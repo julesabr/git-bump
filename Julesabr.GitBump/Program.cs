@@ -1,8 +1,8 @@
 ﻿using System;
 
 namespace Julesabr.GitBump  {
-    class Program {
-        static void Main(string[] args) {
+    internal static class Program {
+        public static void Main(string[] args) {
             Console.WriteLine("Hello World!");
         }
     }
