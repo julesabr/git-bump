@@ -67,5 +67,19 @@ namespace Julesabr.GitBump {
         public static Version From(uint major, uint minor, uint patch, string prereleaseBranch, uint prereleaseBuild) {
             return new Version(major, minor, patch, prereleaseBranch, prereleaseBuild, true);
         }
+
+        public static Version From(string value) {
+            Version result;
+            
+            string[] revisions = value.Split('.');
+            if (revisions.Length == 5)
+                result = From(uint.Parse(revisions[0]), uint.Parse(revisions[1]),
+                    uint.Parse(revisions[2]), revisions[3], uint.Parse(revisions[4]));
+            else
+                result = From(uint.Parse(revisions[0]), uint.Parse(revisions[1]), 
+                    uint.Parse(revisions[2]));
+
+            return result;
+        }
     }
 }
