@@ -52,5 +52,12 @@ namespace Julesabr.GitBump.Tests {
             action.Should().Throw<InvalidOperationException>()
                 .WithMessage(Version.INVAILD_PRERELEASE_BUMP_ERROR);
         }
+
+        [Test]
+        public void BumpPrereleaseBuild_WhenPrerelease_ThenReturnVersionWherePrereleaseBuildIsIncreasedBy1() {
+            IVersion version = Version.From(1, 1, 3, "dev", 5);
+            IVersion result = version.BumpPrereleaseBuild();
+            result.Should().Be(Version.From(1, 1, 3, "dev", 6));
+        }
     }
 }

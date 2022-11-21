@@ -24,7 +24,10 @@ namespace Julesabr.GitBump {
         }
         
         public IVersion BumpPrereleaseBuild() {
-            throw new InvalidOperationException(INVAILD_PRERELEASE_BUMP_ERROR);
+            if (!IsPrerelease)
+                throw new InvalidOperationException(INVAILD_PRERELEASE_BUMP_ERROR);
+
+            return new Version(Major, Minor, Patch, PrereleaseBranch, PrereleaseBuild + 1, IsPrerelease);
         }
 
         public override bool Equals(object obj) {

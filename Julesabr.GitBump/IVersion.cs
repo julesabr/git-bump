@@ -10,5 +10,6 @@ namespace Julesabr.GitBump {
         Version BumpMajor();
         IVersion BumpMinor();
         IVersion BumpPatch();
+        IVersion BumpPrereleaseBuild();
     }
 }
