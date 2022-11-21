@@ -8,5 +8,7 @@ namespace Julesabr.GitBump {
         bool IsPrerelease { get; }
 
         Version BumpMajor();
+        IVersion BumpMinor();
+        IVersion BumpPatch();
     }
 }

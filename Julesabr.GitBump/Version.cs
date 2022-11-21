@@ -2,6 +2,8 @@ using System;
 
 namespace Julesabr.GitBump {
     public sealed class Version : IVersion {
+        public const string INVAILD_PRERELEASE_BUMP_ERROR = "Cannot bump prerelease build number when version is not a prerelease.";
+        
         public uint Major { get; }
         public uint Minor { get; }
         public uint Patch { get; }
@@ -11,6 +13,18 @@ namespace Julesabr.GitBump {
 
         public Version BumpMajor() {
             return new Version(Major + 1, 0, 0, PrereleaseBranch, 1, IsPrerelease);
+        }
+
+        public IVersion BumpMinor() {
+            return new Version(Major, Minor + 1, 0, PrereleaseBranch, 1, IsPrerelease);
+        }
+
+        public IVersion BumpPatch() {
+            return new Version(Major, Minor, Patch + 1, PrereleaseBranch, 1, IsPrerelease);
+        }
+        
+        public IVersion BumpPrereleaseBuild() {
+            throw new InvalidOperationException(INVAILD_PRERELEASE_BUMP_ERROR);
         }
 
         public override bool Equals(object obj) {
