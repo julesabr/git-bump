@@ -1,3 +1,5 @@
+using System.Diagnostics.Contracts;
+
 namespace Julesabr.GitBump {
     public interface IVersion {
         uint Major { get; }
@@ -7,9 +9,9 @@ namespace Julesabr.GitBump {
         uint PrereleaseBuild { get; }
         bool IsPrerelease { get; }
 
-        Version BumpMajor();
-        IVersion BumpMinor();
-        IVersion BumpPatch();
-        IVersion BumpPrereleaseBuild();
+        [Pure] IVersion BumpMajor();
+        [Pure] IVersion BumpMinor();
+        [Pure] IVersion BumpPatch();
+        [Pure] IVersion BumpPrereleaseBuild();
     }
 }

@@ -48,6 +48,7 @@ namespace Julesabr.GitBump.Tests {
 
         [Test]
         public void BumpPrereleaseBuild_WhenNotPrerelease_ThenThrowInvalidOperationException() {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
             Action action = () => Version.From(2, 1, 3).BumpPrereleaseBuild();
             action.Should().Throw<InvalidOperationException>()
                 .WithMessage(Version.InvalidPrereleaseBumpError);
@@ -58,6 +59,26 @@ namespace Julesabr.GitBump.Tests {
             IVersion version = Version.From(1, 1, 3, "dev", 5);
             IVersion result = version.BumpPrereleaseBuild();
             result.Should().Be(Version.From(1, 1, 3, "dev", 6));
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("   ")]
+        public void From_GivenPrereleaseVersionAsSeparateComponents_AndPrereleaseBranchIsNullOrWhitespace_ThenThrowArgumentNullException(
+            string prereleaseBranch) {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action action = () => Version.From(1, 0, 0, prereleaseBranch, 1);
+            action.Should().Throw<ArgumentNullException>()
+                .WithMessage( Version.BlankStringError + " (Parameter 'prereleaseBranch')");
+        }
+
+        [Test]
+        public void From_GivenPrereleaseVersionAsSeparateComponents_AndPrereleaseBuildIs0_ThenThrowArgumentException() {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action action = () => Version.From(1, 0, 0, "dev", 0);
+            action.Should().Throw<ArgumentException>()
+                .WithMessage(Version.PrereleaseBuildIsZeroError);
         }
 
         [Test]
@@ -77,15 +98,12 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        public void From_GivenVersionAsNull_ThenThrowArgumentNullException() {
-            Action action = () => Version.From(null);
-            action.Should().Throw<ArgumentNullException>()
-                .WithMessage(Version.BlankStringError + " (Parameter 'value')");
-        }
-        
-        [Test]
-        public void From_GivenVersionAsEmpty_ThenThrowArgumentNullException() {
-            Action action = () => Version.From(" ");
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase("   ")]
+        public void From_GivenVersionAsNullOrWhitespace_ThenThrowArgumentNullException(string value) {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action action = () => Version.From(value);
             action.Should().Throw<ArgumentNullException>()
                 .WithMessage(Version.BlankStringError + " (Parameter 'value')");
         }
@@ -97,9 +115,28 @@ namespace Julesabr.GitBump.Tests {
         [TestCase("1.b.3")]
         [TestCase("foo")]
         public void From_GivenVersionAsInvalidString_ThenThrowArgumentException(string value) {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
             Action action = () => Version.From(value);
             action.Should().Throw<ArgumentException>()
                 .WithMessage(string.Format(Version.InvalidStringFormatError, value));
+        }
+
+        [Test]
+        [TestCase(3u, 2u, 1u, "3.2.1")]
+        [TestCase(6u, 8u, 2u, "6.8.2")]
+        public void ToString_WhenVersionIsNotPrerelease_ThenReturnAsStringInReleaseFormat(uint major, uint minor, 
+            uint patch, string value) {
+            IVersion version = Version.From(major, minor, patch);
+            version.ToString().Should().Be(value);
+        }
+
+        [Test]
+        [TestCase(5u, 12u, 1u, "alpha", 3u, "5.12.1.alpha.3")]
+        [TestCase(1u, 6u, 2u, "staging", 15u, "1.6.2.staging.15")]
+        public void ToString_WhenVersionIsPrerelease_ThenReturnAsStringInPrereleaseFormat(uint major, uint minor, 
+            uint patch, string prereleaseBranch, uint prereleaseBuild, string value) {
+            IVersion version = Version.From(major, minor, patch, prereleaseBranch, prereleaseBuild);
+            version.ToString().Should().Be(value);
         }
     }
 }
