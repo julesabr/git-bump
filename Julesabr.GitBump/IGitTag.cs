@@ -6,7 +6,7 @@ namespace Julesabr.GitBump {
         public const string BlankStringError = "Value cannot be null or empty.";
         public const string MissingPrefixError = "The git tag '{0}' is missing the given prefix '{1}'.";
         public const string MissingSuffixError = "The git tag '{0}' is missing the given suffix '{1}'.";
-        
+
         IVersion Version { get; }
         string? Prefix { get; }
         string? Suffix { get; }
@@ -15,7 +15,7 @@ namespace Julesabr.GitBump {
         public static IGitTag Create(IVersion version, string? prefix = "v", string? suffix = "") {
             if (version == null)
                 throw new ArgumentNullException(nameof(version));
-            
+
             return new GitTag(version, prefix, suffix);
         }
 
@@ -23,7 +23,7 @@ namespace Julesabr.GitBump {
         public static IGitTag Create(string value, string? prefix = "v", string? suffix = "") {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentNullException(nameof(value), BlankStringError);
-            
+
             if (!string.IsNullOrEmpty(prefix) && !value.StartsWith(prefix))
                 throw new ArgumentException(string.Format(MissingPrefixError, value, prefix));
 
@@ -40,7 +40,7 @@ namespace Julesabr.GitBump {
 
             return Create(
                 IVersion.From(version),
-                prefix, 
+                prefix,
                 suffix
             );
         }

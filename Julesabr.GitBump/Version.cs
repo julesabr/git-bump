@@ -3,15 +3,14 @@ using System.Diagnostics.Contracts;
 
 namespace Julesabr.GitBump {
     internal sealed class Version : IVersion {
-        public uint Major { get; }
-        public uint Minor { get; }
-        public uint Patch { get; }
-        public string? PrereleaseBranch { get; }
-        public uint PrereleaseBuild { get; }
-        public bool IsPrerelease { get; }
-        
-        public Version(uint major, uint minor, uint patch, string? prereleaseBranch = null, uint prereleaseBuild = 1,
-            bool isPrerelease = false) {
+        public Version(
+            uint major,
+            uint minor,
+            uint patch,
+            string? prereleaseBranch = null,
+            uint prereleaseBuild = 1,
+            bool isPrerelease = false
+        ) {
             Major = major;
             Minor = minor;
             Patch = patch;
@@ -19,6 +18,13 @@ namespace Julesabr.GitBump {
             PrereleaseBuild = prereleaseBuild;
             IsPrerelease = isPrerelease;
         }
+
+        public uint Major { get; }
+        public uint Minor { get; }
+        public uint Patch { get; }
+        public string? PrereleaseBranch { get; }
+        public uint PrereleaseBuild { get; }
+        public bool IsPrerelease { get; }
 
         [Pure]
         public IVersion BumpMajor() {
@@ -34,7 +40,7 @@ namespace Julesabr.GitBump {
         public IVersion BumpPatch() {
             return new Version(Major, Minor, Patch + 1, PrereleaseBranch, 1, IsPrerelease);
         }
-        
+
         [Pure]
         public IVersion BumpPrereleaseBuild() {
             if (!IsPrerelease)
@@ -58,7 +64,7 @@ namespace Julesabr.GitBump {
             string result = string.Join(IVersion.Separator, Major, Minor, Patch);
             if (IsPrerelease)
                 result = string.Join(IVersion.Separator, result, PrereleaseBranch, PrereleaseBuild);
-            
+
             return result;
         }
 

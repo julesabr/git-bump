@@ -1,4 +1,4 @@
-﻿namespace Julesabr.GitBump  {
+﻿namespace Julesabr.GitBump {
     internal static class Program {
         public static void Main(string[] args) {
         }
