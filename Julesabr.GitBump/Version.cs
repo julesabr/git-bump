@@ -4,11 +4,11 @@ using System.Diagnostics.Contracts;
 namespace Julesabr.GitBump {
     internal sealed class Version : IVersion {
         public Version(
-            uint major,
-            uint minor,
-            uint patch,
+            ushort major,
+            ushort minor,
+            ushort patch,
             string? prereleaseBranch = null,
-            uint prereleaseBuild = 1,
+            ushort prereleaseBuild = 1,
             bool isPrerelease = false
         ) {
             Major = major;
@@ -19,26 +19,26 @@ namespace Julesabr.GitBump {
             IsPrerelease = isPrerelease;
         }
 
-        public uint Major { get; }
-        public uint Minor { get; }
-        public uint Patch { get; }
+        public ushort Major { get; }
+        public ushort Minor { get; }
+        public ushort Patch { get; }
         public string? PrereleaseBranch { get; }
-        public uint PrereleaseBuild { get; }
+        public ushort PrereleaseBuild { get; }
         public bool IsPrerelease { get; }
 
         [Pure]
         public IVersion BumpMajor() {
-            return new Version(Major + 1, 0, 0, PrereleaseBranch, 1, IsPrerelease);
+            return new Version((ushort)(Major + 1), 0, 0, PrereleaseBranch, 1, IsPrerelease);
         }
 
         [Pure]
         public IVersion BumpMinor() {
-            return new Version(Major, Minor + 1, 0, PrereleaseBranch, 1, IsPrerelease);
+            return new Version(Major, (ushort)(Minor + 1), 0, PrereleaseBranch, 1, IsPrerelease);
         }
 
         [Pure]
         public IVersion BumpPatch() {
-            return new Version(Major, Minor, Patch + 1, PrereleaseBranch, 1, IsPrerelease);
+            return new Version(Major, Minor, (ushort)(Patch + 1), PrereleaseBranch, 1, IsPrerelease);
         }
 
         [Pure]
@@ -46,7 +46,7 @@ namespace Julesabr.GitBump {
             if (!IsPrerelease)
                 throw new InvalidOperationException(IVersion.InvalidPrereleaseBumpError);
 
-            return new Version(Major, Minor, Patch, PrereleaseBranch, PrereleaseBuild + 1, IsPrerelease);
+            return new Version(Major, Minor, Patch, PrereleaseBranch, (ushort)(PrereleaseBuild + 1), IsPrerelease);
         }
 
         public override bool Equals(object? obj) {

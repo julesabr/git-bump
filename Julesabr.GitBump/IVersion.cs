@@ -16,11 +16,11 @@ namespace Julesabr.GitBump {
         public const string InvalidStringFormatError = "'{0}' is not a valid version. All versions must be in a " +
                                                        "semantic version format either 'x.y.z' or 'x.y.z.<branch>.n'.";
 
-        uint Major { get; }
-        uint Minor { get; }
-        uint Patch { get; }
+        ushort Major { get; }
+        ushort Minor { get; }
+        ushort Patch { get; }
         string? PrereleaseBranch { get; }
-        uint PrereleaseBuild { get; }
+        ushort PrereleaseBuild { get; }
         bool IsPrerelease { get; }
 
         [Pure]
@@ -36,12 +36,12 @@ namespace Julesabr.GitBump {
         IVersion BumpPrereleaseBuild();
 
         [Pure]
-        public static IVersion From(uint major, uint minor = 0, uint patch = 0) {
+        public static IVersion From(ushort major, ushort minor = 0, ushort patch = 0) {
             return new Version(major, minor, patch);
         }
 
         [Pure]
-        public static IVersion From(uint major, uint minor, uint patch, string prereleaseBranch, uint prereleaseBuild) {
+        public static IVersion From(ushort major, ushort minor, ushort patch, string prereleaseBranch, ushort prereleaseBuild) {
             if (string.IsNullOrWhiteSpace(prereleaseBranch))
                 throw new ArgumentNullException(nameof(prereleaseBranch), BlankStringError);
 
@@ -64,11 +64,11 @@ namespace Julesabr.GitBump {
 
             string[] revisions = value.Split(Separator);
             if (revisions.Length == 5)
-                result = From(uint.Parse(revisions[0]), uint.Parse(revisions[1]),
-                    uint.Parse(revisions[2]), revisions[3], uint.Parse(revisions[4]));
+                result = From(ushort.Parse(revisions[0]), ushort.Parse(revisions[1]),
+                    ushort.Parse(revisions[2]), revisions[3], ushort.Parse(revisions[4]));
             else
-                result = From(uint.Parse(revisions[0]), uint.Parse(revisions[1]),
-                    uint.Parse(revisions[2]));
+                result = From(ushort.Parse(revisions[0]), ushort.Parse(revisions[1]),
+                    ushort.Parse(revisions[2]));
 
             return result;
         }

@@ -59,6 +59,7 @@ namespace Julesabr.GitBump.Tests {
         [Test]
         public void Create_GivenGitTagAsStringWithInvalidVersion_ThenThrowArgumentException() {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            // ReSharper disable once StringLiteralTypo
             Action action = () => IGitTag.Create("prefoo-post", "pre", "-post");
             action.Should()
                 .Throw<ArgumentException>()
@@ -78,15 +79,15 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        [TestCase(3u, 2u, 1u, "p", "s", "p3.2.1s")]
-        [TestCase(6u, 8u, 2u, "v", "", "v6.8.2")]
-        [TestCase(6u, 8u, 2u, "", "u", "6.8.2u")]
-        [TestCase(6u, 8u, 2u, "v", null, "v6.8.2")]
-        [TestCase(6u, 8u, 2u, null, "u", "6.8.2u")]
+        [TestCase((ushort)3u, (ushort)2u, (ushort)1u, "p", "s", "p3.2.1s")]
+        [TestCase((ushort)6u, (ushort)8u, (ushort)2u, "v", "", "v6.8.2")]
+        [TestCase((ushort)6u, (ushort)8u, (ushort)2u, "", "u", "6.8.2u")]
+        [TestCase((ushort)6u, (ushort)8u, (ushort)2u, "v", null, "v6.8.2")]
+        [TestCase((ushort)6u, (ushort)8u, (ushort)2u, null, "u", "6.8.2u")]
         public void ToString_WhenVersionIsNotPrerelease_ThenReturnGitTagAsStringInReleaseFormat(
-            uint major,
-            uint minor,
-            uint patch,
+            ushort major,
+            ushort minor,
+            ushort patch,
             string? prefix,
             string? suffix,
             string value
@@ -97,22 +98,22 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        [TestCase(5u, 12u, 1u, "alpha", 3u, "p", "s",
+        [TestCase((ushort)5u, (ushort)12u, (ushort)1u, "alpha", (ushort)3u, "p", "s",
             "p5.12.1.alpha.3s")]
-        [TestCase(1u, 6u, 2u, "staging", 15u, "v", "",
+        [TestCase((ushort)1u, (ushort)6u, (ushort)2u, "staging", (ushort)15u, "v", "",
             "v1.6.2.staging.15")]
-        [TestCase(1u, 6u, 2u, "staging", 15u, "", "u",
+        [TestCase((ushort)1u, (ushort)6u, (ushort)2u, "staging", (ushort)15u, "", "u",
             "1.6.2.staging.15u")]
-        [TestCase(1u, 6u, 2u, "staging", 15u, "v", null,
+        [TestCase((ushort)1u, (ushort)6u, (ushort)2u, "staging", (ushort)15u, "v", null,
             "v1.6.2.staging.15")]
-        [TestCase(1u, 6u, 2u, "staging", 15u, null, "u",
+        [TestCase((ushort)1u, (ushort)6u, (ushort)2u, "staging", (ushort)15u, null, "u",
             "1.6.2.staging.15u")]
         public void ToString_WhenVersionIsPrerelease_ThenReturnGitTagAsStringInPrereleaseFormat(
-            uint major,
-            uint minor,
-            uint patch,
+            ushort major,
+            ushort minor,
+            ushort patch,
             string prereleaseBranch,
-            uint prereleaseBuild,
+            ushort prereleaseBuild,
             string? prefix,
             string? suffix,
             string value

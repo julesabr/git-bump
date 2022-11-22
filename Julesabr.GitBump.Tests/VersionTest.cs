@@ -93,27 +93,27 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        [TestCase("3.1.2", 3u, 1u, 2u)]
-        [TestCase("2.5.13", 2u, 5u, 13u)]
+        [TestCase("3.1.2", (ushort)3u, (ushort)1u, (ushort)2u)]
+        [TestCase("2.5.13", (ushort)2u, (ushort)5u, (ushort)13u)]
         public void From_GivenReleaseVersionAsValidString_ThenReturnVersionObject(
             string value,
-            uint major,
-            uint minor,
-            uint patch
+            ushort major,
+            ushort minor,
+            ushort patch
         ) {
             IVersion.From(value).Should().Be(IVersion.From(major, minor, patch));
         }
 
         [Test]
-        [TestCase("7.2.1.dev.1", 7u, 2u, 1u, "dev", 1u)]
-        [TestCase("5.9.6.beta.5", 5u, 9u, 6u, "beta", 5u)]
+        [TestCase("7.2.1.dev.1", (ushort)7u, (ushort)2u, (ushort)1u, "dev", (ushort)1u)]
+        [TestCase("5.9.6.beta.5", (ushort)5u, (ushort)9u, (ushort)6u, "beta", (ushort)5u)]
         public void From_GivenPrereleaseVersionAsValidString_ThenReturnVersionObject(
             string value,
-            uint major,
-            uint minor,
-            uint patch,
+            ushort major,
+            ushort minor,
+            ushort patch,
             string prereleaseBranch,
-            uint prereleaseBuild
+            ushort prereleaseBuild
         ) {
             IVersion.From(value).Should().Be(IVersion.From(major, minor, patch, prereleaseBranch, prereleaseBuild));
         }
@@ -145,12 +145,12 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        [TestCase(3u, 2u, 1u, "3.2.1")]
-        [TestCase(6u, 8u, 2u, "6.8.2")]
+        [TestCase((ushort)3u, (ushort)2u, (ushort)1u, "3.2.1")]
+        [TestCase((ushort)6u, (ushort)8u, (ushort)2u, "6.8.2")]
         public void ToString_WhenVersionIsNotPrerelease_ThenReturnAsStringInReleaseFormat(
-            uint major,
-            uint minor,
-            uint patch,
+            ushort major,
+            ushort minor,
+            ushort patch,
             string value
         ) {
             IVersion version = IVersion.From(major, minor, patch);
@@ -158,14 +158,14 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        [TestCase(5u, 12u, 1u, "alpha", 3u, "5.12.1.alpha.3")]
-        [TestCase(1u, 6u, 2u, "staging", 15u, "1.6.2.staging.15")]
+        [TestCase((ushort)5u, (ushort)12u, (ushort)1u, "alpha", (ushort)3u, "5.12.1.alpha.3")]
+        [TestCase((ushort)1u, (ushort)6u, (ushort)2u, "staging", (ushort)15u, "1.6.2.staging.15")]
         public void ToString_WhenVersionIsPrerelease_ThenReturnAsStringInPrereleaseFormat(
-            uint major,
-            uint minor,
-            uint patch,
+            ushort major,
+            ushort minor,
+            ushort patch,
             string prereleaseBranch,
-            uint prereleaseBuild,
+            ushort prereleaseBuild,
             string value
         ) {
             IVersion version = IVersion.From(major, minor, patch, prereleaseBranch, prereleaseBuild);
