@@ -14,10 +14,13 @@ namespace Julesabr.GitBump {
         [Option(Default = false, HelpText = "Disable the default behavior of pushing the new git tag once created. This is irrelevant when using the '--no-tag' flag.")]
         public bool NoPush { get; set; }
         
-        [Option(Required = false, Default = "v", HelpText = "The git tag prefix. Git tag names are always going to be the version with the prefix appended.")]
-        public string Prefix { get; set; }
+        [Option(Required = false, Default = "v", HelpText = "The git tag prefix. Git tag names are always going to be the version with the prefix appended at the beginning.")]
+        public string? Prefix { get; set; }
+        
+        [Option(Required = false, Default = "", HelpText = "The git tag suffix. Git tag names are always going to be the version with the suffix appended at the end.")]
+        public string? Suffix { get; set; }
         
         [Option(Required = false, Default = "", HelpText = "Output the new version into a file at the given path. The path could be absolute or relative to the current working directory.")]
-        public string OutputVersion { get; set; }
+        public string? OutputVersion { get; set; }
     }
 }
