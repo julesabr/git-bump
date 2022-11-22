@@ -1,8 +1,13 @@
 using System;
+using System.Text.RegularExpressions;
 
 namespace Julesabr.GitBump {
     public sealed class Version : IVersion {
-        public const string INVAILD_PRERELEASE_BUMP_ERROR = "Cannot bump prerelease build number when version is not a prerelease.";
+        private const string RegexPattern = @"^([0-9]+\.){2}[0-9]+(\.[a-zA-z]+\.[0-9]+)?$";
+
+        public const string BlankStringError = "Value cannot be null or empty.";
+        public const string InvalidPrereleaseBumpError = "Cannot bump prerelease build number when version is not a prerelease.";
+        public const string InvalidStringFormatError = "'{0}' is not a valid version. All versions must be in a semantic version format either 'x.y.z' or 'x.y.z.<branch>.n'.";
         
         public uint Major { get; }
         public uint Minor { get; }
@@ -25,7 +30,7 @@ namespace Julesabr.GitBump {
         
         public IVersion BumpPrereleaseBuild() {
             if (!IsPrerelease)
-                throw new InvalidOperationException(INVAILD_PRERELEASE_BUMP_ERROR);
+                throw new InvalidOperationException(InvalidPrereleaseBumpError);
 
             return new Version(Major, Minor, Patch, PrereleaseBranch, PrereleaseBuild + 1, IsPrerelease);
         }
@@ -69,6 +74,13 @@ namespace Julesabr.GitBump {
         }
 
         public static Version From(string value) {
+            if (string.IsNullOrWhiteSpace(value))
+                throw new ArgumentNullException(nameof(value), BlankStringError);
+            
+            Match match = Regex.Match(value, RegexPattern);
+            if (!match.Success)
+                throw new ArgumentException(string.Format(InvalidStringFormatError, value));
+            
             Version result;
             
             string[] revisions = value.Split('.');

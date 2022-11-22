@@ -50,7 +50,7 @@ namespace Julesabr.GitBump.Tests {
         public void BumpPrereleaseBuild_WhenNotPrerelease_ThenThrowInvalidOperationException() {
             Action action = () => Version.From(2, 1, 3).BumpPrereleaseBuild();
             action.Should().Throw<InvalidOperationException>()
-                .WithMessage(Version.INVAILD_PRERELEASE_BUMP_ERROR);
+                .WithMessage(Version.InvalidPrereleaseBumpError);
         }
 
         [Test]
@@ -77,6 +77,20 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
+        public void From_GivenVersionAsNull_ThenThrowArgumentNullException() {
+            Action action = () => Version.From(null);
+            action.Should().Throw<ArgumentNullException>()
+                .WithMessage(Version.BlankStringError + " (Parameter 'value')");
+        }
+        
+        [Test]
+        public void From_GivenVersionAsEmpty_ThenThrowArgumentNullException() {
+            Action action = () => Version.From(" ");
+            action.Should().Throw<ArgumentNullException>()
+                .WithMessage(Version.BlankStringError + " (Parameter 'value')");
+        }
+
+        [Test]
         [TestCase("1.1")]
         [TestCase("1.2.3.4")]
         [TestCase("1.2.3.dev")]
@@ -85,7 +99,7 @@ namespace Julesabr.GitBump.Tests {
         public void From_GivenVersionAsInvalidString_ThenThrowArgumentException(string value) {
             Action action = () => Version.From(value);
             action.Should().Throw<ArgumentException>()
-                .WithMessage(string.Format("'{0}' is not a valid version. All versions must be in a semantic version format either 'x.y.z' or 'x.y.z.<branch>.n'.", value));
+                .WithMessage(string.Format(Version.InvalidStringFormatError, value));
         }
     }
 }
