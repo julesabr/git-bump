@@ -2,25 +2,32 @@ using System.Collections.Generic;
 using System.Linq;
 using LibGit2Sharp;
 
-namespace Julesabr.GitBump.Services {
-    public interface IGit {
+namespace Julesabr.GitBump {
+    public interface IGitDetails {
         IGitTag? LatestTag { get; }
-        // IEnumerable<Commit> LatestCommits { get; }
+        IEnumerable<Commit> LatestCommits { get; }
 
-        public static IGit Create(IRepository repository, string? tagPrefix = "v", string? tagSuffix = "") {
+        public static IGitDetails Create(IRepository repository, string? tagPrefix = "v", string? tagSuffix = "") {
+            IGitTag? latestTag = null;
+            IList<Commit> latestCommits = new List<Commit>();
+
             IDictionary<ObjectId, IList<Tag>> tagsPerCommitId = TagsPerCommitId(repository);
 
             CommitFilter filter = new() {
                 SortBy = CommitSortStrategies.Reverse
             };
 
-            IGitTag? latestTag = (from commit in repository.Commits.QueryBy(filter)
-                select AssignedTags(commit, tagsPerCommitId).FirstOrDefault(tag => tag.IsAnnotated)
-                into annotatedTag
-                where annotatedTag != null
-                select IGitTag.Create(annotatedTag.FriendlyName, tagPrefix, tagSuffix)).FirstOrDefault();
+            foreach (Commit commit in repository.Commits.QueryBy(filter)) {
+                Tag? annotatedTag = AssignedTags(commit, tagsPerCommitId).FirstOrDefault(tag => tag.IsAnnotated);
+                if (annotatedTag != null) {
+                    latestTag = IGitTag.Create(annotatedTag.FriendlyName, tagPrefix, tagSuffix);
+                    break;
+                }
 
-            return new Git(latestTag, new List<Commit>());
+                latestCommits.Add(commit);
+            }
+
+            return new GitDetails(latestTag, latestCommits);
         }
 
         private static IEnumerable<Tag> AssignedTags(GitObject commit, IDictionary<ObjectId, IList<Tag>> tags) {

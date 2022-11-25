@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using LibGit2Sharp;
 
-namespace Julesabr.GitBump.Services {
-    internal sealed class Git : IGit {
-        public Git(IGitTag? latestTag, IEnumerable<Commit> latestCommits) {
+namespace Julesabr.GitBump {
+    internal sealed class GitDetails : IGitDetails {
+        public GitDetails(IGitTag? latestTag, IEnumerable<Commit> latestCommits) {
             LatestTag = latestTag;
             LatestCommits = latestCommits;
         }
