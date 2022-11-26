@@ -12,8 +12,17 @@ namespace Julesabr.GitBump {
         public string? Prefix { get; }
         public string? Suffix { get; }
 
-        private bool Equals(IGitTag other) {
-            return Version.Equals(other.Version) && Prefix == other.Prefix && Suffix == other.Suffix;
+        public int CompareTo(IGitTag? other) {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+
+            int prefixComparison = string.Compare(Prefix, other.Prefix, StringComparison.Ordinal);
+            if (prefixComparison != 0) return prefixComparison;
+
+            int versionComparison = Version.CompareTo(other.Version);
+            return versionComparison != 0
+                ? versionComparison
+                : string.Compare(Suffix, other.Suffix, StringComparison.Ordinal);
         }
 
         public override bool Equals(object? obj) {
@@ -29,6 +38,10 @@ namespace Julesabr.GitBump {
 
         public override string ToString() {
             return $"{Prefix}{Version}{Suffix}";
+        }
+
+        private bool Equals(IGitTag other) {
+            return Version.Equals(other.Version) && Prefix == other.Prefix && Suffix == other.Suffix;
         }
     }
 }

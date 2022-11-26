@@ -1,7 +1,7 @@
 using CommandLine;
 
 namespace Julesabr.GitBump {
-    internal class Options {
+    public class Options {
         [Option(Default = false, HelpText = "Output the steps to take without making file changes or git changes.")]
         public bool DryRun { get; set; }
 

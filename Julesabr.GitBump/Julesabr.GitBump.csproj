@@ -10,8 +10,4 @@
         <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Services" />
-    </ItemGroup>
-
 </Project>

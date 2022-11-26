@@ -4,6 +4,206 @@ using NUnit.Framework;
 
 namespace Julesabr.GitBump.Tests {
     public class GitTagTest {
+        #region Comparisons
+
+        [Test]
+        public void LessThan_WhenLeftPrefixIsLessThanTheRightPrefix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "b", "x");
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftPrefixIsGreaterThanTheRightPrefix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "b", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftVersionIsLessThanTheRightVersion_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(2), "a", "x");
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftVersionIsGreaterThanTheRightVersion_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(2), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftSuffixIsLessThanTheRightSuffix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "y");
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftSuffixIsGreaterThanTheRightSuffix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "y");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenGitTagsAreEqual_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPrefixIsLessThanTheRightPrefix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "b", "x");
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPrefixIsGreaterThanTheRightPrefix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "b", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftVersionIsLessThanTheRightVersion_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(2), "a", "x");
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftVersionIsGreaterThanTheRightVersion_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(2), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftSuffixIsLessThanTheRightSuffix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "y");
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftSuffixIsGreaterThanTheRightSuffix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "y");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenGitTagsAreEqual_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPrefixIsLessThanTheRightPrefix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "b", "x");
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPrefixIsGreaterThanTheRightPrefix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "b", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftVersionIsLessThanTheRightVersion_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(2), "a", "x");
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftVersionIsGreaterThanTheRightVersion_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(2), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftSuffixIsLessThanTheRightSuffix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "y");
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftSuffixIsGreaterThanTheRightSuffix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "y");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenGitTagsAreEqual_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftPrefixIsLessThanTheRightPrefix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "b", "x");
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftPrefixIsGreaterThanTheRightPrefix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "b", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftVersionIsLessThanTheRightVersion_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(2), "a", "x");
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftVersionIsGreaterThanTheRightVersion_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(2), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftSuffixIsLessThanTheRightSuffix_ThenReturnFalse() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "y");
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftSuffixIsGreaterThanTheRightSuffix_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "y");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenGitTagsAreEqual_ThenReturnTrue() {
+            IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
+            IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
+            (left >= right).Should().BeTrue();
+        }
+
+        #endregion
+        
         [Test]
         public void Create_GivenVersionObjectIsNull_ThenThrowArgumentNullException() {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
@@ -113,12 +313,12 @@ namespace Julesabr.GitBump.Tests {
             ushort minor,
             ushort patch,
             string prereleaseBranch,
-            ushort prereleaseBuild,
+            ushort prereleaseNumber,
             string? prefix,
             string? suffix,
             string value
         ) {
-            IVersion version = IVersion.From(major, minor, patch, prereleaseBranch, prereleaseBuild);
+            IVersion version = IVersion.From(major, minor, patch, prereleaseBranch, prereleaseNumber);
             IGitTag gitTag = IGitTag.Create(version, prefix, suffix);
             gitTag.ToString().Should().Be(value);
         }

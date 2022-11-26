@@ -4,6 +4,320 @@ using NUnit.Framework;
 
 namespace Julesabr.GitBump.Tests {
     public class VersionTest {
+        #region Comparisons
+
+        [Test]
+        public void LessThan_WhenLeftMajorIsLessThanTheRightMajor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(2, 1, 1);
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftMajorIsGreaterThanTheRightMajor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(0, 1, 1);
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftMinorIsLessThanTheRightMinor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 2, 1);
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftMinorIsGreaterThanTheRightMinor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 0, 1);
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftPatchIsLessThanTheRightPatch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1, 2);
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftPatchIsGreaterThanTheRightPatch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1);
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftPrereleaseNumberIsLessThanTheRightPrereleaseNumber_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 2);
+            (left < right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThan_WhenLeftPrereleaseNumberIsGreaterThanTheRightPrereleaseNumber_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 2);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThan_WhenVersionsAreEqual_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left < right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftMajorIsLessThanTheRightMajor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(2, 1, 1);
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftMajorIsGreaterThanTheRightMajor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(0, 1, 1);
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftMinorIsLessThanTheRightMinor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 2, 1);
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftMinorIsGreaterThanTheRightMinor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 0, 1);
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPatchIsLessThanTheRightPatch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1, 2);
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPatchIsGreaterThanTheRightPatch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1);
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPrereleaseNumberIsLessThanTheRightPrereleaseNumber_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 2);
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThan_WhenLeftPrereleaseNumberIsGreaterThanTheRightPrereleaseNumber_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 2);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left > right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThan_WhenVersionsAreEqual_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left > right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftMajorIsLessThanTheRightMajor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(2, 1, 1);
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftMajorIsGreaterThanTheRightMajor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(0, 1, 1);
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftMinorIsLessThanTheRightMinor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 2, 1);
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftMinorIsGreaterThanTheRightMinor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 0, 1);
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPatchIsLessThanTheRightPatch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1, 2);
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPatchIsGreaterThanTheRightPatch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1);
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPrereleaseNumberIsLessThanTheRightPrereleaseNumber_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 2);
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenLeftPrereleaseNumberIsGreaterThanTheRightPrereleaseNumber_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 2);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left <= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void LessThanOrEqualTo_WhenVersionsAreEqual_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left <= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftMajorIsLessThanTheRightMajor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(2, 1, 1);
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftMajorIsGreaterThanTheRightMajor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(0, 1, 1);
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftMinorIsLessThanTheRightMinor_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 2, 1);
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftMinorIsGreaterThanTheRightMinor_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 0, 1);
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftPatchIsLessThanTheRightPatch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1, 2);
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftPatchIsGreaterThanTheRightPatch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1);
+            IVersion right = IVersion.From(1, 1);
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void
+            GreaterThanOrEqualTo_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenLeftPrereleaseNumberIsLessThanTheRightPrereleaseNumber_ThenReturnFalse() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 2);
+            (left >= right).Should().BeFalse();
+        }
+
+        [Test]
+        public void
+            GreaterThanOrEqualTo_WhenLeftPrereleaseNumberIsGreaterThanTheRightPrereleaseNumber_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 2);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left >= right).Should().BeTrue();
+        }
+
+        [Test]
+        public void GreaterThanOrEqualTo_WhenVersionsAreEqual_ThenReturnTrue() {
+            IVersion left = IVersion.From(1, 1, 1, "beta", 1);
+            IVersion right = IVersion.From(1, 1, 1, "beta", 1);
+            (left >= right).Should().BeTrue();
+        }
+
+        #endregion
+        
         [Test]
         public void
             BumpMajor_WhenNotPrerelease_ThenReturnVersionWhereMajorIncreasedBy1AndBothMinorAndPatchAreResetTo0() {
@@ -14,7 +328,7 @@ namespace Julesabr.GitBump.Tests {
 
         [Test]
         public void
-            BumpMajor_WhenPrerelease_ThenReturnVersionWhereMajorIncreasedBy1_MinorAndPatchIsResetTo0_AndPrereleaseBuildIsResetTo1() {
+            BumpMajor_WhenPrerelease_ThenReturnVersionWhereMajorIncreasedBy1_MinorAndPatchIsResetTo0_AndPrereleaseNumberIsResetTo1() {
             IVersion version = IVersion.From(1, 1, 3, "dev", 5);
             IVersion result = version.BumpMajor();
             result.Should().Be(IVersion.From(2, 0, 0, "dev", 1));
@@ -30,7 +344,7 @@ namespace Julesabr.GitBump.Tests {
 
         [Test]
         public void
-            BumpMinor_WhenPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsIncreasedBy1_PatchIsResetTo0_AndPrereleaseBuildIsResetTo1() {
+            BumpMinor_WhenPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsIncreasedBy1_PatchIsResetTo0_AndPrereleaseNumberIsResetTo1() {
             IVersion version = IVersion.From(1, 1, 3, "dev", 5);
             IVersion result = version.BumpMinor();
             result.Should().Be(IVersion.From(1, 2, 0, "dev", 1));
@@ -46,25 +360,25 @@ namespace Julesabr.GitBump.Tests {
 
         [Test]
         public void
-            BumpPatch_WhenPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsTheSame_PatchIsIncreasedBy1_AndPrereleaseBuildIsResetTo1() {
+            BumpPatch_WhenPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsTheSame_PatchIsIncreasedBy1_AndPrereleaseNumberIsResetTo1() {
             IVersion version = IVersion.From(1, 1, 3, "dev", 5);
             IVersion result = version.BumpPatch();
             result.Should().Be(IVersion.From(1, 1, 4, "dev", 1));
         }
 
         [Test]
-        public void BumpPrereleaseBuild_WhenNotPrerelease_ThenThrowInvalidOperationException() {
+        public void BumpPrerelease_WhenNotPrerelease_ThenThrowInvalidOperationException() {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action action = () => IVersion.From(2, 1, 3).BumpPrereleaseBuild();
+            Action action = () => IVersion.From(2, 1, 3).BumpPrerelease();
             action.Should()
                 .Throw<InvalidOperationException>()
                 .WithMessage(IVersion.InvalidPrereleaseBumpError);
         }
 
         [Test]
-        public void BumpPrereleaseBuild_WhenPrerelease_ThenReturnVersionWherePrereleaseBuildIsIncreasedBy1() {
+        public void BumpPrerelease_WhenPrerelease_ThenReturnVersionWherePrereleaseNumberIsIncreasedBy1() {
             IVersion version = IVersion.From(1, 1, 3, "dev", 5);
-            IVersion result = version.BumpPrereleaseBuild();
+            IVersion result = version.BumpPrerelease();
             result.Should().Be(IVersion.From(1, 1, 3, "dev", 6));
         }
 
@@ -84,12 +398,13 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        public void From_GivenPrereleaseVersionAsSeparateComponents_AndPrereleaseBuildIs0_ThenThrowArgumentException() {
+        public void
+            From_GivenPrereleaseVersionAsSeparateComponents_AndPrereleaseNumberIs0_ThenThrowArgumentException() {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
             Action action = () => IVersion.From(1, 0, 0, "dev", 0);
             action.Should()
                 .Throw<ArgumentException>()
-                .WithMessage(IVersion.PrereleaseBuildIsZeroError);
+                .WithMessage(IVersion.PrereleaseIsZeroError);
         }
 
         [Test]
@@ -113,9 +428,9 @@ namespace Julesabr.GitBump.Tests {
             ushort minor,
             ushort patch,
             string prereleaseBranch,
-            ushort prereleaseBuild
+            ushort prereleaseNumber
         ) {
-            IVersion.From(value).Should().Be(IVersion.From(major, minor, patch, prereleaseBranch, prereleaseBuild));
+            IVersion.From(value).Should().Be(IVersion.From(major, minor, patch, prereleaseBranch, prereleaseNumber));
         }
 
         [Test]
@@ -165,10 +480,10 @@ namespace Julesabr.GitBump.Tests {
             ushort minor,
             ushort patch,
             string prereleaseBranch,
-            ushort prereleaseBuild,
+            ushort prereleaseNumber,
             string value
         ) {
-            IVersion version = IVersion.From(major, minor, patch, prereleaseBranch, prereleaseBuild);
+            IVersion version = IVersion.From(major, minor, patch, prereleaseBranch, prereleaseNumber);
             version.ToString().Should().Be(value);
         }
     }

@@ -8,14 +8,14 @@ namespace Julesabr.GitBump {
             ushort minor,
             ushort patch,
             string? prereleaseBranch = null,
-            ushort prereleaseBuild = 1,
+            ushort prereleaseNumber = 1,
             bool isPrerelease = false
         ) {
             Major = major;
             Minor = minor;
             Patch = patch;
             PrereleaseBranch = prereleaseBranch;
-            PrereleaseBuild = prereleaseBuild;
+            PrereleaseNumber = prereleaseNumber;
             IsPrerelease = isPrerelease;
         }
 
@@ -23,7 +23,7 @@ namespace Julesabr.GitBump {
         public ushort Minor { get; }
         public ushort Patch { get; }
         public string? PrereleaseBranch { get; }
-        public ushort PrereleaseBuild { get; }
+        public ushort PrereleaseNumber { get; }
         public bool IsPrerelease { get; }
 
         [Pure]
@@ -42,11 +42,32 @@ namespace Julesabr.GitBump {
         }
 
         [Pure]
-        public IVersion BumpPrereleaseBuild() {
+        public IVersion BumpPrerelease() {
             if (!IsPrerelease)
                 throw new InvalidOperationException(IVersion.InvalidPrereleaseBumpError);
 
-            return new Version(Major, Minor, Patch, PrereleaseBranch, (ushort)(PrereleaseBuild + 1), IsPrerelease);
+            return new Version(Major, Minor, Patch, PrereleaseBranch,
+                (ushort)(PrereleaseNumber + 1), IsPrerelease);
+        }
+
+        public int CompareTo(IVersion? other) {
+            if (ReferenceEquals(this, other)) return 0;
+            if (ReferenceEquals(null, other)) return 1;
+
+            int majorComparison = Major.CompareTo(other.Major);
+            if (majorComparison != 0) return majorComparison;
+
+            int minorComparison = Minor.CompareTo(other.Minor);
+            if (minorComparison != 0) return minorComparison;
+
+            int patchComparison = Patch.CompareTo(other.Patch);
+            if (patchComparison != 0) return patchComparison;
+
+            int prereleaseBranchComparison =
+                string.Compare(PrereleaseBranch, other.PrereleaseBranch, StringComparison.Ordinal);
+            return prereleaseBranchComparison != 0
+                ? prereleaseBranchComparison
+                : PrereleaseNumber.CompareTo(other.PrereleaseNumber);
         }
 
         public override bool Equals(object? obj) {
@@ -57,13 +78,13 @@ namespace Julesabr.GitBump {
         }
 
         public override int GetHashCode() {
-            return HashCode.Combine(Major, Minor, Patch, PrereleaseBranch, PrereleaseBuild);
+            return HashCode.Combine(Major, Minor, Patch, PrereleaseBranch, PrereleaseNumber);
         }
 
         public override string ToString() {
             string result = string.Join(IVersion.Separator, Major, Minor, Patch);
             if (IsPrerelease)
-                result = string.Join(IVersion.Separator, result, PrereleaseBranch, PrereleaseBuild);
+                result = string.Join(IVersion.Separator, result, PrereleaseBranch, PrereleaseNumber);
 
             return result;
         }
@@ -73,7 +94,7 @@ namespace Julesabr.GitBump {
                    Minor == other.Minor &&
                    Patch == other.Patch &&
                    PrereleaseBranch == other.PrereleaseBranch &&
-                   PrereleaseBuild == other.PrereleaseBuild &&
+                   PrereleaseNumber == other.PrereleaseNumber &&
                    IsPrerelease == other.IsPrerelease;
         }
     }

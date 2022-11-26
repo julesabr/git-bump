@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
 namespace Julesabr.GitBump {
-    public interface IGitTag {
+    public interface IGitTag : IComparable<IGitTag> {
         public const string BlankStringError = "Value cannot be null or empty.";
         public const string MissingPrefixError = "The git tag '{0}' is missing the given prefix '{1}'.";
         public const string MissingSuffixError = "The git tag '{0}' is missing the given suffix '{1}'.";
@@ -43,6 +44,22 @@ namespace Julesabr.GitBump {
                 prefix,
                 suffix
             );
+        }
+
+        public static bool operator <(IGitTag? left, IGitTag? right) {
+            return Comparer<IGitTag>.Default.Compare(left, right) < 0;
+        }
+
+        public static bool operator >(IGitTag? left, IGitTag? right) {
+            return Comparer<IGitTag>.Default.Compare(left, right) > 0;
+        }
+
+        public static bool operator <=(IGitTag? left, IGitTag? right) {
+            return Comparer<IGitTag>.Default.Compare(left, right) <= 0;
+        }
+
+        public static bool operator >=(IGitTag? left, IGitTag? right) {
+            return Comparer<IGitTag>.Default.Compare(left, right) >= 0;
         }
     }
 }

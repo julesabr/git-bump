@@ -1,14 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
 
 namespace Julesabr.GitBump {
-    public interface IVersion {
+    public interface IVersion : IComparable<IVersion> {
         private const string RegexPattern = @"^([0-9]+\.){2}[0-9]+(\.[a-zA-z]+\.[0-9]+)?$";
 
         public const char Separator = '.';
         public const string BlankStringError = "Value cannot be null or empty.";
-        public const string PrereleaseBuildIsZeroError = "Prerelease Build number cannot be 0.";
+        public const string PrereleaseIsZeroError = "Prerelease number cannot be 0.";
 
         public const string InvalidPrereleaseBumpError = "Cannot bump prerelease build number when version is not a " +
                                                          "prerelease.";
@@ -20,7 +21,7 @@ namespace Julesabr.GitBump {
         ushort Minor { get; }
         ushort Patch { get; }
         string? PrereleaseBranch { get; }
-        ushort PrereleaseBuild { get; }
+        ushort PrereleaseNumber { get; }
         bool IsPrerelease { get; }
 
         [Pure]
@@ -33,7 +34,7 @@ namespace Julesabr.GitBump {
         IVersion BumpPatch();
 
         [Pure]
-        IVersion BumpPrereleaseBuild();
+        IVersion BumpPrerelease();
 
         [Pure]
         public static IVersion From(ushort major, ushort minor = 0, ushort patch = 0) {
@@ -41,14 +42,20 @@ namespace Julesabr.GitBump {
         }
 
         [Pure]
-        public static IVersion From(ushort major, ushort minor, ushort patch, string prereleaseBranch, ushort prereleaseBuild) {
+        public static IVersion From(
+            ushort major,
+            ushort minor,
+            ushort patch,
+            string prereleaseBranch,
+            ushort prereleaseNumber
+        ) {
             if (string.IsNullOrWhiteSpace(prereleaseBranch))
                 throw new ArgumentNullException(nameof(prereleaseBranch), BlankStringError);
 
-            if (prereleaseBuild == 0)
-                throw new ArgumentException(PrereleaseBuildIsZeroError);
+            if (prereleaseNumber == 0)
+                throw new ArgumentException(PrereleaseIsZeroError);
 
-            return new Version(major, minor, patch, prereleaseBranch, prereleaseBuild, true);
+            return new Version(major, minor, patch, prereleaseBranch, prereleaseNumber, true);
         }
 
         [Pure]
@@ -71,6 +78,22 @@ namespace Julesabr.GitBump {
                     ushort.Parse(revisions[2]));
 
             return result;
+        }
+
+        public static bool operator <(IVersion? left, IVersion? right) {
+            return Comparer<IVersion>.Default.Compare(left, right) < 0;
+        }
+
+        public static bool operator >(IVersion? left, IVersion? right) {
+            return Comparer<IVersion>.Default.Compare(left, right) > 0;
+        }
+
+        public static bool operator <=(IVersion? left, IVersion? right) {
+            return Comparer<IVersion>.Default.Compare(left, right) <= 0;
+        }
+
+        public static bool operator >=(IVersion? left, IVersion? right) {
+            return Comparer<IVersion>.Default.Compare(left, right) >= 0;
         }
     }
 }

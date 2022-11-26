@@ -5,29 +5,47 @@ using LibGit2Sharp;
 namespace Julesabr.GitBump {
     public interface IGitDetails {
         IGitTag? LatestTag { get; }
+        IGitTag? LatestPrereleaseTag { get; }
         IEnumerable<Commit> LatestCommits { get; }
 
-        public static IGitDetails Create(IRepository repository, string? tagPrefix = "v", string? tagSuffix = "") {
-            IGitTag? latestTag = null;
-            IList<Commit> latestCommits = new List<Commit>();
+        public static IGitDetails Create(IRepository repository, Options options) {
+            IGitTag? latestTag = repository.Tags.Where(tag => tag.IsAnnotated)
+                .Select(tag => IGitTag.Create(tag.FriendlyName, options.Prefix, options.Suffix))
+                .Where(tag => !tag.Version.IsPrerelease)
+                .OrderByDescending(tag => tag)
+                .FirstOrDefault();
 
+            IGitTag? latestPrereleaseTag = null;
+            if (options.Prerelease)
+                latestPrereleaseTag = repository.Tags.Where(tag => tag.IsAnnotated)
+                    .Select(tag => IGitTag.Create(tag.FriendlyName, options.Prefix, options.Suffix))
+                    .Where(tag =>
+                        tag.Version.IsPrerelease && tag.Version.PrereleaseBranch == repository.Head.FriendlyName)
+                    .OrderByDescending(tag => tag)
+                    .FirstOrDefault();
+            
             IDictionary<ObjectId, IList<Tag>> tagsPerCommitId = TagsPerCommitId(repository);
-
             CommitFilter filter = new() {
                 SortBy = CommitSortStrategies.Reverse
             };
 
-            foreach (Commit commit in repository.Commits.QueryBy(filter)) {
-                Tag? annotatedTag = AssignedTags(commit, tagsPerCommitId).FirstOrDefault(tag => tag.IsAnnotated);
-                if (annotatedTag != null) {
-                    latestTag = IGitTag.Create(annotatedTag.FriendlyName, tagPrefix, tagSuffix);
-                    break;
-                }
+            IList<Commit> latestCommits = LatestCommitsSince(options.Prerelease ? latestPrereleaseTag : latestTag,
+                repository, filter, tagsPerCommitId);
 
-                latestCommits.Add(commit);
-            }
+            return new GitDetails(latestTag, latestPrereleaseTag, latestCommits);
+        }
 
-            return new GitDetails(latestTag, latestCommits);
+        private static IList<Commit> LatestCommitsSince(
+            IGitTag? tag,
+            IRepository repository,
+            CommitFilter filter,
+            IDictionary<ObjectId, IList<Tag>> tagsPerCommitId
+        ) {
+            return repository.Commits.QueryBy(filter)
+                .TakeWhile(commit => AssignedTags(commit, tagsPerCommitId)
+                    .Where(t => t.IsAnnotated)
+                    .All(t => t.FriendlyName != tag?.ToString()))
+                .ToList();
         }
 
         private static IEnumerable<Tag> AssignedTags(GitObject commit, IDictionary<ObjectId, IList<Tag>> tags) {
