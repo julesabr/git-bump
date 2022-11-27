@@ -8,6 +8,17 @@ namespace Julesabr.GitBump {
         IGitTag? LatestPrereleaseTag { get; }
         IEnumerable<Commit> LatestCommits { get; }
 
+        IGitTag BumpTag();
+
+        public static IGitDetails Create(
+            IGitTag? latestTag,
+            IGitTag? latestPrereleaseTag,
+            IEnumerable<Commit> latestCommits,
+            Options options
+        ) {
+            return new GitDetails(latestTag, latestPrereleaseTag, latestCommits, options);
+        }
+
         public static IGitDetails Create(IRepository repository, Options options) {
             IGitTag? latestTag = repository.Tags.Where(tag => tag.IsAnnotated)
                 .Select(tag => IGitTag.Create(tag.FriendlyName, options.Prefix, options.Suffix))
@@ -29,13 +40,13 @@ namespace Julesabr.GitBump {
                 SortBy = CommitSortStrategies.Reverse
             };
 
-            IList<Commit> latestCommits = LatestCommitsSince(options.Prerelease ? latestPrereleaseTag : latestTag,
+            IEnumerable<Commit> latestCommits = LatestCommitsSince(options.Prerelease ? latestPrereleaseTag : latestTag,
                 repository, filter, tagsPerCommitId);
 
-            return new GitDetails(latestTag, latestPrereleaseTag, latestCommits);
+            return new GitDetails(latestTag, latestPrereleaseTag, latestCommits, options);
         }
 
-        private static IList<Commit> LatestCommitsSince(
+        private static IEnumerable<Commit> LatestCommitsSince(
             IGitTag? tag,
             IRepository repository,
             CommitFilter filter,
