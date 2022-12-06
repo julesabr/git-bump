@@ -65,6 +65,30 @@ namespace Julesabr.GitBump.Tests {
                 .Should()
                 .Be(IGitTag.Create(IVersion.From(2, 1, 4), options.Prefix, options.Suffix));
         }
+        
+        [Test]
+        public void
+            BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainABuildChange_ThenReturnTheLatestTagWithAPatchBump() {
+            Options options = new() {
+                Prerelease = false,
+                Prefix = "v",
+                Suffix = ""
+            };
+            IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3));
+            IList<Commit> latestCommits = CommitsWithNoSignificantChange();
+
+            Commit commit = Substitute.For<Commit>();
+            commit.Id.Returns(new ObjectId("6c6f2ee44a8bc3105e1fa9e01fcd7e99d3313621"));
+            commit.MessageShort.Returns("build: Commit 8");
+            latestCommits.Add(commit);
+
+            IGitDetails details = IGitDetails.Create(latestTag, null, latestCommits,
+                options);
+
+            details.BumpTag()
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4), options.Prefix, options.Suffix));
+        }
 
         private IList<Commit> CommitsWithNoSignificantChange() {
             Commit commit1 = Substitute.For<Commit>();
