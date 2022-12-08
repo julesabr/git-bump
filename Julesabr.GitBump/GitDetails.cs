@@ -6,6 +6,8 @@ namespace Julesabr.GitBump {
     internal sealed class GitDetails : IGitDetails {
         private const string CommitTypeRegexInclusive = @"^[a-zA-Z]+(?:\(.+\))?: ";
         private const string CommitTypeRegexExclusive = @"^[a-zA-Z]+";
+        private const string BreakingChangeCommitTypeRegex = @"^[a-zA-Z]+(?:\(.+\))?!: ";
+        private const string BreakingChangeFooterRegex = @"\n\nBREAKING CHANGE: ";
 
         public GitDetails(
             IGitTag? latestTag,
@@ -31,6 +33,11 @@ namespace Julesabr.GitBump {
 
             BumpType currentType = BumpType.None;
             foreach (Commit commit in LatestCommits) {
+                if (IsBreakingChange(commit)) {
+                    currentType = BumpType.Major;
+                    break;
+                }
+                
                 string match = Regex.Match(commit.MessageShort, CommitTypeRegexInclusive).Value;
                 match = Regex.Match(match, CommitTypeRegexExclusive).Value;
 
@@ -46,9 +53,16 @@ namespace Julesabr.GitBump {
                     return IGitTag.Create(LatestTag.Version.BumpPatch(), LatestTag.Prefix, LatestTag.Suffix);
                 case BumpType.Minor:
                     return IGitTag.Create(LatestTag.Version.BumpMinor(), LatestTag.Prefix, LatestTag.Suffix);
+                case BumpType.Major:
+                    return IGitTag.Create(LatestTag.Version.BumpMajor(), LatestTag.Prefix, LatestTag.Suffix);
             }
 
             return LatestTag;
+        }
+
+        private bool IsBreakingChange(Commit commit) {
+            return Regex.IsMatch(commit.MessageShort, BreakingChangeCommitTypeRegex) ||
+                   Regex.IsMatch(commit.Message, BreakingChangeFooterRegex);
         }
     }
 }

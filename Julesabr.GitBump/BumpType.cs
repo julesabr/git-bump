@@ -2,6 +2,7 @@ namespace Julesabr.GitBump {
     public enum BumpType {
         None,
         Patch,
-        Minor
+        Minor,
+        Major
     }
 }
