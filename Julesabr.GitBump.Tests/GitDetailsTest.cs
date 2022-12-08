@@ -164,7 +164,7 @@ namespace Julesabr.GitBump.Tests {
         
         [Test]
         public void
-            BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainABugFix_ThenReturnTheLatestTagWithAMinorBump() {
+            BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainABugFix_ThenReturnTheLatestTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = false,
                 Prefix = "v",
@@ -178,8 +178,27 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 2), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4), options.Prefix, options.Suffix));
         }
+        
+        // [Test]
+        // public void
+        //     BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainAFeature_ThenReturnTheLatestTagWithAMinorBump() {
+        //     Options options = new() {
+        //         Prerelease = false,
+        //         Prefix = "v",
+        //         Suffix = ""
+        //     };
+        //     IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3));
+        //     IEnumerable<Commit> latestCommits = CommitsWithBugFix();
+        //
+        //     IGitDetails details = IGitDetails.Create(latestTag, null, latestCommits,
+        //         options);
+        //
+        //     details.BumpTag()
+        //         .Should()
+        //         .Be(IGitTag.Create(IVersion.From(2, 2), options.Prefix, options.Suffix));
+        // }
         
         private IEnumerable<Commit> CommitsWithBugFix() {
             Commit commit1 = Substitute.For<Commit>();
