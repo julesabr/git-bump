@@ -3,6 +3,7 @@ using System.Collections.Generic;
 namespace Julesabr.GitBump {
     internal static class ConventionalCommits {
         public static readonly IDictionary<string, BumpType> Map = new Dictionary<string, BumpType> {
+            { "fix", BumpType.Minor },
             { "docs", BumpType.Patch },
             { "refactor", BumpType.Patch },
             { "perf", BumpType.Patch },

@@ -44,6 +44,8 @@ namespace Julesabr.GitBump {
             switch (currentType) {
                 case BumpType.Patch:
                     return IGitTag.Create(LatestTag.Version.BumpPatch(), LatestTag.Prefix, LatestTag.Suffix);
+                case BumpType.Minor:
+                    return IGitTag.Create(LatestTag.Version.BumpMinor(), LatestTag.Prefix, LatestTag.Suffix);
             }
 
             return LatestTag;

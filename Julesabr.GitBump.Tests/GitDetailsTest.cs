@@ -161,6 +161,66 @@ namespace Julesabr.GitBump.Tests {
                 .Should()
                 .Be(IGitTag.Create(IVersion.From(2, 1, 4), options.Prefix, options.Suffix));
         }
+        
+        [Test]
+        public void
+            BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainABugFix_ThenReturnTheLatestTagWithAMinorBump() {
+            Options options = new() {
+                Prerelease = false,
+                Prefix = "v",
+                Suffix = ""
+            };
+            IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3));
+            IEnumerable<Commit> latestCommits = CommitsWithBugFix();
+
+            IGitDetails details = IGitDetails.Create(latestTag, null, latestCommits,
+                options);
+
+            details.BumpTag()
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(2, 2), options.Prefix, options.Suffix));
+        }
+        
+        private IEnumerable<Commit> CommitsWithBugFix() {
+            Commit commit1 = Substitute.For<Commit>();
+            commit1.Id.Returns(new ObjectId("85c7b488da8d14fe96bac1e399b56bf2a6dea990"));
+            commit1.MessageShort.Returns("style: Commit 1");
+
+            Commit commit2 = Substitute.For<Commit>();
+            commit2.Id.Returns(new ObjectId("86017adac2e16d9819e0be278474a09a90347b54"));
+            commit2.MessageShort.Returns("fix(calc): Commit 2");
+
+            Commit commit3 = Substitute.For<Commit>();
+            commit3.Id.Returns(new ObjectId("421e029b331f50520417935ce70b8e0d7f405039"));
+            commit3.MessageShort.Returns("test: Commit 3");
+
+            Commit commit4 = Substitute.For<Commit>();
+            commit4.Id.Returns(new ObjectId("09a6f6432e7ae9a1c793db85bba1ef47c1b20787"));
+            commit4.MessageShort.Returns("test(calc): Commit 4");
+
+            Commit commit5 = Substitute.For<Commit>();
+            commit5.Id.Returns(new ObjectId("b737f5c1096f56f0ecb3496204fc3182fdcc9cf7"));
+            commit5.MessageShort.Returns("Commit 5");
+
+            Commit commit6 = Substitute.For<Commit>();
+            commit6.Id.Returns(new ObjectId("ddb048d1afed2c6beb3d8abc4c0a1f0d9a8de18b"));
+            commit6.MessageShort.Returns("Commit 6");
+
+            Commit commit7 = Substitute.For<Commit>();
+            commit7.Id.Returns(new ObjectId("1cabd5900830c8cd2f437d5183094f01ed38a0f0"));
+            commit7.MessageShort.Returns("chore: Commit 7");
+
+            IList<Commit> commits = new List<Commit>();
+            commits.Add(commit7);
+            commits.Add(commit6);
+            commits.Add(commit5);
+            commits.Add(commit4);
+            commits.Add(commit3);
+            commits.Add(commit2);
+            commits.Add(commit1);
+
+            return commits;
+        }
 
         private IList<Commit> CommitsWithNoSignificantChange() {
             Commit commit1 = Substitute.For<Commit>();
