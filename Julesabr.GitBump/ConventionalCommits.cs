@@ -2,17 +2,17 @@ using System.Collections.Generic;
 
 namespace Julesabr.GitBump {
     internal static class ConventionalCommits {
-        public static readonly IDictionary<string, BumpType> Map = new Dictionary<string, BumpType> {
-            { "feat", BumpType.Minor },
-            { "fix", BumpType.Patch },
-            { "docs", BumpType.Patch },
-            { "refactor", BumpType.Patch },
-            { "perf", BumpType.Patch },
-            { "build", BumpType.Patch },
-            { "ci", BumpType.Patch },
-            { "style", BumpType.None },
-            { "test", BumpType.None },
-            { "chore", BumpType.None }
+        public static readonly IDictionary<string, ReleaseType> Map = new Dictionary<string, ReleaseType> {
+            { "feat", ReleaseType.Minor },
+            { "fix", ReleaseType.Patch },
+            { "docs", ReleaseType.Patch },
+            { "refactor", ReleaseType.Patch },
+            { "perf", ReleaseType.Patch },
+            { "build", ReleaseType.Patch },
+            { "ci", ReleaseType.Patch },
+            { "style", ReleaseType.None },
+            { "test", ReleaseType.None },
+            { "chore", ReleaseType.None }
         };
     }
 }

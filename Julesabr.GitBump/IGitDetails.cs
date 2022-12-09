@@ -34,7 +34,7 @@ namespace Julesabr.GitBump {
                         tag.Version.IsPrerelease && tag.Version.PrereleaseBranch == repository.Head.FriendlyName)
                     .OrderByDescending(tag => tag)
                     .FirstOrDefault();
-            
+
             IDictionary<ObjectId, IList<Tag>> tagsPerCommitId = TagsPerCommitId(repository);
             CommitFilter filter = new() {
                 SortBy = CommitSortStrategies.Reverse

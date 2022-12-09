@@ -16,7 +16,7 @@ namespace Julesabr.GitBump {
 
         public const string InvalidStringFormatError = "'{0}' is not a valid version. All versions must be in a " +
                                                        "semantic version format either 'x.y.z' or 'x.y.z.<branch>.n'.";
-        
+
         public static readonly IVersion First = From(0, 1);
 
         ushort Major { get; }
@@ -25,6 +25,9 @@ namespace Julesabr.GitBump {
         string? PrereleaseBranch { get; }
         ushort PrereleaseNumber { get; }
         bool IsPrerelease { get; }
+
+        [Pure]
+        IVersion Bump(ReleaseType type);
 
         [Pure]
         IVersion BumpMajor();

@@ -2,18 +2,25 @@ using CommandLine;
 
 namespace Julesabr.GitBump {
     public class Options {
-        [Option(Default = false, HelpText = "Output the steps to take without making file changes or git changes.")]
+        [Option(Required = false, Default = false,
+            HelpText = "Output the steps to take without making file changes or git changes.")]
         public bool DryRun { get; set; }
 
-        [Option(Default = false,
+        [Option(Required = false, Default = false,
             HelpText =
-                "Toggle this version bump as a prerelease. Prerelease versions will be in the format x.y.z.<branch>.n where 'branch' is the name of the current git branch and n is the build number. Prereleases will bump the build number before bumping the major, minor, or patch.")]
+                "Toggle this version bump as a prerelease. Prerelease versions will be in the format x.y.z.<branch>.n where 'branch' is the name of the current git branch and n is the prerelease number. Prereleases will bump the prerelease number before bumping the major, minor, or patch.")]
         public bool Prerelease { get; set; }
 
-        [Option(Default = false, HelpText = "Disable the default behavior of creating a new git tag.")]
+        [Option(Required = false, Default = "",
+            HelpText =
+                "The branch to use in prerelease versions. By default, this is the git branch that is currently checked-out. This is irrelevant if prerelease is false. Prerelease versions will be in the format x.y.z.<branch>.n where 'branch' is the name of the current git branch and n is the prerelease number.")]
+        public string? Branch { get; set; }
+
+        [Option(Required = false, Default = false,
+            HelpText = "Disable the default behavior of creating a new git tag.")]
         public bool NoTag { get; set; }
 
-        [Option(Default = false,
+        [Option(Required = false, Default = false,
             HelpText =
                 "Disable the default behavior of pushing the new git tag once created. This is irrelevant when using the '--no-tag' flag.")]
         public bool NoPush { get; set; }

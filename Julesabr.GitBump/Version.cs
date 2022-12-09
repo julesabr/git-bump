@@ -27,6 +27,16 @@ namespace Julesabr.GitBump {
         public bool IsPrerelease { get; }
 
         [Pure]
+        public IVersion Bump(ReleaseType type) {
+            return type switch {
+                ReleaseType.Patch => BumpPatch(),
+                ReleaseType.Minor => BumpMinor(),
+                ReleaseType.Major => BumpMajor(),
+                _ => this
+            };
+        }
+
+        [Pure]
         public IVersion BumpMajor() {
             return new Version((ushort)(Major + 1), 0, 0, PrereleaseBranch, 1, IsPrerelease);
         }

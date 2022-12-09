@@ -1,5 +1,5 @@
 namespace Julesabr.GitBump {
-    public enum BumpType {
+    public enum ReleaseType {
         None,
         Patch,
         Minor,

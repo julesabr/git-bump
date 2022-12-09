@@ -21,43 +21,60 @@ namespace Julesabr.GitBump {
             Options = options;
         }
 
+        private Options Options { get; }
+
         public IGitTag? LatestTag { get; }
         public IGitTag? LatestPrereleaseTag { get; }
         public IEnumerable<Commit> LatestCommits { get; }
 
-        private Options Options { get; }
-
         public IGitTag BumpTag() {
-            if (LatestTag == null)
-                return IGitTag.Create(IVersion.First, Options.Prefix, Options.Suffix);
+            return Options.Prerelease ? BumpPrereleaseTag() : BumpReleaseTag();
+        }
 
-            BumpType currentType = BumpType.None;
+        private IGitTag BumpPrereleaseTag() {
+            IVersion latestVersion = LatestTag?.Version ?? IVersion.First;
+            if (LatestPrereleaseTag == null)
+                return IGitTag.Create(IVersion.From($"{latestVersion}.{Options.Branch}.1"), Options.Prefix,
+                    Options.Suffix);
+
+            ReleaseType releaseType = GetReleaseType();
+            IVersion newVersion = latestVersion.Bump(releaseType);
+            IVersion prereleaseVersion = LatestPrereleaseTag.Version;
+
+            if (releaseType != ReleaseType.None && newVersion.Major == prereleaseVersion.Major &&
+                newVersion.Minor == prereleaseVersion.Minor && newVersion.Patch == prereleaseVersion.Patch)
+                return IGitTag.Create(prereleaseVersion.BumpPrerelease(), LatestPrereleaseTag.Prefix,
+                    LatestPrereleaseTag.Suffix);
+
+            return IGitTag.Create(prereleaseVersion.Bump(releaseType), LatestPrereleaseTag.Prefix,
+                LatestPrereleaseTag.Suffix);
+        }
+
+        private IGitTag BumpReleaseTag() {
+            return LatestTag == null
+                ? IGitTag.Create(IVersion.First, Options.Prefix, Options.Suffix)
+                : IGitTag.Create(LatestTag.Version.Bump(GetReleaseType()), LatestTag.Prefix, LatestTag.Suffix);
+        }
+
+        private ReleaseType GetReleaseType() {
+            ReleaseType currentType = ReleaseType.None;
             foreach (Commit commit in LatestCommits) {
                 if (IsBreakingChange(commit)) {
-                    currentType = BumpType.Major;
+                    currentType = ReleaseType.Major;
                     break;
                 }
-                
+
                 string match = Regex.Match(commit.MessageShort, CommitTypeRegexInclusive).Value;
                 match = Regex.Match(match, CommitTypeRegexExclusive).Value;
 
-                if (!ConventionalCommits.Map.TryGetValue(match, out BumpType type))
-                    type = BumpType.None;
+                if (!ConventionalCommits.Map.TryGetValue(match, out ReleaseType type))
+                    type = ReleaseType.None;
 
                 if (type > currentType)
                     currentType = type;
             }
 
-            switch (currentType) {
-                case BumpType.Patch:
-                    return IGitTag.Create(LatestTag.Version.BumpPatch(), LatestTag.Prefix, LatestTag.Suffix);
-                case BumpType.Minor:
-                    return IGitTag.Create(LatestTag.Version.BumpMinor(), LatestTag.Prefix, LatestTag.Suffix);
-                case BumpType.Major:
-                    return IGitTag.Create(LatestTag.Version.BumpMajor(), LatestTag.Prefix, LatestTag.Suffix);
-            }
-
-            return LatestTag;
+            return currentType;
         }
 
         private bool IsBreakingChange(Commit commit) {
