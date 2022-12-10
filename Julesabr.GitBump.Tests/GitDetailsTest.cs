@@ -163,7 +163,7 @@ namespace Julesabr.GitBump.Tests {
                 .Should()
                 .Be(IGitTag.Create(IVersion.From(2, 1, 4), options.Prefix, options.Suffix));
         }
-        
+
         [Test]
         public void
             BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainARevertChange_ThenReturnTheLatestTagWithAPatchBump() {
@@ -576,7 +576,7 @@ namespace Julesabr.GitBump.Tests {
                 .Should()
                 .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
         }
-        
+
         [Test]
         public void
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARevertChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
@@ -603,7 +603,7 @@ namespace Julesabr.GitBump.Tests {
                 .Should()
                 .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
         }
-        
+
         [Test]
         public void
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARevertChange_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {

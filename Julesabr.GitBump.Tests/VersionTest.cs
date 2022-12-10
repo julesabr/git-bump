@@ -10,7 +10,7 @@ namespace Julesabr.GitBump.Tests {
             IVersion result = version.Bump(ReleaseType.None);
             result.Should().Be(IVersion.From(2, 1, 3));
         }
-        
+
         [Test]
         public void
             Bump_GivenReleaseTypeIsMajor_AndNotPrerelease_ThenReturnVersionWhereMajorIncreasedBy1AndBothMinorAndPatchAreResetTo0() {
@@ -18,7 +18,7 @@ namespace Julesabr.GitBump.Tests {
             IVersion result = version.Bump(ReleaseType.Major);
             result.Should().Be(IVersion.From(3));
         }
-        
+
         [Test]
         public void
             Bump_GivenReleaseTypeIsMajor_AndIsPrerelease_ThenReturnVersionWhereMajorIncreasedBy1_MinorAndPatchIsResetTo0_AndPrereleaseNumberIsResetTo1() {
@@ -26,7 +26,7 @@ namespace Julesabr.GitBump.Tests {
             IVersion result = version.Bump(ReleaseType.Major);
             result.Should().Be(IVersion.From(2, 0, 0, "dev", 1));
         }
-        
+
         [Test]
         public void
             Bump_GivenReleaseTypeIsMinor_AndNotPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsIncreasedBy1_AndPatchIsResetTo0() {
@@ -34,7 +34,7 @@ namespace Julesabr.GitBump.Tests {
             IVersion result = version.Bump(ReleaseType.Minor);
             result.Should().Be(IVersion.From(2, 2));
         }
-        
+
         [Test]
         public void
             Bump_GivenReleaseTypeIsMinor_AndIsPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsIncreasedBy1_PatchIsResetTo0_AndPrereleaseNumberIsResetTo1() {
@@ -42,7 +42,7 @@ namespace Julesabr.GitBump.Tests {
             IVersion result = version.Bump(ReleaseType.Minor);
             result.Should().Be(IVersion.From(1, 2, 0, "dev", 1));
         }
-        
+
         [Test]
         public void
             Bump_GivenReleaseTypeIsPatch_AndNotPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsTheSame_AndPatchIsIncreasedBy1() {
@@ -50,7 +50,7 @@ namespace Julesabr.GitBump.Tests {
             IVersion result = version.Bump(ReleaseType.Patch);
             result.Should().Be(IVersion.From(2, 1, 4));
         }
-        
+
         [Test]
         public void
             Bump_GivenReleaseTypeIsPatch_AndIsPrerelease_ThenReturnVersionWhereMajorIsTheSame_MinorIsTheSame_PatchIsIncreasedBy1_AndPrereleaseNumberIsResetTo1() {
@@ -58,7 +58,7 @@ namespace Julesabr.GitBump.Tests {
             IVersion result = version.Bump(ReleaseType.Patch);
             result.Should().Be(IVersion.From(1, 1, 4, "dev", 1));
         }
-        
+
         [Test]
         public void
             BumpMajor_WhenNotPrerelease_ThenReturnVersionWhereMajorIncreasedBy1AndBothMinorAndPatchAreResetTo0() {
