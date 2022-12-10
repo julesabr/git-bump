@@ -5,6 +5,7 @@ namespace Julesabr.GitBump {
         public static readonly IDictionary<string, ReleaseType> Map = new Dictionary<string, ReleaseType> {
             { "feat", ReleaseType.Minor },
             { "fix", ReleaseType.Patch },
+            { "revert", ReleaseType.Patch },
             { "docs", ReleaseType.Patch },
             { "refactor", ReleaseType.Patch },
             { "perf", ReleaseType.Patch },

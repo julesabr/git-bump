@@ -163,6 +163,30 @@ namespace Julesabr.GitBump.Tests {
                 .Should()
                 .Be(IGitTag.Create(IVersion.From(2, 1, 4), options.Prefix, options.Suffix));
         }
+        
+        [Test]
+        public void
+            BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainARevertChange_ThenReturnTheLatestTagWithAPatchBump() {
+            Options options = new() {
+                Prerelease = false,
+                Prefix = "v",
+                Suffix = ""
+            };
+            IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
+            IList<Commit> latestCommits = CommitsWithNoSignificantChange();
+
+            Commit commit = Substitute.For<Commit>();
+            commit.Id.Returns(new ObjectId("6c6f2ee44a8bc3105e1fa9e01fcd7e99d3313621"));
+            commit.MessageShort.Returns("revert(calc): Commit 8");
+            latestCommits.Add(commit);
+
+            IGitDetails details = IGitDetails.Create(latestTag, null, latestCommits,
+                options);
+
+            details.BumpTag()
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4), options.Prefix, options.Suffix));
+        }
 
         [Test]
         public void
@@ -543,6 +567,60 @@ namespace Julesabr.GitBump.Tests {
             Commit commit = Substitute.For<Commit>();
             commit.Id.Returns(new ObjectId("6c6f2ee44a8bc3105e1fa9e01fcd7e99d3313621"));
             commit.MessageShort.Returns("docs: Commit 8");
+            latestCommits.Add(commit);
+
+            IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
+                options);
+
+            details.BumpTag()
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+        }
+        
+        [Test]
+        public void
+            BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARevertChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
+            Options options = new() {
+                Prerelease = true,
+                Branch = "dev",
+                Prefix = "v",
+                Suffix = ""
+            };
+            IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
+            IGitTag latestPrereleaseTag =
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+            IList<Commit> latestCommits = CommitsWithNoSignificantChange();
+
+            Commit commit = Substitute.For<Commit>();
+            commit.Id.Returns(new ObjectId("6c6f2ee44a8bc3105e1fa9e01fcd7e99d3313621"));
+            commit.MessageShort.Returns("revert(calc): Commit 8");
+            latestCommits.Add(commit);
+
+            IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
+                options);
+
+            details.BumpTag()
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+        }
+        
+        [Test]
+        public void
+            BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARevertChange_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {
+            Options options = new() {
+                Prerelease = true,
+                Branch = "dev",
+                Prefix = "v",
+                Suffix = ""
+            };
+            IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
+            IGitTag latestPrereleaseTag =
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+            IList<Commit> latestCommits = CommitsWithNoSignificantChange();
+
+            Commit commit = Substitute.For<Commit>();
+            commit.Id.Returns(new ObjectId("6c6f2ee44a8bc3105e1fa9e01fcd7e99d3313621"));
+            commit.MessageShort.Returns("revert(calc): Commit 8");
             latestCommits.Add(commit);
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
