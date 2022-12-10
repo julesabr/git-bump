@@ -74,6 +74,7 @@ the commit types that are supported by git-bump:
 - `perf` Special `refactor` commits, that improve performance. Will trigger a patch bump.
 - `build` Affects build components like build tool, ci pipeline, dependencies, etc. Will trigger a patch bump.
 - `ci` Changes to CI configuration files and scripts (examples: CircleCi, TravisCI, Jenkins, etc). Will trigger a patch bump.
+- `revert` Reverts a previous change. Will trigger a patch bump, regardless of the type of change being reverted.
 - `style` Does not affect the meaning of the code (white-space, formatting, missing semi-colons, etc). Will trigger NO bump.
 - `test` Add missing tests or correcting existing tests. Will trigger NO bump.
 - `chore` Miscellaneous commits (e.g. modifying `.gitignore`). Will trigger NO bump.
