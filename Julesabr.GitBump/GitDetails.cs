@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using LibGit2Sharp;
+using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
     internal sealed class GitDetails : IGitDetails {
@@ -64,7 +64,7 @@ namespace Julesabr.GitBump {
                     break;
                 }
 
-                string match = Regex.Match(commit.MessageShort, CommitTypeRegexInclusive).Value;
+                string match = Regex.Match(commit.Message, CommitTypeRegexInclusive).Value;
                 match = Regex.Match(match, CommitTypeRegexExclusive).Value;
 
                 if (!ConventionalCommits.Map.TryGetValue(match, out ReleaseType type))
@@ -78,8 +78,8 @@ namespace Julesabr.GitBump {
         }
 
         private bool IsBreakingChange(Commit commit) {
-            return Regex.IsMatch(commit.MessageShort, BreakingChangeCommitTypeRegex) ||
-                   Regex.IsMatch(commit.Message, BreakingChangeFooterRegex);
+            return Regex.IsMatch(commit.Message, BreakingChangeCommitTypeRegex) ||
+                   Regex.IsMatch(commit.MessageFull, BreakingChangeFooterRegex);
         }
     }
 }

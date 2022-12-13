@@ -1,5 +1,5 @@
 using System;
-using LibGit2Sharp;
+using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
     internal class GitService : IGitService {
@@ -13,13 +13,7 @@ namespace Julesabr.GitBump {
             if (tag == null)
                 throw new ArgumentNullException(nameof(tag));
 
-            Signature tagger = repository.Config.BuildSignature(DateTimeOffset.Now);
-            if (tagger == null)
-                throw new InvalidOperationException(IGitService.TaggerNotFoundError);
-
-            Tag t = repository.ApplyTag(tag.ToString(), tagger, "");
-            if (t == null)
-                throw new OperationFailedException(string.Format(IGitService.ApplyTagFailedError, tag));
+            repository.ApplyTag(tag.ToString(), "");
         }
 
         public void PushTag(IGitTag tag) {

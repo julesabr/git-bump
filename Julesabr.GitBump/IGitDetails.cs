@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using LibGit2Sharp;
+using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
     public interface IGitDetails {
@@ -21,7 +21,7 @@ namespace Julesabr.GitBump {
 
         public static IGitDetails Create(IRepository repository, Options options) {
             IGitTag? latestTag = repository.Tags.Where(tag => tag.IsAnnotated)
-                .Select(tag => IGitTag.Create(tag.FriendlyName, options.Prefix, options.Suffix))
+                .Select(tag => IGitTag.Create(tag.Name, options.Prefix, options.Suffix))
                 .Where(tag => !tag.Version.IsPrerelease)
                 .OrderByDescending(tag => tag)
                 .FirstOrDefault();
@@ -29,13 +29,13 @@ namespace Julesabr.GitBump {
             IGitTag? latestPrereleaseTag = null;
             if (options.Prerelease)
                 latestPrereleaseTag = repository.Tags.Where(tag => tag.IsAnnotated)
-                    .Select(tag => IGitTag.Create(tag.FriendlyName, options.Prefix, options.Suffix))
+                    .Select(tag => IGitTag.Create(tag.Name, options.Prefix, options.Suffix))
                     .Where(tag =>
-                        tag.Version.IsPrerelease && tag.Version.PrereleaseBranch == repository.Head.FriendlyName)
+                        tag.Version.IsPrerelease && tag.Version.PrereleaseBranch == repository.Head.Name)
                     .OrderByDescending(tag => tag)
                     .FirstOrDefault();
 
-            IDictionary<ObjectId, IList<Tag>> tagsPerCommitId = TagsPerCommitId(repository);
+            IDictionary<string, IList<Tag>> tagsPerCommitId = TagsPerCommitId(repository);
             CommitFilter filter = new() {
                 SortBy = CommitSortStrategies.Reverse
             };
@@ -50,34 +50,29 @@ namespace Julesabr.GitBump {
             IGitTag? tag,
             IRepository repository,
             CommitFilter filter,
-            IDictionary<ObjectId, IList<Tag>> tagsPerCommitId
+            IDictionary<string, IList<Tag>> tagsPerCommitId
         ) {
             return repository.Commits.QueryBy(filter)
                 .TakeWhile(commit => AssignedTags(commit, tagsPerCommitId)
                     .Where(t => t.IsAnnotated)
-                    .All(t => t.FriendlyName != tag?.ToString()))
+                    .All(t => t.Name != tag?.ToString()))
                 .ToList();
         }
 
-        private static IEnumerable<Tag> AssignedTags(GitObject commit, IDictionary<ObjectId, IList<Tag>> tags) {
-            return !tags.ContainsKey(commit.Id) ? Enumerable.Empty<Tag>() : tags[commit.Id];
+        private static IEnumerable<Tag> AssignedTags(Commit commit, IDictionary<string, IList<Tag>> tags) {
+            return !tags.ContainsKey(commit.Sha) ? Enumerable.Empty<Tag>() : tags[commit.Sha];
         }
 
-        private static IDictionary<ObjectId, IList<Tag>> TagsPerCommitId(IRepository repo) {
-            Dictionary<ObjectId, IList<Tag>> tagsPerCommitId = new();
+        private static IDictionary<string, IList<Tag>> TagsPerCommitId(IRepository repo) {
+            Dictionary<string, IList<Tag>> tagsPerCommitId = new();
 
             foreach (Tag tag in repo.Tags) {
-                GitObject peeledTarget = tag.PeeledTarget;
+                Commit target = tag.Target;
 
-                if (peeledTarget is not Commit)
-                    continue;
+                if (!tagsPerCommitId.ContainsKey(target.Sha))
+                    tagsPerCommitId.Add(target.Sha, new List<Tag>());
 
-                ObjectId commitId = peeledTarget.Id;
-
-                if (!tagsPerCommitId.ContainsKey(commitId))
-                    tagsPerCommitId.Add(commitId, new List<Tag>());
-
-                tagsPerCommitId[commitId].Add(tag);
+                tagsPerCommitId[target.Sha].Add(tag);
             }
 
             return tagsPerCommitId;

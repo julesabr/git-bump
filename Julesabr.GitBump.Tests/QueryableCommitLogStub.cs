@@ -1,7 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using LibGit2Sharp;
+using Julesabr.LibGit;
 
 namespace Julesabr.GitBump.Tests {
     public class QueryableCommitLogStub : IQueryableCommitLog {
@@ -11,6 +10,10 @@ namespace Julesabr.GitBump.Tests {
             log = new CommitLogStub(commits);
         }
 
+        // ReSharper disable once UnassignedGetOnlyAutoProperty
+        // ReSharper disable once UnusedMember.Global
+        public CommitSortStrategies SortedBy { get; }
+
         public IEnumerator<Commit> GetEnumerator() {
             return log.GetEnumerator();
         }
@@ -19,19 +22,8 @@ namespace Julesabr.GitBump.Tests {
             return GetEnumerator();
         }
 
-        // ReSharper disable once UnassignedGetOnlyAutoProperty
-        public CommitSortStrategies SortedBy { get; }
-
         public ICommitLog QueryBy(CommitFilter filter) {
             return log;
-        }
-
-        public IEnumerable<LogEntry> QueryBy(string path) {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<LogEntry> QueryBy(string path, CommitFilter filter) {
-            throw new NotImplementedException();
         }
     }
 }

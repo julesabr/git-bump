@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using LibGit2Sharp;
+using Julesabr.LibGit;
 
 namespace Julesabr.GitBump.Tests {
     public class CommitLogStub : ICommitLog {
@@ -10,6 +10,10 @@ namespace Julesabr.GitBump.Tests {
             this.commits = commits;
         }
 
+        // ReSharper disable once UnassignedGetOnlyAutoProperty
+        // ReSharper disable once UnusedMember.Global
+        public CommitSortStrategies SortedBy { get; }
+
         public IEnumerator<Commit> GetEnumerator() {
             return commits.GetEnumerator();
         }
@@ -17,8 +21,5 @@ namespace Julesabr.GitBump.Tests {
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
-
-        // ReSharper disable once UnassignedGetOnlyAutoProperty
-        public CommitSortStrategies SortedBy { get; }
     }
 }

@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julesabr.GitBump", "Julesab
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julesabr.GitBump.Tests", "Julesabr.GitBump.Tests\Julesabr.GitBump.Tests.csproj", "{90B67250-6CE2-49A6-9C45-954AF7B4779B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Julesabr.LibGit", "Julesabr.LibGit\Julesabr.LibGit.csproj", "{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,5 +46,17 @@ Global
 		{90B67250-6CE2-49A6-9C45-954AF7B4779B}.Release|x64.Build.0 = Release|Any CPU
 		{90B67250-6CE2-49A6-9C45-954AF7B4779B}.Release|x86.ActiveCfg = Release|Any CPU
 		{90B67250-6CE2-49A6-9C45-954AF7B4779B}.Release|x86.Build.0 = Release|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Debug|x64.Build.0 = Debug|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Debug|x86.Build.0 = Debug|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Release|x64.ActiveCfg = Release|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Release|x64.Build.0 = Release|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Release|x86.ActiveCfg = Release|Any CPU
+		{EB01FCBB-DDA8-4CF4-8EB4-96DA4D62D190}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
