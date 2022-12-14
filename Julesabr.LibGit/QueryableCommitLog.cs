@@ -4,10 +4,10 @@ using System.Linq;
 
 namespace Julesabr.LibGit {
     internal class QueryableCommitLog : IQueryableCommitLog {
-        private readonly IEnumerable<Commit> commits;
+        private readonly IEnumerable<Commit>? commits;
 
         public QueryableCommitLog(
-            IEnumerable<Commit> commits = null,
+            IEnumerable<Commit>? commits = null,
             CommitSortStrategies sortedBy = CommitSortStrategies.None
         ) {
             this.commits = commits;
@@ -15,6 +15,18 @@ namespace Julesabr.LibGit {
         }
 
         private CommitSortStrategies SortedBy { get; }
+
+        public IEnumerator<Commit> GetEnumerator() {
+            CommitFilter filter = new() {
+                SortBy = SortedBy
+            };
+
+            return commits == null ? QueryBy(filter).GetEnumerator() : commits.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() {
+            return GetEnumerator();
+        }
 
         private ICommitLog QueryBy(CommitFilter filter) {
             string command = filter.SortBy switch {
@@ -27,18 +39,6 @@ namespace Julesabr.LibGit {
             return new QueryableCommitLog(
                 GetFromShellCommand(command)
             );
-        }
-
-        public IEnumerator<Commit> GetEnumerator() {
-            CommitFilter filter = new() {
-                SortBy = SortedBy
-            };
-
-            return commits == null ? QueryBy(filter).GetEnumerator() : commits.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator() {
-            return GetEnumerator();
         }
 
         private IEnumerable<Commit> GetFromShellCommand(string command) {

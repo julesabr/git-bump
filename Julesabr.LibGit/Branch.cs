@@ -4,6 +4,7 @@ namespace Julesabr.LibGit {
     [PublicAPI]
     public class Branch {
         protected Branch() {
+            Name = null!;
         }
 
         internal Branch(string name) {

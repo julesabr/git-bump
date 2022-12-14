@@ -4,6 +4,9 @@ namespace Julesabr.LibGit {
     [PublicAPI]
     public class Tag {
         protected Tag() {
+            Name = null!;
+            IsAnnotated = false;
+            Target = null!;
         }
 
         internal Tag(string name, bool isAnnotated, Commit target) {

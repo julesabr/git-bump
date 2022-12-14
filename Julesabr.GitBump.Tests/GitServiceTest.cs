@@ -20,7 +20,7 @@ namespace Julesabr.GitBump.Tests {
             CreateAnnotatedTag_GivenGitTagIsNotNull_CanGetTaggerFromConfig_AndRepositoryAppliesTag_ThenReturnSuccessfully() {
             IGitTag tag = IGitTag.Create(IVersion.From(1, 2, 3));
             gitService.CreateAnnotatedTag(tag);
-            repository.Received(1).ApplyTag(tag.ToString(), "");
+            repository.Received(1).ApplyTag(tag.ToString()!, "");
         }
 
         [Test]
@@ -36,9 +36,9 @@ namespace Julesabr.GitBump.Tests {
         public void PushTags_CallRepositoryNetwork() {
             INetwork network = Substitute.For<INetwork>();
             repository.Network.Returns(network);
-            
+
             gitService.PushTags();
-            
+
             network.Received(1).PushTags();
         }
     }

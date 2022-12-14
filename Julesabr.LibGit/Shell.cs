@@ -10,33 +10,41 @@ namespace Julesabr.LibGit {
         private const string Program = "bash";
 #endif
         private const int Timeout = 300000;
-        
+
         public const string GitShowCurrentBranch = "git branch --show-current";
         public const string GitTagList = "git tag";
         public const string GitCatObjectType = "git cat-file -t {0}";
         public const string GitGetCommitSha = "git rev-list -n 1 {0}";
         public const string GitApplyAnnotatedTag = "git tag -a {0} -m '{1}'";
         public const string GitLogWithShaAndBody = "git --no-pager log --pretty=format:\"%H %B<EOC>\"";
-        public const string GitLogWithShaAndBodyInTopoOrder = "git --no-pager log --topo-order --pretty=format:\"%H %B<EOC>\"";
-        public const string GitLogWithShaAndBodyInDateOrder = "git --no-pager log --date-order --pretty=format:\"%H %B<EOC>\"";
-        public const string GitLogWithShaAndBodyInReverse = "git --no-pager log --reverse --pretty=format:\"%H %B<EOC>\"";
+
+        public const string GitLogWithShaAndBodyInTopoOrder =
+            "git --no-pager log --topo-order --pretty=format:\"%H %B<EOC>\"";
+
+        public const string GitLogWithShaAndBodyInDateOrder =
+            "git --no-pager log --date-order --pretty=format:\"%H %B<EOC>\"";
+
+        public const string GitLogWithShaAndBodyInReverse =
+            "git --no-pager log --reverse --pretty=format:\"%H %B<EOC>\"";
+
         public const string GitPushTags = "git push --tags";
-        
+
         public static string Run(string command) {
             using Process process = new();
 
 #if OS_WINDOWS
-            string programPath = null;
+            string? programPath = null;
             foreach (DriveInfo drive in DriveInfo.GetDrives().Where(d => d.IsReady))
                 programPath = Directory.GetFiles(drive.RootDirectory.FullName, Program, SearchOption.AllDirectories)
                     .FirstOrDefault();
 #else
-            string programPath = Directory.GetFiles("/", Program, SearchOption.AllDirectories)
+            string? programPath = Directory.GetFiles("/", Program, SearchOption.AllDirectories)
                 .FirstOrDefault();
 #endif
 
             if (programPath == null)
-                throw new FileNotFoundException($"'{Program}' was not found on this system. Please install it and try again.");
+                throw new FileNotFoundException(
+                    $"'{Program}' was not found on this system. Please install it and try again.");
 
             ProcessStartInfo startInfo = new($"{programPath} -c \"{command}\"") {
                 UseShellExecute = false,

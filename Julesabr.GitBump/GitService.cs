@@ -13,7 +13,7 @@ namespace Julesabr.GitBump {
             if (tag == null)
                 throw new ArgumentNullException(nameof(tag));
 
-            repository.ApplyTag(tag.ToString(), "");
+            repository.ApplyTag(tag.ToString()!, "");
         }
 
         public void PushTags() {
