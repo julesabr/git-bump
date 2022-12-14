@@ -11,7 +11,7 @@ namespace Julesabr.LibGit {
         public TagCollection Tags { get; }
 
         public void ApplyTag(string tagName, string message) {
-            Shell.Run("bash", $"git tag -a {tagName} -m \"{message}\"");
+            Shell.Run(Shell.GitApplyAnnotatedTag);
         }
     }
 }

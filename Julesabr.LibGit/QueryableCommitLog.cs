@@ -18,10 +18,10 @@ namespace Julesabr.LibGit {
 
         public ICommitLog QueryBy(CommitFilter filter) {
             string command = filter.SortBy switch {
-                CommitSortStrategies.Topological => "git --no-pager log --topo-order --pretty=format:\"%H %B<EOC>\"",
-                CommitSortStrategies.Time => "git --no-pager log --date-order --pretty=format:\"%H %B<EOC>\"",
-                CommitSortStrategies.Reverse => "git --no-pager log --reverse --pretty=format:\"%H %B<EOC>\"",
-                _ => "git --no-pager log --pretty=format:\"%H %B<EOC>\""
+                CommitSortStrategies.Topological => Shell.GitLogWithShaAndBodyInTopoOrder,
+                CommitSortStrategies.Time => Shell.GitLogWithShaAndBodyInDateOrder,
+                CommitSortStrategies.Reverse => Shell.GitLogWithShaAndBodyInReverse,
+                _ => Shell.GitLogWithShaAndBody
             };
 
             return new QueryableCommitLog(
@@ -42,7 +42,7 @@ namespace Julesabr.LibGit {
         }
 
         private IEnumerable<Commit> GetFromShellCommand(string command) {
-            return Shell.Run("bash", command)
+            return Shell.Run(command)
                 .Split("<EOC>")
                 .Select(s =>
                     new Commit(

@@ -36,12 +36,9 @@ namespace Julesabr.GitBump {
                     .FirstOrDefault();
 
             IDictionary<string, IList<Tag>> tagsPerCommitId = TagsPerCommitId(repository);
-            CommitFilter filter = new() {
-                SortBy = CommitSortStrategies.Reverse
-            };
 
             IEnumerable<Commit> latestCommits = LatestCommitsSince(options.Prerelease ? latestPrereleaseTag : latestTag,
-                repository, filter, tagsPerCommitId);
+                repository, tagsPerCommitId);
 
             return new GitDetails(latestTag, latestPrereleaseTag, latestCommits, options);
         }
@@ -49,10 +46,9 @@ namespace Julesabr.GitBump {
         private static IEnumerable<Commit> LatestCommitsSince(
             IGitTag? tag,
             IRepository repository,
-            CommitFilter filter,
             IDictionary<string, IList<Tag>> tagsPerCommitId
         ) {
-            return repository.Commits.QueryBy(filter)
+            return repository.Commits
                 .TakeWhile(commit => AssignedTags(commit, tagsPerCommitId)
                     .Where(t => t.IsAnnotated)
                     .All(t => t.Name != tag?.ToString()))
