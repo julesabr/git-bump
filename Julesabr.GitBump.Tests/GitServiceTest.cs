@@ -31,5 +31,15 @@ namespace Julesabr.GitBump.Tests {
                 .Throw<ArgumentNullException>()
                 .WithMessage("Value cannot be null. (Parameter 'tag')");
         }
+
+        [Test]
+        public void PushTags_CallRepositoryNetwork() {
+            INetwork network = Substitute.For<INetwork>();
+            repository.Network.Returns(network);
+            
+            gitService.PushTags();
+            
+            network.Received(1).PushTags();
+        }
     }
 }

@@ -16,8 +16,8 @@ namespace Julesabr.GitBump {
             repository.ApplyTag(tag.ToString(), "");
         }
 
-        public void PushTag(IGitTag tag) {
-            throw new NotImplementedException();
+        public void PushTags() {
+            repository.Network.PushTags();
         }
     }
 }

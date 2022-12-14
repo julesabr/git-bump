@@ -21,9 +21,5 @@ namespace Julesabr.GitBump.Tests {
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
-
-        public ICommitLog QueryBy(CommitFilter filter) {
-            return log;
-        }
     }
 }

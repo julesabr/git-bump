@@ -20,6 +20,7 @@ namespace Julesabr.LibGit {
         public const string GitLogWithShaAndBodyInTopoOrder = "git --no-pager log --topo-order --pretty=format:\"%H %B<EOC>\"";
         public const string GitLogWithShaAndBodyInDateOrder = "git --no-pager log --date-order --pretty=format:\"%H %B<EOC>\"";
         public const string GitLogWithShaAndBodyInReverse = "git --no-pager log --reverse --pretty=format:\"%H %B<EOC>\"";
+        public const string GitPushTags = "git push --tags";
         
         public static string Run(string command) {
             using Process process = new();

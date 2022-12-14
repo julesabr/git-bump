@@ -16,7 +16,7 @@ namespace Julesabr.LibGit {
 
         private CommitSortStrategies SortedBy { get; }
 
-        public ICommitLog QueryBy(CommitFilter filter) {
+        private ICommitLog QueryBy(CommitFilter filter) {
             string command = filter.SortBy switch {
                 CommitSortStrategies.Topological => Shell.GitLogWithShaAndBodyInTopoOrder,
                 CommitSortStrategies.Time => Shell.GitLogWithShaAndBodyInDateOrder,

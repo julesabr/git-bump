@@ -6,6 +6,7 @@ namespace Julesabr.LibGit {
         Branch Head { get; }
         IQueryableCommitLog Commits { get; }
         TagCollection Tags { get; }
+        INetwork Network { get; }
 
         void ApplyTag(string tagName, string message);
 
@@ -25,7 +26,9 @@ namespace Julesabr.LibGit {
                 .ToList();
             TagCollection tags = new(tagList);
 
-            return new Repository(head, commits, tags);
+            INetwork network = INetwork.Create();
+
+            return new Repository(head, commits, tags, network);
         }
     }
 }
