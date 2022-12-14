@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Julesabr.LibGit {
     internal class QueryableCommitLog : IQueryableCommitLog {
@@ -16,6 +17,7 @@ namespace Julesabr.LibGit {
 
         private CommitSortStrategies SortedBy { get; }
 
+        [Pure]
         public IEnumerator<Commit> GetEnumerator() {
             CommitFilter filter = new() {
                 SortBy = SortedBy

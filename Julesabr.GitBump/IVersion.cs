@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     public interface IVersion : IComparable<IVersion> {

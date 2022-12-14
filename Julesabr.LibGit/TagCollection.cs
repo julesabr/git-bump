@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace Julesabr.LibGit {
     public class TagCollection : IEnumerable<Tag> {
@@ -9,6 +10,7 @@ namespace Julesabr.LibGit {
             this.tags = tags;
         }
 
+        [Pure]
         public virtual IEnumerator<Tag> GetEnumerator() {
             return tags.GetEnumerator();
         }

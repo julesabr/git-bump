@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
@@ -8,8 +9,10 @@ namespace Julesabr.GitBump {
         IGitTag? LatestPrereleaseTag { get; }
         IEnumerable<Commit> LatestCommits { get; }
 
+        [Pure]
         IGitTag BumpTag();
 
+        [Pure]
         public static IGitDetails Create(
             IGitTag? latestTag,
             IGitTag? latestPrereleaseTag,
@@ -19,6 +22,7 @@ namespace Julesabr.GitBump {
             return new GitDetails(latestTag, latestPrereleaseTag, latestCommits, options);
         }
 
+        [Pure]
         public static IGitDetails Create(IRepository repository, Options options) {
             IGitTag? latestTag = repository.Tags.Where(tag => tag.IsAnnotated)
                 .Select(tag => IGitTag.Create(tag.Name, options.Prefix, options.Suffix))

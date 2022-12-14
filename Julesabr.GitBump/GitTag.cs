@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     internal sealed class GitTag : IGitTag {
@@ -12,6 +13,7 @@ namespace Julesabr.GitBump {
         public string? Prefix { get; }
         public string? Suffix { get; }
 
+        [Pure]
         public int CompareTo(IGitTag? other) {
             if (ReferenceEquals(this, other)) return 0;
             if (ReferenceEquals(null, other)) return 1;
@@ -25,6 +27,12 @@ namespace Julesabr.GitBump {
                 : string.Compare(Suffix, other.Suffix, StringComparison.Ordinal);
         }
 
+        [Pure]
+        public override string ToString() {
+            return $"{Prefix}{Version}{Suffix}";
+        }
+
+        [Pure]
         public override bool Equals(object? obj) {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
@@ -32,14 +40,12 @@ namespace Julesabr.GitBump {
             return obj.GetType() == GetType() && Equals((GitTag)obj);
         }
 
+        [Pure]
         public override int GetHashCode() {
             return HashCode.Combine(Prefix, Version);
         }
 
-        public override string ToString() {
-            return $"{Prefix}{Version}{Suffix}";
-        }
-
+        [Pure]
         private bool Equals(IGitTag other) {
             return Version.Equals(other.Version) && Prefix == other.Prefix && Suffix == other.Suffix;
         }

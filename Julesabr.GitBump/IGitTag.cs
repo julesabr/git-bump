@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     public interface IGitTag : IComparable<IGitTag> {
@@ -11,6 +11,9 @@ namespace Julesabr.GitBump {
         IVersion Version { get; }
         string? Prefix { get; }
         string? Suffix { get; }
+
+        [Pure]
+        string ToString();
 
         [Pure]
         public static IGitTag Create(IVersion version, string? prefix = "v", string? suffix = "") {
@@ -46,18 +49,22 @@ namespace Julesabr.GitBump {
             );
         }
 
+        [Pure]
         public static bool operator <(IGitTag? left, IGitTag? right) {
             return Comparer<IGitTag>.Default.Compare(left, right) < 0;
         }
 
+        [Pure]
         public static bool operator >(IGitTag? left, IGitTag? right) {
             return Comparer<IGitTag>.Default.Compare(left, right) > 0;
         }
 
+        [Pure]
         public static bool operator <=(IGitTag? left, IGitTag? right) {
             return Comparer<IGitTag>.Default.Compare(left, right) <= 0;
         }
 
+        [Pure]
         public static bool operator >=(IGitTag? left, IGitTag? right) {
             return Comparer<IGitTag>.Default.Compare(left, right) >= 0;
         }

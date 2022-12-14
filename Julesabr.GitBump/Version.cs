@@ -1,5 +1,5 @@
 using System;
-using System.Diagnostics.Contracts;
+using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     internal sealed class Version : IVersion {
@@ -60,6 +60,7 @@ namespace Julesabr.GitBump {
                 (ushort)(PrereleaseNumber + 1), IsPrerelease);
         }
 
+        [Pure]
         public int CompareTo(IVersion? other) {
             if (ReferenceEquals(this, other)) return 0;
             if (ReferenceEquals(null, other)) return 1;
@@ -80,6 +81,7 @@ namespace Julesabr.GitBump {
                 : PrereleaseNumber.CompareTo(other.PrereleaseNumber);
         }
 
+        [Pure]
         public override bool Equals(object? obj) {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
@@ -87,10 +89,12 @@ namespace Julesabr.GitBump {
             return obj.GetType() == GetType() && Equals((Version)obj);
         }
 
+        [Pure]
         public override int GetHashCode() {
             return HashCode.Combine(Major, Minor, Patch, PrereleaseBranch, PrereleaseNumber);
         }
 
+        [Pure]
         public override string ToString() {
             string result = string.Join(IVersion.Separator, Major, Minor, Patch);
             if (IsPrerelease)

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
@@ -27,6 +28,7 @@ namespace Julesabr.GitBump {
         public IGitTag? LatestPrereleaseTag { get; }
         public IEnumerable<Commit> LatestCommits { get; }
 
+        [Pure]
         public IGitTag BumpTag() {
             return Options.Prerelease ? BumpPrereleaseTag() : BumpReleaseTag();
         }
