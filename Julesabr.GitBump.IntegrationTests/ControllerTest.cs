@@ -35,8 +35,8 @@ namespace Julesabr.GitBump.IntegrationTests {
 
             ExitCode exitCode = controller.GitBump(options);
 
-            repository.Received().ApplyTag("v1.2.4", "");
-            repository.Network.Received().PushTags();
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTags();
             stdOut.ToString().Trim().Should().Be("1.2.4");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -51,8 +51,8 @@ namespace Julesabr.GitBump.IntegrationTests {
 
             ExitCode exitCode = controller.GitBump(options);
 
-            repository.Received().ApplyTag("v1.3.0", "");
-            repository.Network.Received().PushTags();
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTags();
             stdOut.ToString().Trim().Should().Be("1.3.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -67,12 +67,36 @@ namespace Julesabr.GitBump.IntegrationTests {
 
             ExitCode exitCode = controller.GitBump(options);
 
-            repository.Received().ApplyTag("v2.0.0", "");
-            repository.Network.Received().PushTags();
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTags();
             stdOut.ToString().Trim().Should().Be("2.0.0");
             exitCode.Should().Be(ExitCode.Success);
         }
 
         #endregion
+
+        // #region Prereleases
+        //
+        // [Test]
+        // public void GitBump_GivenRepositoryWithNoSignificantChange_AndIsPrerelease_ThenDontBumpTag_AndOutputVersion() {
+        //     Options options = new() {
+        //         Prerelease = true
+        //     };
+        //     IRepository repository = RepositoryStubWithNoSignificantChangeOnMain.Create();
+        //     StringWriter stdOut = new();
+        //     Console.SetOut(stdOut);
+        //     Controller controller = new(repository);
+        //
+        //     ExitCode exitCode = controller.GitBump(options);
+        //
+        //     repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+        //     repository.Network.DidNotReceive().PushTags();
+        //     stdOut.ToString().Trim().Should().Be("");
+        //     exitCode.Should().Be(ExitCode.Success);
+        // }
+        //
+        //
+        //
+        // #endregion
     }
 }

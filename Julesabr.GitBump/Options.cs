@@ -17,13 +17,13 @@ namespace Julesabr.GitBump {
         public string Branch { get; init; } = "";
 
         [Option(Required = false, Default = false,
-            HelpText = "Disable the default behavior of creating a new git tag.")]
-        public bool NoTag { get; init; }
+            HelpText = "Use the prefix and suffix to create a git annotated tag from the new version. This will only apply the tag but will not push it.")]
+        public bool Tag { get; init; }
 
         [Option(Required = false, Default = false,
             HelpText =
-                "Disable the default behavior of pushing the new git tag once created. This is irrelevant when using the '--no-tag' flag.")]
-        public bool NoPush { get; init; }
+                "Create a git annotated tag and push the tag to git. Tagging is skipped if the tag already exists.")]
+        public bool Push { get; init; }
 
         [Option(Required = false, Default = "v",
             HelpText =
