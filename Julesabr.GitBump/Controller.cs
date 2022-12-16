@@ -10,14 +10,15 @@ namespace Julesabr.GitBump {
         }
 
         public ExitCode GitBump(Options options) {
-            // IGitDetails details = IGitDetails.Create(repository, options);
-            // IGitTag newTag = details.BumpTag();
+            IGitDetails details = IGitDetails.Create(repository, options);
+            IGitTag newTag = details.BumpTag();
 
-            // repository.ApplyTag(newTag.ToString(), "");
-            // repository.Network.PushTags();
+            if (newTag > details.LatestTag) {
+                repository.ApplyTag(newTag.ToString(), "");
+                repository.Network.PushTags();
+            }
 
-            // Console.WriteLine(newTag.Version);
-            Console.WriteLine("1.2.3");
+            Console.WriteLine(newTag.Version);
 
             return ExitCode.Success;
         }
