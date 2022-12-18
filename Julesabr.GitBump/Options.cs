@@ -9,13 +9,13 @@ namespace Julesabr.GitBump {
 
         [Option(Required = false, Default = false,
             HelpText =
-                "Toggle this version bump as a prerelease. Prerelease versions will be in the format x.y.z.<branch>.n where 'branch' is the name of the current git branch and n is the prerelease number. Prereleases will bump the prerelease number before bumping the major, minor, or patch.")]
+                "Toggle this version bump as a prerelease. Prerelease versions will be in the format x.y.z.<channel>.n where 'channel' is the prerelease channel the version is on and n is the prerelease number. Prereleases will bump the major, minor, or patch before bumping the prerelease number.")]
         public bool Prerelease { get; init; }
 
         [Option(Required = false, Default = "",
             HelpText =
-                "The branch to use in prerelease versions. By default, this is the git branch that is currently checked-out. This is irrelevant if prerelease is false. Prerelease versions will be in the format x.y.z.<branch>.n where 'branch' is the name of the current git branch and n is the prerelease number.")]
-        public string Branch { get; init; } = "";
+                "The channel to use in prerelease versions. By default, this is the git branch that is currently checked-out. This is irrelevant if prerelease is false.")]
+        public string Channel { get; init; } = "";
 
         [Option(Required = false, Default = false,
             HelpText = "Use the prefix and suffix to create a git annotated tag from the new version. This will only apply the tag but will not push it.")]
@@ -42,15 +42,15 @@ namespace Julesabr.GitBump {
         public string OutputVersion { get; init; } = "";
 
         public Options Default(IRepository repository) {
-            string branch = Branch;
+            string channel = Channel;
 
-            if (string.IsNullOrEmpty(branch))
-                branch = repository.Head.Name;
+            if (string.IsNullOrEmpty(channel))
+                channel = repository.Head.Name;
 
             return new Options {
                 DryRun = DryRun,
                 Prerelease = Prerelease,
-                Branch = branch,
+                Channel = channel,
                 Tag = Tag,
                 Push = Push,
                 Prefix = Prefix,

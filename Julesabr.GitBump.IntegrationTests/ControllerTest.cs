@@ -167,6 +167,25 @@ namespace Julesabr.GitBump.IntegrationTests {
             exitCode.Should().Be(ExitCode.Success);
         }
         
+        [Test]
+        public void GitBump_GivenRepositoryWithABugFix_IsPrerelease_AndChannelIsStaging_ThenBumpTagAsPatch_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithBugFixOnDev.Create();
+            Options options = new Options {
+                Prerelease = true,
+                Channel = "staging"
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("1.2.4.staging.1");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
         #endregion
     }
 }

@@ -40,7 +40,7 @@ namespace Julesabr.GitBump {
         private IGitTag BumpPrereleaseTag(ReleaseType releaseType) {
             IVersion latestVersion = LatestTag?.Version ?? IVersion.First;
             if (LatestPrereleaseTag == null)
-                return IGitTag.Create(IVersion.From($"{latestVersion}.{Options.Branch}.1"), Options.Prefix,
+                return IGitTag.Create(IVersion.From($"{latestVersion}.{Options.Channel}.1"), Options.Prefix,
                     Options.Suffix);
             
             IVersion newVersion = latestVersion.Bump(releaseType);

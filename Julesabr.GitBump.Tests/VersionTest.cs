@@ -128,14 +128,14 @@ namespace Julesabr.GitBump.Tests {
         [TestCase("")]
         [TestCase("   ")]
         public void
-            From_GivenPrereleaseVersionAsSeparateComponents_AndPrereleaseBranchIsNullOrWhitespace_ThenThrowArgumentNullException(
-                string prereleaseBranch
+            From_GivenPrereleaseVersionAsSeparateComponents_AndPrereleaseChannelIsNullOrWhitespace_ThenThrowArgumentNullException(
+                string prereleaseChannel
             ) {
             // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action action = () => IVersion.From(1, 0, 0, prereleaseBranch, 1);
+            Action action = () => IVersion.From(1, 0, 0, prereleaseChannel, 1);
             action.Should()
                 .Throw<ArgumentNullException>()
-                .WithMessage(IVersion.BlankStringError + " (Parameter 'prereleaseBranch')");
+                .WithMessage(IVersion.BlankStringError + " (Parameter 'prereleaseChannel')");
         }
 
         [Test]
@@ -273,14 +273,14 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        public void LessThan_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnTrue() {
+        public void LessThan_WhenLeftPrereleaseChannelIsLessThanTheRightPrereleaseChannel_ThenReturnTrue() {
             IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
             IVersion right = IVersion.From(1, 1, 1, "beta", 1);
             (left < right).Should().BeTrue();
         }
 
         [Test]
-        public void LessThan_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnFalse() {
+        public void LessThan_WhenLeftPrereleaseChannelIsGreaterThanTheRightPrereleaseChannel_ThenReturnFalse() {
             IVersion left = IVersion.From(1, 1, 1, "beta", 1);
             IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
             (left < right).Should().BeFalse();
@@ -350,14 +350,14 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        public void GreaterThan_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnFalse() {
+        public void GreaterThan_WhenLeftPrereleaseChannelIsLessThanTheRightPrereleaseChannel_ThenReturnFalse() {
             IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
             IVersion right = IVersion.From(1, 1, 1, "beta", 1);
             (left > right).Should().BeFalse();
         }
 
         [Test]
-        public void GreaterThan_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnTrue() {
+        public void GreaterThan_WhenLeftPrereleaseChannelIsGreaterThanTheRightPrereleaseChannel_ThenReturnTrue() {
             IVersion left = IVersion.From(1, 1, 1, "beta", 1);
             IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
             (left > right).Should().BeTrue();
@@ -427,14 +427,14 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        public void LessThanOrEqualTo_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnTrue() {
+        public void LessThanOrEqualTo_WhenLeftPrereleaseChannelIsLessThanTheRightPrereleaseChannel_ThenReturnTrue() {
             IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
             IVersion right = IVersion.From(1, 1, 1, "beta", 1);
             (left <= right).Should().BeTrue();
         }
 
         [Test]
-        public void LessThanOrEqualTo_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnFalse() {
+        public void LessThanOrEqualTo_WhenLeftPrereleaseChannelIsGreaterThanTheRightPrereleaseChannel_ThenReturnFalse() {
             IVersion left = IVersion.From(1, 1, 1, "beta", 1);
             IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
             (left <= right).Should().BeFalse();
@@ -504,7 +504,7 @@ namespace Julesabr.GitBump.Tests {
         }
 
         [Test]
-        public void GreaterThanOrEqualTo_WhenLeftPrereleaseBranchIsLessThanTheRightPrereleaseBranch_ThenReturnFalse() {
+        public void GreaterThanOrEqualTo_WhenLeftPrereleaseChannelIsLessThanTheRightPrereleaseChannel_ThenReturnFalse() {
             IVersion left = IVersion.From(1, 1, 1, "alpha", 1);
             IVersion right = IVersion.From(1, 1, 1, "beta", 1);
             (left >= right).Should().BeFalse();
@@ -512,7 +512,7 @@ namespace Julesabr.GitBump.Tests {
 
         [Test]
         public void
-            GreaterThanOrEqualTo_WhenLeftPrereleaseBranchIsGreaterThanTheRightPrereleaseBranch_ThenReturnTrue() {
+            GreaterThanOrEqualTo_WhenLeftPrereleaseChannelIsGreaterThanTheRightPrereleaseChannel_ThenReturnTrue() {
             IVersion left = IVersion.From(1, 1, 1, "beta", 1);
             IVersion right = IVersion.From(1, 1, 1, "alpha", 1);
             (left >= right).Should().BeTrue();

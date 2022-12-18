@@ -7,14 +7,14 @@ namespace Julesabr.GitBump {
             ushort major,
             ushort minor,
             ushort patch,
-            string? prereleaseBranch = null,
+            string? prereleaseChannel = null,
             ushort prereleaseNumber = 1,
             bool isPrerelease = false
         ) {
             Major = major;
             Minor = minor;
             Patch = patch;
-            PrereleaseBranch = prereleaseBranch;
+            PrereleaseChannel = prereleaseChannel;
             PrereleaseNumber = prereleaseNumber;
             IsPrerelease = isPrerelease;
         }
@@ -22,7 +22,7 @@ namespace Julesabr.GitBump {
         public ushort Major { get; }
         public ushort Minor { get; }
         public ushort Patch { get; }
-        public string? PrereleaseBranch { get; }
+        public string? PrereleaseChannel { get; }
         public ushort PrereleaseNumber { get; }
         public bool IsPrerelease { get; }
 
@@ -38,17 +38,17 @@ namespace Julesabr.GitBump {
 
         [Pure]
         public IVersion BumpMajor() {
-            return new Version((ushort)(Major + 1), 0, 0, PrereleaseBranch, 1, IsPrerelease);
+            return new Version((ushort)(Major + 1), 0, 0, PrereleaseChannel, 1, IsPrerelease);
         }
 
         [Pure]
         public IVersion BumpMinor() {
-            return new Version(Major, (ushort)(Minor + 1), 0, PrereleaseBranch, 1, IsPrerelease);
+            return new Version(Major, (ushort)(Minor + 1), 0, PrereleaseChannel, 1, IsPrerelease);
         }
 
         [Pure]
         public IVersion BumpPatch() {
-            return new Version(Major, Minor, (ushort)(Patch + 1), PrereleaseBranch, 1, IsPrerelease);
+            return new Version(Major, Minor, (ushort)(Patch + 1), PrereleaseChannel, 1, IsPrerelease);
         }
 
         [Pure]
@@ -56,7 +56,7 @@ namespace Julesabr.GitBump {
             if (!IsPrerelease)
                 throw new InvalidOperationException(IVersion.InvalidPrereleaseBumpError);
 
-            return new Version(Major, Minor, Patch, PrereleaseBranch,
+            return new Version(Major, Minor, Patch, PrereleaseChannel,
                 (ushort)(PrereleaseNumber + 1), IsPrerelease);
         }
 
@@ -75,7 +75,7 @@ namespace Julesabr.GitBump {
             if (patchComparison != 0) return patchComparison;
 
             int prereleaseBranchComparison =
-                string.Compare(PrereleaseBranch, other.PrereleaseBranch, StringComparison.Ordinal);
+                string.Compare(PrereleaseChannel, other.PrereleaseChannel, StringComparison.Ordinal);
             return prereleaseBranchComparison != 0
                 ? prereleaseBranchComparison
                 : PrereleaseNumber.CompareTo(other.PrereleaseNumber);
@@ -91,14 +91,14 @@ namespace Julesabr.GitBump {
 
         [Pure]
         public override int GetHashCode() {
-            return HashCode.Combine(Major, Minor, Patch, PrereleaseBranch, PrereleaseNumber);
+            return HashCode.Combine(Major, Minor, Patch, PrereleaseChannel, PrereleaseNumber);
         }
 
         [Pure]
         public override string ToString() {
             string result = string.Join(IVersion.Separator, Major, Minor, Patch);
             if (IsPrerelease)
-                result = string.Join(IVersion.Separator, result, PrereleaseBranch, PrereleaseNumber);
+                result = string.Join(IVersion.Separator, result, PrereleaseChannel, PrereleaseNumber);
 
             return result;
         }
@@ -107,7 +107,7 @@ namespace Julesabr.GitBump {
             return Major == other.Major &&
                    Minor == other.Minor &&
                    Patch == other.Patch &&
-                   PrereleaseBranch == other.PrereleaseBranch &&
+                   PrereleaseChannel == other.PrereleaseChannel &&
                    PrereleaseNumber == other.PrereleaseNumber &&
                    IsPrerelease == other.IsPrerelease;
         }

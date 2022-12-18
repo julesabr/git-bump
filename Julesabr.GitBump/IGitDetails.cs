@@ -35,7 +35,7 @@ namespace Julesabr.GitBump {
                 latestPrereleaseTag = repository.Tags.Where(tag => tag.IsAnnotated)
                     .Select(tag => IGitTag.Create(tag.Name, options.Prefix, options.Suffix))
                     .Where(tag =>
-                        tag.Version.IsPrerelease && tag.Version.PrereleaseBranch == options.Branch)
+                        tag.Version.IsPrerelease && tag.Version.PrereleaseChannel == options.Channel)
                     .OrderByDescending(tag => tag)
                     .FirstOrDefault();
 

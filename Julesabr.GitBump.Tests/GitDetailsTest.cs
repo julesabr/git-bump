@@ -273,7 +273,7 @@ namespace Julesabr.GitBump.Tests {
         public void BumpTag_WhenLatestTagIsNull_AndThisIsAPrerelease_ThenReturnFirstPrereleaseTag() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -284,7 +284,7 @@ namespace Julesabr.GitBump.Tests {
             details.BumpTag()
                 .Should()
                 .Be(IGitTag.Create(
-                    IVersion.From(IVersion.First.Major, IVersion.First.Minor, IVersion.First.Patch, options.Branch, 1),
+                    IVersion.From(IVersion.First.Major, IVersion.First.Minor, IVersion.First.Patch, options.Channel, 1),
                     options.Prefix, options.Suffix));
         }
 
@@ -293,13 +293,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_AndTheLatestCommitsContainNoSignificantChange_ThenReturnNull() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithNoSignificantChange();
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
                 options);
@@ -314,13 +314,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainACiChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestPrereleaseTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -333,7 +333,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -341,13 +341,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainACiChange_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestPrereleaseTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -360,7 +360,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -368,13 +368,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABuildChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -387,7 +387,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -395,13 +395,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABuildChange_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -414,7 +414,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -422,13 +422,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainAPerfChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -441,7 +441,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -449,13 +449,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainAPerfChange_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -468,7 +468,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -476,13 +476,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARefactorChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -495,7 +495,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -503,13 +503,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARefactorChange_AndTheBumpedVersionDoesMotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -522,7 +522,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -530,13 +530,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainADocsChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -549,7 +549,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -557,13 +557,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainADocsChange_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -576,7 +576,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -584,13 +584,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARevertChange_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -603,7 +603,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -611,13 +611,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainARevertChange_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IList<Commit> latestCommits = CommitsWithNoSignificantChange();
 
             Commit commit = Substitute.For<Commit>();
@@ -630,7 +630,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -638,13 +638,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABugFix_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithBugFix();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -652,7 +652,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -660,13 +660,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABugFix_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAPatchBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithBugFix();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -674,7 +674,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 1, 4, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -682,13 +682,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainAFeature_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 2, 0, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 2, 0, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithFeature();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -696,7 +696,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 2, 0, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 2, 0, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -704,13 +704,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainAFeature_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAMinorBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithFeature();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -718,7 +718,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 2, 0, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(2, 2, 0, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -726,13 +726,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABreakingChangeUsingExclamation_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(3, 0, 0, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(3, 0, 0, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithBreakingChangeUsingExclamation();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -740,7 +740,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -748,13 +748,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABreakingChangeUsingExclamation_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAMajorBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithBreakingChangeUsingExclamation();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -762,7 +762,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -770,13 +770,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABreakingChangeUsingMessageFooter_AndTheBumpedVersionMatchesPrerelease_ThenReturnTheLatestTagWithAPrereleaseBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(3, 0, 0, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(3, 0, 0, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithBreakingChangeUsingMessageFooter();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -784,7 +784,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Branch, 6), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Channel, 6), options.Prefix, options.Suffix));
         }
 
         [Test]
@@ -792,13 +792,13 @@ namespace Julesabr.GitBump.Tests {
             BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_TheLatestCommitsContainABreakingChangeUsingMessageFooter_AndTheBumpedVersionDoesNotMatchPrerelease_ThenReturnTheLatestTagWithAMajorBump() {
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
             IGitTag latestTag = IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix);
             IGitTag latestPrereleaseTag =
-                IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix);
+                IGitTag.Create(IVersion.From(2, 1, 3, options.Channel, 5), options.Prefix, options.Suffix);
             IEnumerable<Commit> latestCommits = CommitsWithBreakingChangeUsingMessageFooter();
 
             IGitDetails details = IGitDetails.Create(latestTag, latestPrereleaseTag, latestCommits,
@@ -806,7 +806,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Branch, 1), options.Prefix, options.Suffix));
+                .Be(IGitTag.Create(IVersion.From(3, 0, 0, options.Channel, 1), options.Prefix, options.Suffix));
         }
 
         #endregion
@@ -1044,7 +1044,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithAnnotatedTagsOnSeparateCommits();
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -1078,7 +1078,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithAnnotatedTagsOnSameCommit();
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -1154,7 +1154,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithAnnotatedTagsOnSeparateCommits();
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -1173,7 +1173,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithNoAnnotatedTags();
             Options options = new() {
                 Prerelease = true,
-                Branch = "dev",
+                Channel = "dev",
                 Prefix = "v",
                 Suffix = ""
             };

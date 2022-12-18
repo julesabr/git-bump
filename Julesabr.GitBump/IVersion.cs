@@ -22,7 +22,7 @@ namespace Julesabr.GitBump {
         ushort Major { get; }
         ushort Minor { get; }
         ushort Patch { get; }
-        string? PrereleaseBranch { get; }
+        string? PrereleaseChannel { get; }
         ushort PrereleaseNumber { get; }
         bool IsPrerelease { get; }
 
@@ -51,16 +51,16 @@ namespace Julesabr.GitBump {
             ushort major,
             ushort minor,
             ushort patch,
-            string prereleaseBranch,
+            string prereleaseChannel,
             ushort prereleaseNumber
         ) {
-            if (string.IsNullOrWhiteSpace(prereleaseBranch))
-                throw new ArgumentNullException(nameof(prereleaseBranch), BlankStringError);
+            if (string.IsNullOrWhiteSpace(prereleaseChannel))
+                throw new ArgumentNullException(nameof(prereleaseChannel), BlankStringError);
 
             if (prereleaseNumber == 0)
                 throw new ArgumentException(PrereleaseIsZeroError);
 
-            return new Version(major, minor, patch, prereleaseBranch, prereleaseNumber, true);
+            return new Version(major, minor, patch, prereleaseChannel, prereleaseNumber, true);
         }
 
         [Pure]
