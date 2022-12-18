@@ -29,17 +29,20 @@ namespace Julesabr.GitBump {
         public IEnumerable<Commit> LatestCommits { get; }
 
         [Pure]
-        public IGitTag BumpTag() {
-            return Options.Prerelease ? BumpPrereleaseTag() : BumpReleaseTag();
+        public IGitTag? BumpTag() {
+            ReleaseType releaseType = GetReleaseType();
+            if (releaseType == ReleaseType.None)
+                return null;
+            
+            return Options.Prerelease ? BumpPrereleaseTag(releaseType) : BumpReleaseTag(releaseType);
         }
 
-        private IGitTag BumpPrereleaseTag() {
+        private IGitTag BumpPrereleaseTag(ReleaseType releaseType) {
             IVersion latestVersion = LatestTag?.Version ?? IVersion.First;
             if (LatestPrereleaseTag == null)
                 return IGitTag.Create(IVersion.From($"{latestVersion}.{Options.Branch}.1"), Options.Prefix,
                     Options.Suffix);
-
-            ReleaseType releaseType = GetReleaseType();
+            
             IVersion newVersion = latestVersion.Bump(releaseType);
             IVersion prereleaseVersion = LatestPrereleaseTag.Version;
 
@@ -52,10 +55,10 @@ namespace Julesabr.GitBump {
                 LatestPrereleaseTag.Suffix);
         }
 
-        private IGitTag BumpReleaseTag() {
+        private IGitTag BumpReleaseTag(ReleaseType releaseType) {
             return LatestTag == null
                 ? IGitTag.Create(IVersion.First, Options.Prefix, Options.Suffix)
-                : IGitTag.Create(LatestTag.Version.Bump(GetReleaseType()), LatestTag.Prefix, LatestTag.Suffix);
+                : IGitTag.Create(LatestTag.Version.Bump(releaseType), LatestTag.Prefix, LatestTag.Suffix);
         }
 
         private ReleaseType GetReleaseType() {

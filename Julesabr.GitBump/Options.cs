@@ -1,4 +1,5 @@
 using CommandLine;
+using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
     public class Options {
@@ -39,5 +40,23 @@ namespace Julesabr.GitBump {
             HelpText =
                 "Output the new version into a file at the given path. The path could be absolute or relative to the current working directory.")]
         public string OutputVersion { get; init; } = "";
+
+        public Options Default(IRepository repository) {
+            string branch = Branch;
+
+            if (string.IsNullOrEmpty(branch))
+                branch = repository.Head.Name;
+
+            return new Options {
+                DryRun = DryRun,
+                Prerelease = Prerelease,
+                Branch = branch,
+                Tag = Tag,
+                Push = Push,
+                Prefix = Prefix,
+                Suffix = Suffix,
+                OutputVersion = OutputVersion
+            };
+        }
     }
 }

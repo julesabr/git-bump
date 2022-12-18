@@ -10,7 +10,7 @@ namespace Julesabr.GitBump {
         IEnumerable<Commit> LatestCommits { get; }
 
         [Pure]
-        IGitTag BumpTag();
+        IGitTag? BumpTag();
 
         [Pure]
         public static IGitDetails Create(
@@ -35,7 +35,7 @@ namespace Julesabr.GitBump {
                 latestPrereleaseTag = repository.Tags.Where(tag => tag.IsAnnotated)
                     .Select(tag => IGitTag.Create(tag.Name, options.Prefix, options.Suffix))
                     .Where(tag =>
-                        tag.Version.IsPrerelease && tag.Version.PrereleaseBranch == repository.Head.Name)
+                        tag.Version.IsPrerelease && tag.Version.PrereleaseBranch == options.Branch)
                     .OrderByDescending(tag => tag)
                     .FirstOrDefault();
 

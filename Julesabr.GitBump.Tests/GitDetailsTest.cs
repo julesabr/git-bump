@@ -12,13 +12,14 @@ namespace Julesabr.GitBump.Tests {
         #region Release
 
         [Test]
-        public void BumpTag_WhenLatestTagIsNullAndThisIsNotAPrerelease_ThenReturnFirstReleaseTag() {
+        public void BumpTag_WhenLatestTagIsNull_AndThisIsNotAPrerelease_ThenReturnFirstReleaseTag() {
             Options options = new() {
                 Prerelease = false,
                 Prefix = "v",
                 Suffix = ""
             };
-            IGitDetails details = IGitDetails.Create(null, null, new List<Commit>(),
+            IEnumerable<Commit> latestCommits = CommitsWithFeature();
+            IGitDetails details = IGitDetails.Create(null, null, latestCommits,
                 options);
 
             details.BumpTag()
@@ -28,7 +29,7 @@ namespace Julesabr.GitBump.Tests {
 
         [Test]
         public void
-            BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainNoSignificantChange_ThenReturnTheLatestTag() {
+            BumpTag_WhenLatestTagIsNotNull_ThisIsNotAPrerelease_AndTheLatestCommitsContainNoSignificantChange_ThenReturnNull() {
             Options options = new() {
                 Prerelease = false,
                 Prefix = "v",
@@ -41,7 +42,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 3), options.Prefix, options.Suffix));
+                .BeNull();
         }
 
         [Test]
@@ -269,14 +270,15 @@ namespace Julesabr.GitBump.Tests {
         #region Prerelease
 
         [Test]
-        public void BumpTag_WhenLatestTagIsNullAndThisIsAPrerelease_ThenReturnFirstPrereleaseTag() {
+        public void BumpTag_WhenLatestTagIsNull_AndThisIsAPrerelease_ThenReturnFirstPrereleaseTag() {
             Options options = new() {
                 Prerelease = true,
                 Branch = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
-            IGitDetails details = IGitDetails.Create(null, null, new List<Commit>(),
+            IEnumerable<Commit> latestCommits = CommitsWithFeature();
+            IGitDetails details = IGitDetails.Create(null, null, latestCommits,
                 options);
 
             details.BumpTag()
@@ -288,7 +290,7 @@ namespace Julesabr.GitBump.Tests {
 
         [Test]
         public void
-            BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_AndTheLatestCommitsContainNoSignificantChange_ThenReturnTheLatestPrereleaseTag() {
+            BumpTag_WhenLatestTagIsNotNull_ThisIsAPrerelease_AndTheLatestCommitsContainNoSignificantChange_ThenReturnNull() {
             Options options = new() {
                 Prerelease = true,
                 Branch = "dev",
@@ -304,7 +306,7 @@ namespace Julesabr.GitBump.Tests {
 
             details.BumpTag()
                 .Should()
-                .Be(IGitTag.Create(IVersion.From(2, 1, 3, options.Branch, 5), options.Prefix, options.Suffix));
+                .BeNull();
         }
 
         [Test]
@@ -1042,6 +1044,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithAnnotatedTagsOnSeparateCommits();
             Options options = new() {
                 Prerelease = true,
+                Branch = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -1075,6 +1078,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithAnnotatedTagsOnSameCommit();
             Options options = new() {
                 Prerelease = true,
+                Branch = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -1150,6 +1154,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithAnnotatedTagsOnSeparateCommits();
             Options options = new() {
                 Prerelease = true,
+                Branch = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -1168,6 +1173,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = RepositoryWithNoAnnotatedTags();
             Options options = new() {
                 Prerelease = true,
+                Branch = "dev",
                 Prefix = "v",
                 Suffix = ""
             };
@@ -1259,13 +1265,9 @@ namespace Julesabr.GitBump.Tests {
             IQueryableCommitLog log = new QueryableCommitLogStub(commits);
             TagCollection tagCollection = new TagCollectionStub(tags);
 
-            Branch head = Substitute.For<Branch>();
-            head.Name.Returns("dev");
-
             IRepository repository = Substitute.For<IRepository>();
             repository.Commits.Returns(log);
             repository.Tags.Returns(tagCollection);
-            repository.Head.Returns(head);
 
             return repository;
         }
@@ -1344,14 +1346,10 @@ namespace Julesabr.GitBump.Tests {
             IQueryableCommitLog log = new QueryableCommitLogStub(commits);
             TagCollection tagCollection = new TagCollectionStub(tags);
 
-            Branch head = Substitute.For<Branch>();
-            head.Name.Returns("dev");
-
             IRepository repository = Substitute.For<IRepository>();
             repository.Commits.Returns(log);
             repository.Tags.Returns(tagCollection);
-            repository.Head.Returns(head);
-
+            
             return repository;
         }
 
@@ -1399,13 +1397,9 @@ namespace Julesabr.GitBump.Tests {
             IQueryableCommitLog log = new QueryableCommitLogStub(commits);
             TagCollection tagCollection = new TagCollectionStub(tags);
 
-            Branch head = Substitute.For<Branch>();
-            head.Name.Returns("dev");
-
             IRepository repository = Substitute.For<IRepository>();
             repository.Commits.Returns(log);
             repository.Tags.Returns(tagCollection);
-            repository.Head.Returns(head);
 
             return repository;
         }
