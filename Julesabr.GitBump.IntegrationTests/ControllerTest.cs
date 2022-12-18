@@ -72,6 +72,22 @@ namespace Julesabr.GitBump.IntegrationTests {
             stdOut.ToString().Trim().Should().Be("2.0.0");
             exitCode.Should().Be(ExitCode.Success);
         }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithNoTag_AndDefaultOptions_ThenBumpFirstTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithNoTagOnMain.Create();
+            Options options = new Options().Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("0.1.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
 
         #endregion
 
@@ -183,6 +199,24 @@ namespace Julesabr.GitBump.IntegrationTests {
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
             repository.Network.DidNotReceive().PushTags();
             stdOut.ToString().Trim().Should().Be("1.2.4.staging.1");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithNoTag_AndIsPrerelease_ThenBumpFirstTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithNoTagOnDev.Create();
+            Options options = new Options {
+                Prerelease = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("0.1.0.dev.1");
             exitCode.Should().Be(ExitCode.Success);
         }
         
