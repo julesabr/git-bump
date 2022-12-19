@@ -15,10 +15,10 @@ namespace Julesabr.GitBump {
             IGitDetails details = IGitDetails.Create(repository, options);
             IGitTag? newTag = details.BumpTag();
 
-            // if (newTag > details.LatestTag) {
-            //     repository.ApplyTag(newTag.ToString(), "");
-            //     repository.Network.PushTags();
-            // }
+            if (options.Tag && newTag != null) {
+                repository.ApplyTag(newTag.ToString(), "");
+                // repository.Network.PushTags();
+            }
 
             if (newTag == null)
                 Console.WriteLine(ReturnNone);

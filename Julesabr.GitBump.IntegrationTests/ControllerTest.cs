@@ -91,7 +91,7 @@ namespace Julesabr.GitBump.IntegrationTests {
 
         #endregion
 
-        #region Prereleases
+        #region Prerelease Enabled
         
         [Test]
         public void GitBump_GivenRepositoryWithNoSignificantChange_AndIsPrerelease_ThenDontBumpTag_AndOutputNone() {
@@ -220,6 +220,100 @@ namespace Julesabr.GitBump.IntegrationTests {
             exitCode.Should().Be(ExitCode.Success);
         }
         
+        #endregion
+
+        #region Tagging Enabled
+
+        [Test]
+        public void GitBump_GivenRepositoryWithNoSignificantChange_AndTaggingIsEnabled_ThenDontBumpTag_AndOutputNone() {
+            IRepository repository = RepositoryStubWithNoSignificantChangeOnMain.Create();
+            Options options = new Options {
+                Tag = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be(Controller.ReturnNone);
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithABugFix_AndTaggingIsEnabled_ThenBumpTagAsPatch_CreateAGitTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithBugFixOnMain.Create();
+            Options options = new Options {
+                Tag = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v1.2.4", "");
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("1.2.4");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithAFeature_AndTaggingIsEnabled_ThenBumpTagAsMinor_CreateAGitTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithFeatureOnMain.Create();
+            Options options = new Options {
+                Tag = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v1.3.0", "");
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("1.3.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithABreakingChange_AndTaggingIsEnabled_ThenBumpTagAsMajor_CreateAGitTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithBreakingChangeOnMain.Create();
+            Options options = new Options {
+                Tag = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v2.0.0", "");
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("2.0.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithNoTag_AndTaggingIsEnabled_ThenBumpFirstTag_CreateAGitTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithNoTagOnMain.Create();
+            Options options = new Options {
+                Tag = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v0.1.0", "");
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("0.1.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+
         #endregion
     }
 }
