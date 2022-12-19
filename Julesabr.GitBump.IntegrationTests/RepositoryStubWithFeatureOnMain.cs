@@ -4,7 +4,7 @@ using NSubstitute;
 
 namespace Julesabr.GitBump.IntegrationTests {
     public static class RepositoryStubWithFeatureOnMain {
-        public static IRepository Create() {
+        public static IRepository Create(string prefix = "v", string suffix = "") {
             Commit commit1 = Substitute.For<Commit>();
             commit1.Sha.Returns("62e880e5f27b18e0e54fd655e294c85aaf152a6b");
             commit1.Message.Returns("Initial Commit");
@@ -21,7 +21,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             commit3.MessageFull.Returns("chore: Setup");
             
             Tag tag1 = Substitute.For<Tag>();
-            tag1.Name.Returns("v1.2.3");
+            tag1.Name.Returns($"{prefix}1.2.3{suffix}");
             tag1.IsAnnotated.Returns(true);
             tag1.Target.Returns(commit3);
             

@@ -313,6 +313,44 @@ namespace Julesabr.GitBump.IntegrationTests {
             stdOut.ToString().Trim().Should().Be("0.1.0");
             exitCode.Should().Be(ExitCode.Success);
         }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithAFeature_TaggingIsEnabled_AndPrefixIsSet_ThenBumpTagAsMinor_CreateAGitTagWithNewPrefix_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithFeatureOnMain.Create("ver");
+            Options options = new Options {
+                Tag = true,
+                Prefix = "ver"
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("ver1.3.0", "");
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("1.3.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithAFeature_TaggingIsEnabled_AndSuffixIsSet_ThenBumpTagAsMinor_CreateAGitTagWithNewSuffix_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithFeatureOnMain.Create("v", "-preview");
+            Options options = new Options {
+                Tag = true,
+                Suffix = "-preview"
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v1.3.0-preview", "");
+            repository.Network.DidNotReceive().PushTags();
+            stdOut.ToString().Trim().Should().Be("1.3.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
 
         #endregion
     }
