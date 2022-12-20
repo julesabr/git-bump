@@ -18,12 +18,12 @@ namespace Julesabr.GitBump {
         public string Channel { get; init; } = "";
 
         [Option(Required = false, Default = false,
-            HelpText = "Use the prefix and suffix to create a git annotated tag from the new version. This will only apply the tag but will not push it.")]
+            HelpText = "Use the prefix and suffix to create a git annotated tag from the new version. This will only apply the tag but will not push it. This is irrelevant if push is true.")]
         public bool Tag { get; init; }
 
         [Option(Required = false, Default = false,
             HelpText =
-                "Create a git annotated tag and push the tag to git. Tagging is skipped if the tag already exists.")]
+                "Create a git annotated tag and push the tag to git.")]
         public bool Push { get; init; }
 
         [Option(Required = false, Default = "v",

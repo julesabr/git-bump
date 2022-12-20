@@ -20,7 +20,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be(Controller.ReturnNone);
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -36,7 +36,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.2.4");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -52,7 +52,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.3.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -68,7 +68,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("2.0.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -84,7 +84,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("0.1.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -106,7 +106,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
         
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be(Controller.ReturnNone);
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -124,7 +124,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.2.4.dev.1");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -142,7 +142,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.3.0.dev.1");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -160,7 +160,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("2.0.0.dev.1");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -178,7 +178,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.2.4.dev.2");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -197,7 +197,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.2.4.staging.1");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -215,7 +215,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("0.1.0.dev.1");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -237,7 +237,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be(Controller.ReturnNone);
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -255,7 +255,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.Received().ApplyTag("v1.2.4", "");
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.2.4");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -273,7 +273,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.Received().ApplyTag("v1.3.0", "");
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.3.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -291,7 +291,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.Received().ApplyTag("v2.0.0", "");
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("2.0.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -309,7 +309,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.Received().ApplyTag("v0.1.0", "");
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("0.1.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -328,7 +328,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.Received().ApplyTag("ver1.3.0", "");
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
             stdOut.ToString().Trim().Should().Be("1.3.0");
             exitCode.Should().Be(ExitCode.Success);
         }
@@ -347,7 +347,139 @@ namespace Julesabr.GitBump.IntegrationTests {
             ExitCode exitCode = controller.GitBump(options);
 
             repository.Received().ApplyTag("v1.3.0-preview", "");
-            repository.Network.DidNotReceive().PushTags();
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
+            stdOut.ToString().Trim().Should().Be("1.3.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+
+        #endregion
+
+        #region Push Enabled
+
+        [Test]
+        public void GitBump_GivenRepositoryWithNoSignificantChange_AndPushIsEnabled_ThenDontBumpTag_AndOutputNone() {
+            IRepository repository = RepositoryStubWithNoSignificantChangeOnMain.Create();
+            Options options = new Options {
+                Push = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.DidNotReceive().ApplyTag(Arg.Any<string>(), Arg.Any<string>());
+            repository.Network.DidNotReceive().PushTag(Arg.Any<string>());
+            stdOut.ToString().Trim().Should().Be(Controller.ReturnNone);
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithABugFix_AndPushIsEnabled_ThenBumpTagAsPatch_CreateAGitTag_PushTheTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithBugFixOnMain.Create();
+            Options options = new Options {
+                Push = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+        
+            ExitCode exitCode = controller.GitBump(options);
+        
+            repository.Received().ApplyTag("v1.2.4", "");
+            repository.Network.Received().PushTag("v1.2.4");
+            stdOut.ToString().Trim().Should().Be("1.2.4");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithAFeature_AndPushIsEnabled_ThenBumpTagAsMinor_CreateAGitTag_PushTheTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithFeatureOnMain.Create();
+            Options options = new Options {
+                Push = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v1.3.0", "");
+            repository.Network.Received().PushTag("v1.3.0");
+            stdOut.ToString().Trim().Should().Be("1.3.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithABreakingChange_AndPushIsEnabled_ThenBumpTagAsMajor_CreateAGitTag_PushTheTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithBreakingChangeOnMain.Create();
+            Options options = new Options {
+                Push = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v2.0.0", "");
+            repository.Network.Received().PushTag("v2.0.0");
+            stdOut.ToString().Trim().Should().Be("2.0.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithNoTag_AndPushIsEnabled_ThenBumpFirstTag_CreateAGitTag_PushTheTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithNoTagOnMain.Create();
+            Options options = new Options {
+                Push = true
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v0.1.0", "");
+            repository.Network.Received().PushTag("v0.1.0");
+            stdOut.ToString().Trim().Should().Be("0.1.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithAFeature_PushIsEnabled_AndPrefixIsSet_ThenBumpTagAsMinor_CreateAGitTagWithNewPrefix_PushTheTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithFeatureOnMain.Create("ver");
+            Options options = new Options {
+                Push = true,
+                Prefix = "ver"
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("ver1.3.0", "");
+            repository.Network.Received().PushTag("ver1.3.0");
+            stdOut.ToString().Trim().Should().Be("1.3.0");
+            exitCode.Should().Be(ExitCode.Success);
+        }
+        
+        [Test]
+        public void GitBump_GivenRepositoryWithAFeature_PushIsEnabled_AndSuffixIsSet_ThenBumpTagAsMinor_CreateAGitTagWithNewSuffix_PushTheTag_AndOutputNewVersion() {
+            IRepository repository = RepositoryStubWithFeatureOnMain.Create("v", "-preview");
+            Options options = new Options {
+                Push = true,
+                Suffix = "-preview"
+            }.Default(repository);
+            StringWriter stdOut = new();
+            Console.SetOut(stdOut);
+            Controller controller = new(repository);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            repository.Received().ApplyTag("v1.3.0-preview", "");
+            repository.Network.Received().PushTag("v1.3.0-preview");
             stdOut.ToString().Trim().Should().Be("1.3.0");
             exitCode.Should().Be(ExitCode.Success);
         }

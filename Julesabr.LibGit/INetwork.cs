@@ -2,7 +2,7 @@ using JetBrains.Annotations;
 
 namespace Julesabr.LibGit {
     public interface INetwork {
-        void PushTags();
+        void PushTag(string tagName);
 
         [Pure]
         public static INetwork Create() {

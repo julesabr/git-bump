@@ -15,17 +15,22 @@ namespace Julesabr.GitBump {
             IGitDetails details = IGitDetails.Create(repository, options);
             IGitTag? newTag = details.BumpTag();
 
-            if (options.Tag && newTag != null) {
-                repository.ApplyTag(newTag.ToString(), "");
-                // repository.Network.PushTags();
-            }
-
             if (newTag == null)
                 Console.WriteLine(ReturnNone);
-            else
+            else {
+                TagAndPush(newTag.ToString(), "", options);
                 Console.WriteLine(newTag.Version);
+            }
 
             return ExitCode.Success;
+        }
+
+        private void TagAndPush(string tagName, string message, Options options) {
+            if (options.Push || options.Tag)
+                repository.ApplyTag(tagName, message);
+
+            if (options.Push)
+                repository.Network.PushTag(tagName);
         }
     }
 }

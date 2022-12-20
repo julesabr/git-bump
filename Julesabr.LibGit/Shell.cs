@@ -27,7 +27,7 @@ namespace Julesabr.LibGit {
         public const string GitLogWithShaAndBodyInReverse =
             "git --no-pager log --reverse --pretty=format:\"%H %B<EOC>\"";
 
-        public const string GitPushTags = "git push --tags";
+        public const string GitPushTag = "git push origin {0}";
 
         public static string Run(string command) {
             using Process process = new();

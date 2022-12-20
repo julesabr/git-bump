@@ -1,7 +1,7 @@
 namespace Julesabr.LibGit {
     internal class Network : INetwork {
-        public void PushTags() {
-            Shell.Run(Shell.GitPushTags);
+        public void PushTag(string tagName) {
+            Shell.Run(string.Format(Shell.GitPushTag, tagName));
         }
     }
 }
