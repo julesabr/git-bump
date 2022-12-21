@@ -82,6 +82,15 @@ namespace Julesabr.GitBump {
         }
 
         [Pure]
+        public override string ToString() {
+            string result = string.Join(IVersion.Separator, Major, Minor, Patch);
+            if (IsPrerelease)
+                result = string.Join(IVersion.Separator, result, PrereleaseChannel, PrereleaseNumber);
+
+            return result;
+        }
+
+        [Pure]
         public override bool Equals(object? obj) {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
@@ -92,15 +101,6 @@ namespace Julesabr.GitBump {
         [Pure]
         public override int GetHashCode() {
             return HashCode.Combine(Major, Minor, Patch, PrereleaseChannel, PrereleaseNumber);
-        }
-
-        [Pure]
-        public override string ToString() {
-            string result = string.Join(IVersion.Separator, Major, Minor, Patch);
-            if (IsPrerelease)
-                result = string.Join(IVersion.Separator, result, PrereleaseChannel, PrereleaseNumber);
-
-            return result;
         }
 
         private bool Equals(IVersion other) {

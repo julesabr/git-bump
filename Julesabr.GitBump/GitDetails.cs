@@ -33,7 +33,7 @@ namespace Julesabr.GitBump {
             ReleaseType releaseType = GetReleaseType();
             if (releaseType == ReleaseType.None)
                 return null;
-            
+
             return Options.Prerelease ? BumpPrereleaseTag(releaseType) : BumpReleaseTag(releaseType);
         }
 
@@ -42,7 +42,7 @@ namespace Julesabr.GitBump {
             if (LatestPrereleaseTag == null)
                 return IGitTag.Create(IVersion.From($"{latestVersion}.{Options.Channel}.1"), Options.Prefix,
                     Options.Suffix);
-            
+
             IVersion newVersion = latestVersion.Bump(releaseType);
             IVersion prereleaseVersion = LatestPrereleaseTag.Version;
 

@@ -5,9 +5,9 @@ using Julesabr.LibGit;
 namespace Julesabr.GitBump {
     public class Controller {
         public const string ReturnNone = "No Bump";
-        
-        private readonly IRepository repository;
         private readonly FileFactory fileFactory;
+
+        private readonly IRepository repository;
 
         public Controller(IRepository repository, FileFactory fileFactory) {
             this.repository = repository;
@@ -39,9 +39,9 @@ namespace Julesabr.GitBump {
         }
 
         private void WriteToFile(string content, Options options) {
-            if (string.IsNullOrEmpty(options.VersionOutput)) 
+            if (string.IsNullOrEmpty(options.VersionOutput))
                 return;
-            
+
             IText text = fileFactory.Create(options.VersionOutput);
             text.Write(content);
         }

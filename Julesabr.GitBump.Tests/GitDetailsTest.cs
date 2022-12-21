@@ -1349,7 +1349,7 @@ namespace Julesabr.GitBump.Tests {
             IRepository repository = Substitute.For<IRepository>();
             repository.Commits.Returns(log);
             repository.Tags.Returns(tagCollection);
-            
+
             return repository;
         }
 

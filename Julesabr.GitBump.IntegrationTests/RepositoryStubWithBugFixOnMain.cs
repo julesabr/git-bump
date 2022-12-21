@@ -14,32 +14,32 @@ namespace Julesabr.GitBump.IntegrationTests {
             commit2.Sha.Returns("71db3ceec751d8124dc1b9ab9d7247c7ca349ec0");
             commit2.Message.Returns("chore: Update README.md");
             commit2.MessageFull.Returns("chore: Update README.md");
-            
+
             Commit commit3 = Substitute.For<Commit>();
             commit3.Sha.Returns("8d8841f8cff4dc50701ec08f149ae09c16c98b39");
             commit3.Message.Returns("chore: Setup");
             commit3.MessageFull.Returns("chore: Setup");
-            
+
             Tag tag1 = Substitute.For<Tag>();
             tag1.Name.Returns("v1.2.3");
             tag1.IsAnnotated.Returns(true);
             tag1.Target.Returns(commit3);
-            
+
             Tag tag2 = Substitute.For<Tag>();
             tag2.Name.Returns("startup-bug");
             tag2.IsAnnotated.Returns(false);
             tag2.Target.Returns(commit3);
-            
+
             Commit commit4 = Substitute.For<Commit>();
             commit4.Sha.Returns("b2483cc69eb53cfec2f29bd295bd73823c2c7c23");
             commit4.Message.Returns("fix: Failure to startup");
             commit4.MessageFull.Returns("fix: Failure to startup");
-            
+
             Tag tag3 = Substitute.For<Tag>();
             tag3.Name.Returns("startup-bug-fix");
             tag3.IsAnnotated.Returns(false);
             tag3.Target.Returns(commit4);
-            
+
             Commit commit5 = Substitute.For<Commit>();
             commit5.Sha.Returns("35e7cc9722428a38d5b8e3feb51b665c000aa98f");
             commit5.Message.Returns("docs: Setup");
@@ -51,7 +51,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             commits.Add(commit3);
             commits.Add(commit2);
             commits.Add(commit1);
-            
+
             IList<Tag> tags = new List<Tag>();
             tags.Add(tag3);
             tags.Add(tag2);
@@ -59,10 +59,10 @@ namespace Julesabr.GitBump.IntegrationTests {
 
             IQueryableCommitLog log = new QueryableCommitLogStub(commits);
             TagCollection tagCollection = new TagCollectionStub(tags);
-            
+
             Branch head = Substitute.For<Branch>();
             head.Name.Returns("main");
-            
+
             IRepository repository = Substitute.For<IRepository>();
             repository.Commits.Returns(log);
             repository.Tags.Returns(tagCollection);

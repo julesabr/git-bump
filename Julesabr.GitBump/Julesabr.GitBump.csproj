@@ -6,12 +6,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.9.1" />
+        <PackageReference Include="CommandLineParser" Version="2.9.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Julesabr.IO\Julesabr.IO.csproj" />
-        <ProjectReference Include="..\Julesabr.LibGit\Julesabr.LibGit.csproj" />
+        <ProjectReference Include="..\Julesabr.IO\Julesabr.IO.csproj"/>
+        <ProjectReference Include="..\Julesabr.LibGit\Julesabr.LibGit.csproj"/>
     </ItemGroup>
 
 </Project>

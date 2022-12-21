@@ -14,12 +14,12 @@ namespace Julesabr.GitBump.IntegrationTests {
             commit2.Sha.Returns("71db3ceec751d8124dc1b9ab9d7247c7ca349ec0");
             commit2.Message.Returns("chore: Update README.md");
             commit2.MessageFull.Returns("chore: Update README.md");
-            
+
             Commit commit3 = Substitute.For<Commit>();
             commit3.Sha.Returns("8d8841f8cff4dc50701ec08f149ae09c16c98b39");
             commit3.Message.Returns("chore: Setup");
             commit3.MessageFull.Returns("chore: Setup");
-            
+
             Tag tag1 = Substitute.For<Tag>();
             tag1.Name.Returns("v1.2.3");
             tag1.IsAnnotated.Returns(true);
@@ -29,16 +29,16 @@ namespace Julesabr.GitBump.IntegrationTests {
             commits.Add(commit3);
             commits.Add(commit2);
             commits.Add(commit1);
-            
+
             IList<Tag> tags = new List<Tag>();
             tags.Add(tag1);
 
             IQueryableCommitLog log = new QueryableCommitLogStub(commits);
             TagCollection tagCollection = new TagCollectionStub(tags);
-            
+
             Branch head = Substitute.For<Branch>();
             head.Name.Returns("dev");
-            
+
             IRepository repository = Substitute.For<IRepository>();
             repository.Commits.Returns(log);
             repository.Tags.Returns(tagCollection);
