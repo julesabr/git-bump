@@ -7,12 +7,7 @@ namespace Julesabr.GitBump {
             HelpText =
                 "The channel to use in prerelease versions. By default, this is the git branch that is currently checked-out. This is irrelevant if prerelease is false.")]
         public string Channel { get; init; } = "";
-        
-        [Option(Required = false, Default = "",
-            HelpText =
-                "Output the new version into a file at the given path. The path could be absolute or relative to the current working directory.")]
-        public string OutputVersion { get; init; } = "";
-        
+
         [Option(Required = false, Default = "v",
             HelpText =
                 "The git tag prefix. Git tag names are always going to be the version with the prefix appended at the beginning.")]
@@ -36,6 +31,11 @@ namespace Julesabr.GitBump {
         [Option(Required = false, Default = false,
             HelpText = "Use the prefix and suffix to create a git annotated tag from the new version. This will only apply the tag but will not push it. This is irrelevant if push is true.")]
         public bool Tag { get; init; }
+        
+        [Option(Required = false, Default = "",
+            HelpText =
+                "File path to output the new version to. By default, don't output to file. The path could be absolute or relative to the current working directory.")]
+        public string VersionOutput { get; init; } = "";
 
         public Options Default(IRepository repository) {
             string channel = Channel;
@@ -45,12 +45,12 @@ namespace Julesabr.GitBump {
 
             return new Options {
                 Channel = channel,
-                OutputVersion = OutputVersion,
                 Prefix = Prefix,
                 Prerelease = Prerelease,
                 Push = Push,
                 Suffix = Suffix,
                 Tag = Tag,
+                VersionOutput = VersionOutput
             };
         }
     }

@@ -40,6 +40,9 @@ namespace Julesabr.GitBump {
 
         [Pure]
         IVersion BumpPrerelease();
+        
+        [Pure]
+        string ToString();
 
         [Pure]
         public static IVersion From(ushort major, ushort minor = 0, ushort patch = 0) {

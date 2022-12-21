@@ -10,6 +10,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Julesabr.IO\Julesabr.IO.csproj" />
         <ProjectReference Include="..\Julesabr.LibGit\Julesabr.LibGit.csproj" />
     </ItemGroup>
 

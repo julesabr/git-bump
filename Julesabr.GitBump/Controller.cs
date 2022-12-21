@@ -1,4 +1,5 @@
 using System;
+using Julesabr.IO;
 using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
@@ -6,19 +7,23 @@ namespace Julesabr.GitBump {
         public const string ReturnNone = "No Bump";
         
         private readonly IRepository repository;
+        private readonly FileFactory fileFactory;
 
-        public Controller(IRepository repository) {
+        public Controller(IRepository repository, FileFactory fileFactory) {
             this.repository = repository;
+            this.fileFactory = fileFactory;
         }
 
         public ExitCode GitBump(Options options) {
             IGitDetails details = IGitDetails.Create(repository, options);
             IGitTag? newTag = details.BumpTag();
 
-            if (newTag == null)
+            if (newTag == null) {
+                WriteToFile(ReturnNone, options);
                 Console.WriteLine(ReturnNone);
-            else {
+            } else {
                 TagAndPush(newTag.ToString(), "", options);
+                WriteToFile(newTag.Version.ToString(), options);
                 Console.WriteLine(newTag.Version);
             }
 
@@ -31,6 +36,14 @@ namespace Julesabr.GitBump {
 
             if (options.Push)
                 repository.Network.PushTag(tagName);
+        }
+
+        private void WriteToFile(string content, Options options) {
+            if (string.IsNullOrEmpty(options.VersionOutput)) 
+                return;
+            
+            IText text = fileFactory.Create(options.VersionOutput);
+            text.Write(content);
         }
     }
 }
