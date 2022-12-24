@@ -873,7 +873,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             stdErr.ToString()
                 .Trim()
                 .Should()
-                .Be("git-bump: operation failed: Shell command failed with error (exit code: 1)\nPermission denied");
+                .Be("git-bump: operation failed: Command failed with error (exit code: 1)\nPermission denied");
             exitCode.Should().Be(ExitCode.OperationFailed);
         }
 
@@ -933,7 +933,7 @@ namespace Julesabr.GitBump.IntegrationTests {
         private IRepository GetRepositoryWhereOperationFailed() {
             IRepository repository = Substitute.For<IRepository>();
             repository.Tags.Throws(new OperationFailedException(
-                "Shell command failed with error (exit code: 1)\nPermission denied"));
+                "Command failed with error (exit code: 1)\nPermission denied"));
 
             return repository;
         }
