@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using FluentAssertions;
 using Julesabr.IO;
 using Julesabr.LibGit;
 using NSubstitute;
+using NSubstitute.ExceptionExtensions;
 using NUnit.Framework;
 
 namespace Julesabr.GitBump.IntegrationTests {
@@ -784,6 +786,163 @@ namespace Julesabr.GitBump.IntegrationTests {
             text.Received(1).Write("0.1.0");
             stdOut.ToString().Trim().Should().Be("0.1.0");
             exitCode.Should().Be(ExitCode.Success);
+        }
+
+        #endregion
+
+        #region Exceptions
+
+        [Test]
+        public void GitBump_WhenArgumentNullExceptionIsCaught_ThenOutputErrorAndExitCode() {
+            IRepository repository = GetRepositoryWithNullTagName();
+            FileFactory fileFactory = Substitute.For<FileFactory>();
+            Options options = new Options().Default(repository);
+            StringWriter stdOut = new();
+            StringWriter stdErr = new();
+            Console.SetOut(stdOut);
+            Console.SetError(stdErr);
+            Controller controller = new(repository, fileFactory);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            stdOut.ToString().Trim().Should().BeEmpty();
+            stdErr.ToString()
+                .Trim()
+                .Should()
+                .Be("git-bump: validation error: Value cannot be null or empty. (Parameter 'value')");
+            exitCode.Should().Be(ExitCode.NullArgument);
+        }
+
+        [Test]
+        public void GitBump_WhenArgumentExceptionIsCaught_ThenOutputErrorAndExitCode() {
+            IRepository repository = GetRepositoryWithInvalidTagName();
+            FileFactory fileFactory = Substitute.For<FileFactory>();
+            Options options = new Options().Default(repository);
+            StringWriter stdOut = new();
+            StringWriter stdErr = new();
+            Console.SetOut(stdOut);
+            Console.SetError(stdErr);
+            Controller controller = new(repository, fileFactory);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            stdOut.ToString().Trim().Should().BeEmpty();
+            stdErr.ToString()
+                .Trim()
+                .Should()
+                .Be(
+                    "git-bump: validation error: 'foo' is not a valid version. All versions must be in a semantic version format either 'x.y.z' or 'x.y.z.<branch>.n'.");
+            exitCode.Should().Be(ExitCode.InvalidArgument);
+        }
+
+        [Test]
+        public void GitBump_WhenFileNotFoundExceptionIsCaught_ThenOutputErrorAndExitCode() {
+            IRepository repository = GetRepositoryWhereFileNotFound();
+            FileFactory fileFactory = Substitute.For<FileFactory>();
+            Options options = new Options().Default(repository);
+            StringWriter stdOut = new();
+            StringWriter stdErr = new();
+            Console.SetOut(stdOut);
+            Console.SetError(stdErr);
+            Controller controller = new(repository, fileFactory);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            stdOut.ToString().Trim().Should().BeEmpty();
+            stdErr.ToString()
+                .Trim()
+                .Should()
+                .Be("git-bump: file not found: 'bash' was not found on this system. Please install it and try again.");
+            exitCode.Should().Be(ExitCode.FileNotFound);
+        }
+
+        [Test]
+        public void GitBump_WhenOperationFailedExceptionIsCaught_ThenOutputErrorAndExitCode() {
+            IRepository repository = GetRepositoryWhereOperationFailed();
+            FileFactory fileFactory = Substitute.For<FileFactory>();
+            Options options = new Options().Default(repository);
+            StringWriter stdOut = new();
+            StringWriter stdErr = new();
+            Console.SetOut(stdOut);
+            Console.SetError(stdErr);
+            Controller controller = new(repository, fileFactory);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            stdOut.ToString().Trim().Should().BeEmpty();
+            stdErr.ToString()
+                .Trim()
+                .Should()
+                .Be("git-bump: operation failed: Shell command failed with error (exit code: 1)\nPermission denied");
+            exitCode.Should().Be(ExitCode.OperationFailed);
+        }
+
+        [Test]
+        public void GitBump_WhenExceptionIsCaught_ThenOutputErrorAndExitCode() {
+            IRepository repository = GetRepositoryWhereException();
+            FileFactory fileFactory = Substitute.For<FileFactory>();
+            Options options = new Options().Default(repository);
+            StringWriter stdOut = new();
+            StringWriter stdErr = new();
+            Console.SetOut(stdOut);
+            Console.SetError(stdErr);
+            Controller controller = new(repository, fileFactory);
+
+            ExitCode exitCode = controller.GitBump(options);
+
+            stdOut.ToString().Trim().Should().BeEmpty();
+            stdErr.ToString()
+                .Trim()
+                .Should()
+                .Be("git-bump: error: Operation is not valid due to the current state of the object.");
+            exitCode.Should().Be(ExitCode.Fail);
+        }
+
+        private IRepository GetRepositoryWithNullTagName() {
+            Tag tag = Substitute.For<Tag>();
+            tag.Name.Returns((string)null);
+            tag.IsAnnotated.Returns(true);
+            tag.Target.Returns((Commit)null);
+
+            IRepository repository = Substitute.For<IRepository>();
+            repository.Tags.Returns(new TagCollectionStub(new List<Tag> { tag }));
+
+            return repository;
+        }
+
+        private IRepository GetRepositoryWithInvalidTagName() {
+            Tag tag = Substitute.For<Tag>();
+            tag.Name.Returns("vfoo");
+            tag.IsAnnotated.Returns(true);
+            tag.Target.Returns((Commit)null);
+
+            IRepository repository = Substitute.For<IRepository>();
+            repository.Tags.Returns(new TagCollectionStub(new List<Tag> { tag }));
+
+            return repository;
+        }
+
+        private IRepository GetRepositoryWhereFileNotFound() {
+            IRepository repository = Substitute.For<IRepository>();
+            repository.Tags.Throws(
+                new FileNotFoundException("'bash' was not found on this system. Please install it and try again."));
+
+            return repository;
+        }
+
+        private IRepository GetRepositoryWhereOperationFailed() {
+            IRepository repository = Substitute.For<IRepository>();
+            repository.Tags.Throws(new OperationFailedException(
+                "Shell command failed with error (exit code: 1)\nPermission denied"));
+
+            return repository;
+        }
+
+        private IRepository GetRepositoryWhereException() {
+            IRepository repository = Substitute.For<IRepository>();
+            repository.Tags.Throws<InvalidOperationException>();
+
+            return repository;
         }
 
         #endregion
