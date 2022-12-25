@@ -900,9 +900,9 @@ namespace Julesabr.GitBump.IntegrationTests {
 
         private IRepository GetRepositoryWithNullTagName() {
             Tag tag = Substitute.For<Tag>();
-            tag.Name.Returns((string)null);
+            tag.Name.Returns((string)null!);
             tag.IsAnnotated.Returns(true);
-            tag.Target.Returns((Commit)null);
+            tag.Target.Returns((Commit)null!);
 
             IRepository repository = Substitute.For<IRepository>();
             repository.Tags.Returns(new TagCollectionStub(new List<Tag> { tag }));
@@ -914,7 +914,7 @@ namespace Julesabr.GitBump.IntegrationTests {
             Tag tag = Substitute.For<Tag>();
             tag.Name.Returns("vfoo");
             tag.IsAnnotated.Returns(true);
-            tag.Target.Returns((Commit)null);
+            tag.Target.Returns((Commit)null!);
 
             IRepository repository = Substitute.For<IRepository>();
             repository.Tags.Returns(new TagCollectionStub(new List<Tag> { tag }));
