@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <AssemblyName>git-bump</AssemblyName>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <AssemblyName>git-bump</AssemblyName>
+        <Version>0.1.0</Version>
         <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
         <SelfContained>true</SelfContained>
         <PublishTrimmed>true</PublishTrimmed>
@@ -12,7 +13,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommandLineParser" Version="2.9.1"/>
+        <PackageReference Include="CommandDotNet" Version="6.0.5"/>
+        <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="4.0.1"/>
     </ItemGroup>
 
     <ItemGroup>

@@ -2,9 +2,10 @@ namespace Julesabr.GitBump {
     public enum ExitCode {
         Success = 0,
         Fail = 1,
-        NullArgument = 39,
-        InvalidArgument = 46,
-        FileNotFound = 60,
-        OperationFailed = 122
+        ValidationError = 10,
+        IllegalState = 11,
+        FileNotFound = 12,
+        OperationFailed = 13,
+        Max = 255
     }
 }

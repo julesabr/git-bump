@@ -28,18 +28,18 @@ namespace Julesabr.GitBump {
             if (string.IsNullOrWhiteSpace(value))
                 throw new ArgumentNullException(nameof(value), BlankStringError);
 
-            if (!string.IsNullOrEmpty(prefix) && !value.StartsWith(prefix))
+            if (!string.IsNullOrWhiteSpace(prefix) && !value.StartsWith(prefix))
                 throw new ArgumentException(string.Format(MissingPrefixError, value, prefix));
 
-            if (!string.IsNullOrEmpty(suffix) && !value.EndsWith(suffix))
+            if (!string.IsNullOrWhiteSpace(suffix) && !value.EndsWith(suffix))
                 throw new ArgumentException(string.Format(MissingSuffixError, value, suffix));
 
             string version = value;
 
-            if (!string.IsNullOrEmpty(prefix))
+            if (!string.IsNullOrWhiteSpace(prefix))
                 version = version[prefix.Length..];
 
-            if (!string.IsNullOrEmpty(suffix))
+            if (!string.IsNullOrWhiteSpace(suffix))
                 version = version[..version.IndexOf(suffix, StringComparison.Ordinal)];
 
             return Create(

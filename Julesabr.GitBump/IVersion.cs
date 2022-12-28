@@ -14,8 +14,8 @@ namespace Julesabr.GitBump {
         public const string InvalidPrereleaseBumpError = "Cannot bump prerelease build number when version is not a " +
                                                          "prerelease.";
 
-        public const string InvalidStringFormatError = "'{0}' is not a valid version. All versions must be in a " +
-                                                       "semantic version format either 'x.y.z' or 'x.y.z.<branch>.n'.";
+        public const string InvalidStringFormatError = "'{0}' is not a valid version. All versions must be in " +
+                                                       "semantic version format either 'x.y.z' or 'x.y.z.<channel>.n'.";
 
         public static readonly IVersion First = From(0, 1);
 

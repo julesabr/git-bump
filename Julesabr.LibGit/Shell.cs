@@ -55,14 +55,14 @@ namespace Julesabr.LibGit {
 
             process.StartInfo = startInfo;
             process.Start();
-            
+
             if (!process.WaitForExit(Timeout))
                 throw new OperationFailedException(
-                    $"Command has timed out in {Timeout / 1000 / 60} minutes");
+                    $"Subcommand has timed out\n\t$ {command} (in {Timeout / 1000 / 60} minutes)");
 
             if (process.ExitCode != 0)
                 throw new OperationFailedException(
-                    $"Command failed with error (exit code: {process.ExitCode})\n{process.StandardError.ReadToEnd()}");
+                    $"Subcommand failed with error\n\t$ {command} (exit code: {process.ExitCode})\n\n{process.StandardError.ReadToEnd()}");
 
             return process.StandardOutput.ReadToEnd().Trim();
         }

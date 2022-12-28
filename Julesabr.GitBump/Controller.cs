@@ -1,53 +1,40 @@
 using System;
-using System.IO;
+using System.ComponentModel.DataAnnotations;
+using CommandDotNet;
+using JetBrains.Annotations;
 using Julesabr.IO;
 using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
+    [Command(Description = "Show, create, or push the bumped version.")]
     public class Controller {
         public const string ReturnNone = "No Bump";
-        private readonly FileFactory fileFactory;
 
         private readonly IRepository repository;
+        private readonly FileFactory fileFactory;
 
         public Controller(IRepository repository, FileFactory fileFactory) {
             this.repository = repository;
             this.fileFactory = fileFactory;
         }
 
-        public ExitCode GitBump(Options options) {
-            try {
-                GitBumpCore(options);
-                return ExitCode.Success;
-            } catch (ArgumentNullException e) {
-                Console.Error.WriteLine($"git-bump: validation error: {e.Message}");
-                return ExitCode.NullArgument;
-            } catch (ArgumentException e) {
-                Console.Error.WriteLine($"git-bump: validation error: {e.Message}");
-                return ExitCode.InvalidArgument;
-            } catch (FileNotFoundException e) {
-                Console.Error.WriteLine($"git-bump: file not found: {e.Message}");
-                return ExitCode.FileNotFound;
-            } catch (OperationFailedException e) {
-                Console.Error.WriteLine($"git-bump: operation failed: {e.Message}");
-                return ExitCode.OperationFailed;
-            } catch (Exception e) {
-                Console.Error.WriteLine($"git-bump: error: {e.Message}");
-                return ExitCode.Fail;
-            }
-        }
+        [DefaultCommand]
+        [UsedImplicitly]
+        public void Execute(IConsole console, Options options) {
+            Options defaultedOptions = options.Default(repository);
 
-        private void GitBumpCore(Options options) {
-            IGitDetails details = IGitDetails.Create(repository, options);
+            TryWriteToFile("version-output", defaultedOptions.VersionOutput);
+
+            IGitDetails details = IGitDetails.Create(repository, defaultedOptions);
             IGitTag? newTag = details.BumpTag();
 
             if (newTag == null) {
-                WriteToFile(ReturnNone, options);
-                Console.WriteLine(ReturnNone);
+                WriteToFile(ReturnNone, defaultedOptions.VersionOutput);
+                console.WriteLine(ReturnNone);
             } else {
-                TagAndPush(newTag.ToString(), "", options);
-                WriteToFile(newTag.Version.ToString(), options);
-                Console.WriteLine(newTag.Version);
+                TagAndPush(newTag.ToString(), "", defaultedOptions);
+                WriteToFile(newTag.Version.ToString(), defaultedOptions.VersionOutput);
+                console.WriteLine(newTag.Version);
             }
         }
 
@@ -59,12 +46,20 @@ namespace Julesabr.GitBump {
                 repository.Network.PushTag(tagName);
         }
 
-        private void WriteToFile(string content, Options options) {
-            if (string.IsNullOrEmpty(options.VersionOutput))
+        private void WriteToFile(string content, string? path) {
+            if (string.IsNullOrWhiteSpace(path))
                 return;
 
-            IText text = fileFactory.Create(options.VersionOutput);
+            IText text = fileFactory.Create(path);
             text.Write(content);
+        }
+
+        private void TryWriteToFile(string option, string? path) {
+            try {
+                WriteToFile("", path);
+            } catch (Exception e) {
+                throw new ValidationException($"{option} is invalid. {e.Message}");
+            }
         }
     }
 }
