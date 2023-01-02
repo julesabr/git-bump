@@ -2,6 +2,8 @@
 using CommandDotNet.Builders;
 using CommandDotNet.Help;
 using CommandDotNet.IoC.MicrosoftDependencyInjection;
+using Julesabr.GitBump.Controllers;
+using Julesabr.GitBump.Middleware;
 using Julesabr.IO;
 using Julesabr.LibGit;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +15,7 @@ namespace Julesabr.GitBump {
         public static int Main(string[] args) {
             ServiceCollection services = new();
 
-            services.AddSingleton<Controller>();
+            services.AddSingleton<AppController>();
             services.AddSingleton(IRepository.Create());
             services.AddSingleton<FileFactory>();
 
@@ -34,7 +36,7 @@ namespace Julesabr.GitBump {
                 }
             };
 
-            return new AppRunner<Controller>(settings)
+            return new AppRunner<AppController>(settings)
                 .UseDependencyResolver(dependencyResolver)
                 .UseErrorHandler(ErrorHandler.Invoke);
         }

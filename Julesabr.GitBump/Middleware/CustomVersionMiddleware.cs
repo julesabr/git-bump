@@ -4,7 +4,7 @@ using CommandDotNet.Builders;
 using CommandDotNet.Execution;
 using CommandDotNet.Rendering;
 
-namespace Julesabr.GitBump {
+namespace Julesabr.GitBump.Middleware {
     public static class CustomVersionMiddleware {
         private static string VersionOptionName => Resources.A.Command_version;
 

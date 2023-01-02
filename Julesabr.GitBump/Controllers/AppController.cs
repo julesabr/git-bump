@@ -5,15 +5,15 @@ using JetBrains.Annotations;
 using Julesabr.IO;
 using Julesabr.LibGit;
 
-namespace Julesabr.GitBump {
+namespace Julesabr.GitBump.Controllers {
     [Command(Description = "Show, create, or push the bumped version.")]
-    public class Controller {
+    public class AppController {
         public const string ReturnNone = "No Bump";
 
         private readonly IRepository repository;
         private readonly FileFactory fileFactory;
 
-        public Controller(IRepository repository, FileFactory fileFactory) {
+        public AppController(IRepository repository, FileFactory fileFactory) {
             this.repository = repository;
             this.fileFactory = fileFactory;
         }

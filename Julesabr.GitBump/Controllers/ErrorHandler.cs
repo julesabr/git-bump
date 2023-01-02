@@ -4,7 +4,7 @@ using System.IO;
 using CommandDotNet;
 using Julesabr.LibGit;
 
-namespace Julesabr.GitBump {
+namespace Julesabr.GitBump.Controllers {
     public static class ErrorHandler {
         public static int Invoke(CommandContext? context, Exception cause) {
             if (context == null) {
