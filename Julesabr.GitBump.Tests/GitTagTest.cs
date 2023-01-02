@@ -4,79 +4,7 @@ using NUnit.Framework;
 
 namespace Julesabr.GitBump.Tests {
     public class GitTagTest {
-        [Test]
-        public void Create_GivenVersionObjectIsNull_ThenThrowArgumentNullException() {
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action action = () => IGitTag.Create((IVersion)null!);
-            action.Should()
-                .Throw<ArgumentNullException>()
-                .WithMessage("Value cannot be null. (Parameter 'version')");
-        }
-
-        [Test]
-        public void Create_GivenGitTagAsValidString_PrefixIsNotNull_AndSuffixIsNotNull_ThenReturnGitTagObject() {
-            IGitTag.Create("pre1.2.3-post", "pre", "-post")
-                .Should()
-                .Be(IGitTag.Create(IVersion.From(1, 2, 3), "pre", "-post"));
-        }
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        public void Create_GivenGitTagAsValidString_AndPrefixIsNullOrEmpty_ThenReturnGitTagObject(string prefix) {
-            IGitTag.Create("1.2.3-post", prefix, "-post")
-                .Should()
-                .Be(IGitTag.Create(IVersion.From(1, 2, 3), prefix, "-post"));
-        }
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        public void Create_GivenGitTagAsValidString_AndSuffixIsNullOrEmpty_ThenReturnGitTagObject(string suffix) {
-            IGitTag.Create("pre1.2.3", "pre", suffix)
-                .Should()
-                .Be(IGitTag.Create(IVersion.From(1, 2, 3), "pre", suffix));
-        }
-
-        [Test]
-        public void Create_GivenGitTagAsStringWithMissingPrefix_ThenThrowArgumentException() {
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action action = () => IGitTag.Create("1.2.3", "pre");
-            action.Should()
-                .Throw<ArgumentException>()
-                .WithMessage(string.Format(IGitTag.MissingPrefixError, "1.2.3", "pre"));
-        }
-
-        [Test]
-        public void Create_GivenGitTagAsStringWithMissingSuffix_ThenThrowArgumentException() {
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action action = () => IGitTag.Create("1.2.3", "", "-post");
-            action.Should()
-                .Throw<ArgumentException>()
-                .WithMessage(string.Format(IGitTag.MissingSuffixError, "1.2.3", "-post"));
-        }
-
-        [Test]
-        public void Create_GivenGitTagAsStringWithInvalidVersion_ThenThrowArgumentException() {
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            // ReSharper disable once StringLiteralTypo
-            Action action = () => IGitTag.Create("prefoo-post", "pre", "-post");
-            action.Should()
-                .Throw<ArgumentException>()
-                .WithMessage(string.Format(IVersion.InvalidStringFormatError, "foo"));
-        }
-
-        [Test]
-        [TestCase(null)]
-        [TestCase("")]
-        [TestCase(" ")]
-        public void Create_GivenGitTagAsStringIsNullOrWhitespace_ThenThrowArgumentNullException(string value) {
-            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
-            Action action = () => IGitTag.Create(value);
-            action.Should()
-                .Throw<ArgumentNullException>()
-                .WithMessage(IGitTag.BlankStringError + " (Parameter 'value')");
-        }
+        #region ToString
 
         [Test]
         [TestCase((ushort)3u, (ushort)2u, (ushort)1u, "p", "s", "p3.2.1s")]
@@ -122,6 +50,8 @@ namespace Julesabr.GitBump.Tests {
             IGitTag gitTag = IGitTag.Create(version, prefix, suffix);
             gitTag.ToString().Should().Be(value);
         }
+
+        #endregion
 
         #region Comparisons
 
@@ -319,6 +249,84 @@ namespace Julesabr.GitBump.Tests {
             IGitTag left = IGitTag.Create(IVersion.From(1), "a", "x");
             IGitTag right = IGitTag.Create(IVersion.From(1), "a", "x");
             (left >= right).Should().BeTrue();
+        }
+
+        #endregion
+        
+        #region Creation
+
+        [Test]
+        public void Create_GivenVersionObjectIsNull_ThenThrowArgumentNullException() {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action action = () => IGitTag.Create((IVersion)null!);
+            action.Should()
+                .Throw<ArgumentNullException>()
+                .WithMessage("Value cannot be null. (Parameter 'version')");
+        }
+
+        [Test]
+        public void Create_GivenGitTagAsValidString_PrefixIsNotNull_AndSuffixIsNotNull_ThenReturnGitTagObject() {
+            IGitTag.Create("pre1.2.3-post", "pre", "-post")
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(1, 2, 3), "pre", "-post"));
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        public void Create_GivenGitTagAsValidString_AndPrefixIsNullOrEmpty_ThenReturnGitTagObject(string prefix) {
+            IGitTag.Create("1.2.3-post", prefix, "-post")
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(1, 2, 3), prefix, "-post"));
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        public void Create_GivenGitTagAsValidString_AndSuffixIsNullOrEmpty_ThenReturnGitTagObject(string suffix) {
+            IGitTag.Create("pre1.2.3", "pre", suffix)
+                .Should()
+                .Be(IGitTag.Create(IVersion.From(1, 2, 3), "pre", suffix));
+        }
+
+        [Test]
+        public void Create_GivenGitTagAsStringWithMissingPrefix_ThenThrowArgumentException() {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action action = () => IGitTag.Create("1.2.3", "pre");
+            action.Should()
+                .Throw<ArgumentException>()
+                .WithMessage(string.Format(IGitTag.MissingPrefixError, "1.2.3", "pre"));
+        }
+
+        [Test]
+        public void Create_GivenGitTagAsStringWithMissingSuffix_ThenThrowArgumentException() {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action action = () => IGitTag.Create("1.2.3", "", "-post");
+            action.Should()
+                .Throw<ArgumentException>()
+                .WithMessage(string.Format(IGitTag.MissingSuffixError, "1.2.3", "-post"));
+        }
+
+        [Test]
+        public void Create_GivenGitTagAsStringWithInvalidVersion_ThenThrowArgumentException() {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            // ReSharper disable once StringLiteralTypo
+            Action action = () => IGitTag.Create("prefoo-post", "pre", "-post");
+            action.Should()
+                .Throw<ArgumentException>()
+                .WithMessage(string.Format(IVersion.InvalidStringFormatError, "foo"));
+        }
+
+        [Test]
+        [TestCase(null)]
+        [TestCase("")]
+        [TestCase(" ")]
+        public void Create_GivenGitTagAsStringIsNullOrWhitespace_ThenThrowArgumentNullException(string value) {
+            // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+            Action action = () => IGitTag.Create(value);
+            action.Should()
+                .Throw<ArgumentNullException>()
+                .WithMessage(IGitTag.BlankStringError + " (Parameter 'value')");
         }
 
         #endregion
