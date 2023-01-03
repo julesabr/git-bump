@@ -2,7 +2,7 @@ using System.Reflection;
 using CommandDotNet.Builders;
 
 namespace Julesabr.GitBump {
-    public class AppVersionInfo {
+    public sealed class AppVersionInfo {
         public AppVersionInfo() {
             FileName = Assembly.GetEntryAssembly()?.GetName().Name!;
             Version = AppInfo.Instance.Version!;

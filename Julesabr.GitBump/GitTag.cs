@@ -2,7 +2,7 @@ using System;
 using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
-    internal sealed class GitTag : IGitTag {
+    public sealed class GitTag : IGitTag {
         public GitTag(IVersion version, string? prefix, string? suffix) {
             Version = version;
             Prefix = prefix;

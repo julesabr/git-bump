@@ -4,7 +4,7 @@ using JetBrains.Annotations;
 using Julesabr.LibGit;
 
 namespace Julesabr.GitBump {
-    internal sealed class GitDetails : IGitDetails {
+    public sealed class GitDetails : IGitDetails {
         private const string CommitTypeRegexInclusive = @"^[a-zA-Z]+(?:\(.+\))?: ";
         private const string CommitTypeRegexExclusive = @"^[a-zA-Z]+";
         private const string BreakingChangeCommitTypeRegex = @"^[a-zA-Z]+(?:\(.+\))?!: ";
@@ -29,18 +29,18 @@ namespace Julesabr.GitBump {
         public IEnumerable<Commit> LatestCommits { get; }
 
         [Pure]
-        public IGitTag? BumpTag() {
+        public IGitTag? BumpTag(IGitTag.Factory gitTagFactory) {
             ReleaseType releaseType = GetReleaseType();
             if (releaseType == ReleaseType.None)
                 return null;
 
-            return Options.Prerelease ? BumpPrereleaseTag(releaseType) : BumpReleaseTag(releaseType);
+            return Options.Prerelease ? BumpPrereleaseTag(releaseType, gitTagFactory) : BumpReleaseTag(releaseType, gitTagFactory);
         }
 
-        private IGitTag BumpPrereleaseTag(ReleaseType releaseType) {
+        private IGitTag BumpPrereleaseTag(ReleaseType releaseType, IGitTag.Factory gitTagFactory) {
             IVersion latestVersion = LatestTag?.Version ?? IVersion.First;
             if (LatestPrereleaseTag == null)
-                return IGitTag.Create(IVersion.From($"{latestVersion}.{Options.Channel}.1"), Options.Prefix,
+                return gitTagFactory.Create(IVersion.From($"{latestVersion}.{Options.Channel}.1"), Options.Prefix,
                     Options.Suffix);
 
             IVersion newVersion = latestVersion.Bump(releaseType);
@@ -48,17 +48,17 @@ namespace Julesabr.GitBump {
 
             if (releaseType != ReleaseType.None && newVersion.Major == prereleaseVersion.Major &&
                 newVersion.Minor == prereleaseVersion.Minor && newVersion.Patch == prereleaseVersion.Patch)
-                return IGitTag.Create(prereleaseVersion.BumpPrerelease(), LatestPrereleaseTag.Prefix,
+                return gitTagFactory.Create(prereleaseVersion.BumpPrerelease(), LatestPrereleaseTag.Prefix,
                     LatestPrereleaseTag.Suffix);
 
-            return IGitTag.Create(prereleaseVersion.Bump(releaseType), LatestPrereleaseTag.Prefix,
+            return gitTagFactory.Create(prereleaseVersion.Bump(releaseType), LatestPrereleaseTag.Prefix,
                 LatestPrereleaseTag.Suffix);
         }
 
-        private IGitTag BumpReleaseTag(ReleaseType releaseType) {
+        private IGitTag BumpReleaseTag(ReleaseType releaseType, IGitTag.Factory gitTagFactory) {
             return LatestTag == null
-                ? IGitTag.Create(IVersion.First, Options.Prefix, Options.Suffix)
-                : IGitTag.Create(LatestTag.Version.Bump(releaseType), LatestTag.Prefix, LatestTag.Suffix);
+                ? gitTagFactory.Create(IVersion.First, Options.Prefix, Options.Suffix)
+                : gitTagFactory.Create(LatestTag.Version.Bump(releaseType), LatestTag.Prefix, LatestTag.Suffix);
         }
 
         private ReleaseType GetReleaseType() {

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
-    public interface IVersion : IComparable<IVersion> {
+    public partial interface IVersion : IComparable<IVersion> {
         private const string RegexPattern = @"^([0-9]+\.){2}[0-9]+(\.[a-zA-z]+\.[0-9]+)?$";
 
         public const char Separator = '.';

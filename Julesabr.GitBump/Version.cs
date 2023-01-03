@@ -2,14 +2,32 @@ using System;
 using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
-    internal sealed class Version : IVersion {
-        public Version(
-            ushort major,
-            ushort minor,
-            ushort patch,
-            string? prereleaseChannel = null,
-            ushort prereleaseNumber = 1,
-            bool isPrerelease = false
+    public sealed class Version : IVersion {
+        public Version(ushort major, ushort minor, ushort patch) {
+            Major = major;
+            Minor = minor;
+            Patch = patch;
+            PrereleaseChannel = null;
+            PrereleaseNumber = 1;
+            IsPrerelease = false;
+        }
+        
+        public Version(ushort major, ushort minor, ushort patch, string? prereleaseChannel, ushort prereleaseNumber) {
+            Major = major;
+            Minor = minor;
+            Patch = patch;
+            PrereleaseChannel = prereleaseChannel;
+            PrereleaseNumber = prereleaseNumber;
+            IsPrerelease = true;
+        }
+        
+        internal Version(
+            ushort major, 
+            ushort minor, 
+            ushort patch, 
+            string? prereleaseChannel, 
+            ushort prereleaseNumber, 
+            bool isPrerelease
         ) {
             Major = major;
             Minor = minor;
