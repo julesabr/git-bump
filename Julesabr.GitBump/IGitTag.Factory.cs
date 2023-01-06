@@ -15,6 +15,15 @@ namespace Julesabr.GitBump {
             public Factory(IVersion.Factory versionFactory) {
                 this.versionFactory = versionFactory;
             }
+
+            [Pure]
+            public virtual IGitTag Create(IVersion version, string? prefix, string? suffix) {
+                return new GitTag(
+                    version,
+                    prefix,
+                    suffix
+                );
+            }
             
             [Pure]
             public virtual IGitTag Create(string value, string? prefix, string? suffix) {

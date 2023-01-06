@@ -15,6 +15,13 @@ namespace Julesabr.GitBump.Tests {
             
             versionFactory.Create("1.2.3").Returns(new Version(1, 2, 3));
         }
+        
+        [Test]
+        public void Create_GivenVersionIsNotNull_ThenReturnGitTagObject() {
+            gitTagFactory.Create(new Version(1, 2, 3), "pre", "-post")
+                .Should()
+                .Be(new GitTag(new Version(1, 2, 3), "pre", "-post"));
+        }
 
         [Test]
         public void Create_GivenGitTagAsValidString_PrefixIsNotNull_AndSuffixIsNotNull_ThenReturnGitTagObject() {
