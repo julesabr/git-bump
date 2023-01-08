@@ -24,6 +24,19 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         }
 
         [Given]
+        public static GivenBuilder OptionsForPrerelease(this GivenBuilder @this) {
+            Options options = new() {
+                Prerelease = true,
+                Channel = Given.DefaultChannel,
+                Prefix = Given.DefaultPrefix,
+                Suffix = Given.DefaultSuffix
+            };
+
+            @this.Options = options;
+            return @this;
+        }
+
+        [Given]
         public static GivenBuilder ALatestTag(this GivenBuilder @this) {
             @this.LatestTag = Given.StartingTag
                 .ThatReturnsBumpedTags(
@@ -32,6 +45,31 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                     Given.NextMajorTag,
                     @this.Options!
                 );
+            return @this;
+        }
+
+        [Given]
+        public static GivenBuilder ALatestPrereleaseTagFor(this GivenBuilder @this, IGitTag start, IGitTag nextPrerelease) {
+            @this.ALatestTag();
+            
+            @this.LatestPrereleaseTag = start
+                .ThatReturnsPrereleaseBumpedTag(nextPrerelease, @this.Options!)
+                .ThatReturnsBumpedTags(
+                    Given.NextPatchTagWithoutPrerelease,
+                    Given.NextMinorTagWithoutPrerelease,
+                    Given.NextMajorTagWithoutPrerelease,
+                    @this.Options!
+                );
+
+            ReturnsWhichVersionsAreReleaseEqual();
+
+            return @this;
+        }
+
+        [Given]
+        private static IGitTag ThatReturnsPrereleaseBumpedTag(this IGitTag @this, IGitTag nextPrerelease,
+            Options options) {
+            @this.BumpPrerelease(options).Returns(nextPrerelease);
             return @this;
         }
 
@@ -95,6 +133,15 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
             result?.Version.Should().Be(version);
             result?.Prefix.Should().Be(Given.DefaultPrefix);
             result?.Suffix.Should().Be(Given.DefaultSuffix);
+        }
+
+        private static void ReturnsWhichVersionsAreReleaseEqual() {
+            Given.NextPatchVersion.IsReleaseEqual(Given.StartingPrereleaseVersion).Returns(false);
+            Given.NextPatchVersion.IsReleaseEqual(Given.StartingPatchVersion).Returns(true);
+            Given.NextMinorVersion.IsReleaseEqual(Given.StartingPrereleaseVersion).Returns(false);
+            Given.NextMinorVersion.IsReleaseEqual(Given.StartingMinorVersion).Returns(true);
+            Given.NextMajorVersion.IsReleaseEqual(Given.StartingPrereleaseVersion).Returns(false);
+            Given.NextMajorVersion.IsReleaseEqual(Given.StartingMajorVersion).Returns(true);
         }
 
         private static IEnumerable<Commit> CommitListThatContainsNoSignificantChange() {

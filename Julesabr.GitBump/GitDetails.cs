@@ -41,10 +41,9 @@ namespace Julesabr.GitBump {
             IVersion newVersion = LatestTag.Bump(releaseType, Options).Version!;
             IVersion? prereleaseVersion = LatestPrereleaseTag.Version;
 
-            if (releaseType != ReleaseType.None && newVersion.IsReleaseEqual(prereleaseVersion))
-                return LatestPrereleaseTag.BumpPrerelease(Options);
-
-            return LatestPrereleaseTag.Bump(releaseType, Options);
+            return newVersion.IsReleaseEqual(prereleaseVersion)
+                ? LatestPrereleaseTag.BumpPrerelease(Options)
+                : LatestPrereleaseTag.Bump(releaseType, Options);
         }
 
         private IGitTag BumpReleaseTag(ReleaseType releaseType) {
