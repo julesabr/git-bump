@@ -1,3 +1,5 @@
+using System;
+
 namespace Julesabr.GitBump.Tests {
     internal class Given<TSystem> {
         public static readonly Given<TSystem> Instance = new();
@@ -5,5 +7,9 @@ namespace Julesabr.GitBump.Tests {
         public TBuilder With<TBuilder>() where TBuilder : new() {
             return new TBuilder();
         }
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    internal class GivenAttribute : Attribute {
     }
 }

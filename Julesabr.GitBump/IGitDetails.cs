@@ -9,6 +9,6 @@ namespace Julesabr.GitBump {
         IEnumerable<Commit> LatestCommits { get; }
 
         [Pure]
-        IGitTag? BumpTag(IGitTag.Factory gitTagFactory);
+        IGitTag? BumpTag();
     }
 }

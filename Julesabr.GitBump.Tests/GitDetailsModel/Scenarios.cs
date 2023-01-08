@@ -5,10 +5,12 @@ using NSubstitute;
 
 namespace Julesabr.GitBump.Tests.GitDetailsModel {
     internal static class Scenarios {
+        [Given]
         public static GivenBuilder With(this Given<GitDetails> @this) {
             return @this.With<GivenBuilder>();
         }
 
+        [Given]
         public static GivenBuilder OptionsForRelease(this GivenBuilder @this) {
             Options options = new() {
                 Prerelease = false,
@@ -21,150 +23,78 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
             return @this;
         }
 
+        [Given]
         public static GivenBuilder ALatestTag(this GivenBuilder @this) {
-            @this.LatestTag = GitTagWith(
-                Given.AVersion.Start(),
-                Given.AVersion.NextPatch(),
-                Given.AVersion.NextMinor(),
-                Given.AVersion.NextMajor()
-            );
+            @this.LatestTag = Given.StartingTag
+                .ThatReturnsBumpedTags(
+                    Given.NextPatchTag,
+                    Given.NextMinorTag,
+                    Given.NextMajorTag,
+                    @this.Options!
+                );
             return @this;
         }
-        
-        public static IVersion First(this IVersion @this) {
-            @this.Major.Returns(IVersion.First.Major);
-            @this.Minor.Returns(IVersion.First.Minor);
-            @this.Patch.Returns(IVersion.First.Patch);
-            @this.PrereleaseChannel.Returns((string?)null);
-            @this.PrereleaseNumber.Returns((ushort)1);
-            @this.IsPrerelease.Returns(false);
 
-            return @this;
-        }
-        
-        private static IVersion Start(this IVersion @this) {
-            @this.Major.Returns(Given.StartingVersion.Major);
-            @this.Minor.Returns(Given.StartingVersion.Minor);
-            @this.Patch.Returns(Given.StartingVersion.Patch);
-            @this.PrereleaseChannel.Returns((string?)null);
-            @this.PrereleaseNumber.Returns((ushort)1);
-            @this.IsPrerelease.Returns(false);
-
-            return @this;
-        }
-        
-        public static IVersion NextPatch(this IVersion @this) {
-            @this.Major.Returns(Given.NextPatchVersion.Major);
-            @this.Minor.Returns(Given.NextPatchVersion.Minor);
-            @this.Patch.Returns(Given.NextPatchVersion.Patch);
-            @this.PrereleaseChannel.Returns((string?)null);
-            @this.PrereleaseNumber.Returns((ushort)1);
-            @this.IsPrerelease.Returns(false);
-
-            return @this;
-        }
-        
-        public static IVersion NextMinor(this IVersion @this) {
-            @this.Major.Returns(Given.NextMinorVersion.Major);
-            @this.Minor.Returns(Given.NextMinorVersion.Minor);
-            @this.Patch.Returns(Given.NextMinorVersion.Patch);
-            @this.PrereleaseChannel.Returns((string?)null);
-            @this.PrereleaseNumber.Returns((ushort)1);
-            @this.IsPrerelease.Returns(false);
-
-            return @this;
-        }
-        
-        public static IVersion NextMajor(this IVersion @this) {
-            @this.Major.Returns(Given.NextMajorVersion.Major);
-            @this.Minor.Returns(Given.NextMajorVersion.Minor);
-            @this.Patch.Returns(Given.NextMajorVersion.Patch);
-            @this.PrereleaseChannel.Returns((string?)null);
-            @this.PrereleaseNumber.Returns((ushort)1);
-            @this.IsPrerelease.Returns(false);
+        [Given]
+        private static IGitTag ThatReturnsBumpedTags(this IGitTag @this, IGitTag nextPatch, IGitTag nextMinor, 
+            IGitTag nextMajor, Options options) {
+            @this.Bump(ReleaseType.Patch, options).Returns(nextPatch);
+            @this.Bump(ReleaseType.Minor, options).Returns(nextMinor);
+            @this.Bump(ReleaseType.Major, options).Returns(nextMajor);
 
             return @this;
         }
 
+        [Given]
         public static GivenBuilder LatestCommitsThatContain(this GivenBuilder @this, string change) {
             @this.LatestCommits = CommitListThatContains(change);
             return @this;
         }
 
+        [Given]
         public static GivenBuilder LatestCommitsThatContainNoSignificantChange(this GivenBuilder @this) {
             @this.LatestCommits = CommitListThatContainsNoSignificantChange();
             return @this;
         }
 
+        [Given]
         public static GivenBuilder LatestCommitsThatContainABugFix(this GivenBuilder @this) {
             @this.LatestCommits = CommitListThatContainsABugFix();
             return @this;
         }
 
+        [Given]
         public static GivenBuilder LatestCommitsThatContainAFeature(this GivenBuilder @this) {
             @this.LatestCommits = CommitListThatContainsAFeature();
             return @this;
         }
 
+        [Given]
         public static GivenBuilder LatestCommitsThatContainABreakingChangeUsingExclamation(this GivenBuilder @this) {
             @this.LatestCommits = CommitListThatContainsABreakingChangeUsingExclamation();
             return @this;
         }
 
+        [Given]
         public static GivenBuilder LatestCommitsThatContainABreakingChangeUsingMessageFooter(this GivenBuilder @this) {
             @this.LatestCommits = CommitListThatContainsABreakingChangeUsingMessageFooter();
             return @this;
         }
-        
-        private static IGitTag.Factory ThatReturnsGitTagForVersion(this IGitTag.Factory @this, IVersion version) {
-            @this.Create(version, Given.DefaultPrefix, Given.DefaultSuffix)
-                .Returns(new GitTag(version, Given.DefaultPrefix, Given.DefaultSuffix));
 
-            return @this;
-        }
-
-        public static When<GitDetails, IGitTag?> BumpTagForVersion(this When<GitDetails> @this, IVersion version) {
+        [When]
+        public static When<GitDetails, IGitTag?> BumpTag(this When<GitDetails> @this) {
             return @this.AddResult(
-                @this.SystemUnderTest.BumpTag(
-                    Given.AGitTagFactory.ThatReturnsGitTagForVersion(version)
-                )
+                @this.SystemUnderTest.BumpTag()
             );
         }
 
-        public static Then<IGitTag?> TheResultShouldBeGitTagForVersion(this Then<IGitTag?> @this, IVersion version) {
+        [Then]
+        public static void TheResultShouldBeAGitTagForVersion(this Then<IGitTag?> @this, IVersion version) {
             IGitTag? result = @this.TheResult;
 
-            result?.Version.Major.Should().Be(version.Major);
-            result?.Version.Minor.Should().Be(version.Minor);
-            result?.Version.Patch.Should().Be(version.Patch);
-            result?.Version.PrereleaseChannel.Should().Be(version.PrereleaseChannel);
-            result?.Version.PrereleaseNumber.Should().Be(version.PrereleaseNumber);
-            result?.Version.IsPrerelease.Should().Be(version.IsPrerelease);
+            result?.Version.Should().Be(version);
             result?.Prefix.Should().Be(Given.DefaultPrefix);
             result?.Suffix.Should().Be(Given.DefaultSuffix);
-
-            return @this;
-        }
-
-        private static IGitTag GitTagWith(IVersion start, IVersion nextPatch, IVersion nextMinor, IVersion nextMajor) {
-            IVersion latestVersion = Substitute.For<IVersion>();
-            latestVersion.Major.Returns(start.Major);
-            latestVersion.Minor.Returns(start.Minor);
-            latestVersion.Patch.Returns(start.Patch);
-            latestVersion.PrereleaseChannel.Returns(start.PrereleaseChannel);
-            latestVersion.PrereleaseNumber.Returns(start.PrereleaseNumber);
-            latestVersion.IsPrerelease.Returns(start.IsPrerelease);
-            
-            latestVersion.Bump(ReleaseType.Patch).Returns(nextPatch);
-            latestVersion.Bump(ReleaseType.Minor).Returns(nextMinor);
-            latestVersion.Bump(ReleaseType.Major).Returns(nextMajor);
-           
-            IGitTag latestTag = Substitute.For<IGitTag>();
-            latestTag.Version.Returns(latestVersion);
-            latestTag.Prefix.Returns(Given.DefaultPrefix);
-            latestTag.Suffix.Returns(Given.DefaultSuffix);
-
-            return latestTag;
         }
 
         private static IEnumerable<Commit> CommitListThatContainsNoSignificantChange() {

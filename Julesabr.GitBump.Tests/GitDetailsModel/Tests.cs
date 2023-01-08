@@ -17,30 +17,16 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
 
         [Test]
         public void
-            BumpTag_WithNoLatestTag_LatestCommitsThatContainAFeature_AndOptionsForRelease_ThenTheResult_Should_Be_GitTagForFirstVersion() {
+            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainNoSignificantChange_Then_TheResult_Should_BeNull() {
             Given.GitDetails
                 .With()
-                .LatestCommitsThatContainAFeature()
-                .And()
                 .OptionsForRelease()
-                .When()
-                .BumpTagForVersion(Given.AVersion.First())
-                .Then()
-                .TheResultShouldBeGitTagForVersion(IVersion.First);
-        }
-
-        [Test]
-        public void
-            BumpTag_WithALatestTag_LatestCommitsThatContainNoSignificantChange_AndOptionsForRelease_ThenTheResult_Should_BeNull() {
-            Given.GitDetails
-                .With()
+                .And()
                 .ALatestTag()
                 .And()
                 .LatestCommitsThatContainNoSignificantChange()
-                .And()
-                .OptionsForRelease()
                 .When()
-                .BumpTagForVersion(Given.AVersion.First())
+                .BumpTag()
                 .Then()
                 .TheResult
                 .Should()
@@ -55,82 +41,82 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         [TestCase("docs")]
         [TestCase("revert")]
         public void
-            BumpTag_WithALatestTag_LatestCommitsThatContainALesserPatchChange_AndOptionsForRelease_ThenTheResult_Should_Be_GitTagForNextPatchVersion(string change) {
+            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainAChange_Then_TheResult_Should_Be_GitTagForNextPatchVersion(string change) {
             Given.GitDetails
                 .With()
+                .OptionsForRelease()
+                .And()
                 .ALatestTag()
                 .And()
                 .LatestCommitsThatContain(change)
-                .And()
-                .OptionsForRelease()
                 .When()
-                .BumpTagForVersion(Given.AVersion.NextPatch())
+                .BumpTag()
                 .Then()
-                .TheResultShouldBeGitTagForVersion(Given.NextPatchVersion);
+                .TheResultShouldBeAGitTagForVersion(Given.NextPatchVersion);
         }
 
         [Test]
         public void
-            BumpTag_WithALatestTag_LatestCommitsThatContainABugFix_AndOptionsForRelease_ThenTheResult_Should_Be_GitTagForNextPatchVersion() {
+            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainABugFix_ThenTheResult_Should_Be_GitTagForNextPatchVersion() {
             Given.GitDetails
                 .With()
+                .OptionsForRelease()
+                .And()
                 .ALatestTag()
                 .And()
                 .LatestCommitsThatContainABugFix()
-                .And()
-                .OptionsForRelease()
                 .When()
-                .BumpTagForVersion(Given.AVersion.NextPatch())
+                .BumpTag()
                 .Then()
-                .TheResultShouldBeGitTagForVersion(Given.NextPatchVersion);
+                .TheResultShouldBeAGitTagForVersion(Given.NextPatchVersion);
         }
         
         [Test]
         public void
-            BumpTag_WithALatestTag_LatestCommitsThatContainAFeature_AndOptionsForRelease_ThenTheResult_Should_Be_GitTagForNextMinorVersion() {
+            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainAFeature_ThenTheResult_Should_Be_GitTagForNextMinorVersion() {
             Given.GitDetails
                 .With()
+                .OptionsForRelease()
+                .And()
                 .ALatestTag()
                 .And()
                 .LatestCommitsThatContainAFeature()
-                .And()
-                .OptionsForRelease()
                 .When()
-                .BumpTagForVersion(Given.AVersion.NextMinor())
+                .BumpTag()
                 .Then()
-                .TheResultShouldBeGitTagForVersion(Given.NextMinorVersion);
+                .TheResultShouldBeAGitTagForVersion(Given.NextMinorVersion);
         }
         
         [Test]
         public void
-            BumpTag_WithALatestTag_LatestCommitsThatContainABreakingChangeUsingExclamation_AndOptionsForRelease_ThenTheResult_Should_Be_GitTagForNextMajorVersion() {
+            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainABreakingChangeUsingExclamation_ThenTheResult_Should_Be_GitTagForNextMajorVersion() {
             Given.GitDetails
                 .With()
+                .OptionsForRelease()
+                .And()
                 .ALatestTag()
                 .And()
                 .LatestCommitsThatContainABreakingChangeUsingExclamation()
-                .And()
-                .OptionsForRelease()
                 .When()
-                .BumpTagForVersion(Given.AVersion.NextMajor())
+                .BumpTag()
                 .Then()
-                .TheResultShouldBeGitTagForVersion(Given.NextMajorVersion);
+                .TheResultShouldBeAGitTagForVersion(Given.NextMajorVersion);
         }
         
         [Test]
         public void
-            BumpTag_WithALatestTag_LatestCommitsThatContainABreakingChangeUsingMessageFooter_AndOptionsForRelease_ThenTheResult_Should_Be_GitTagForNextMajorVersion() {
+            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainABreakingChangeUsingMessageFooter_ThenTheResult_Should_Be_GitTagForNextMajorVersion() {
             Given.GitDetails
                 .With()
+                .OptionsForRelease()
+                .And()
                 .ALatestTag()
                 .And()
                 .LatestCommitsThatContainABreakingChangeUsingMessageFooter()
-                .And()
-                .OptionsForRelease()
                 .When()
-                .BumpTagForVersion(Given.AVersion.NextMajor())
+                .BumpTag()
                 .Then()
-                .TheResultShouldBeGitTagForVersion(Given.NextMajorVersion);
+                .TheResultShouldBeAGitTagForVersion(Given.NextMajorVersion);
         }
 
         #endregion

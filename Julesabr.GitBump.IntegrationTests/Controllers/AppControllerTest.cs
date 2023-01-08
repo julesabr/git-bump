@@ -30,7 +30,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoSignificantChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -50,7 +50,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBugFixOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -70,7 +70,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -90,7 +90,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBreakingChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -110,7 +110,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoTagOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -134,7 +134,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoSignificantChangeOnDev.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -154,7 +154,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBugFixOnDev.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -174,7 +174,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnDev.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -194,7 +194,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBreakingChangeOnDev.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -214,7 +214,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithPrereleaseChangeOnDev.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -234,7 +234,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBugFixOnDev.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -254,7 +254,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoTagOnDev.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -278,7 +278,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoSignificantChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -298,7 +298,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBugFixOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -318,7 +318,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -338,7 +338,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBreakingChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -358,7 +358,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoTagOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -379,7 +379,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create("ver");
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -400,7 +400,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create("v", "-preview");
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -424,7 +424,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoSignificantChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -444,7 +444,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBugFixOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -464,7 +464,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -485,7 +485,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBreakingChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -506,7 +506,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoTagOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -527,7 +527,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create("ver");
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -548,7 +548,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create("v", "-preview");
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -573,7 +573,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoSignificantChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -594,7 +594,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBugFixOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -615,7 +615,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -636,7 +636,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithBreakingChangeOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -657,7 +657,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithNoTagOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
 
@@ -681,7 +681,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
             IRepository repository = RepositoryStubWithFeatureOnMain.Create();
             FileFactory fileFactory = Substitute.For<FileFactory>();
             IText text = Substitute.For<IText>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             fileFactory.Create(Arg.Any<string>()).Returns(text);
             text.When(t => t.Write(Arg.Any<string>()))
@@ -704,7 +704,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
         public void RepositoryWithInvalidTagName_Should_Fail_WithIllegalStateError() {
             IRepository repository = GetRepositoryWithInvalidTagName();
             FileFactory fileFactory = Substitute.For<FileFactory>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             AppRunnerResult result = Program.GetAppRunner(new TestDependencyResolver { controller })
                 .RunInMem("");
@@ -721,7 +721,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
         public void RepositoryWhereFileNotFound_Should_Fail_WithFileNotFoundError() {
             IRepository repository = GetRepositoryWhereFileNotFound();
             FileFactory fileFactory = Substitute.For<FileFactory>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             AppRunnerResult result = Program.GetAppRunner(new TestDependencyResolver { controller })
                 .RunInMem("");
@@ -737,7 +737,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
         public void RepositoryWhereOperationFailed_Should_Fail_WithOperationFailedError() {
             IRepository repository = GetRepositoryWhereOperationFailed();
             FileFactory fileFactory = Substitute.For<FileFactory>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             AppRunnerResult result = Program.GetAppRunner(new TestDependencyResolver { controller })
                 .RunInMem("");
@@ -754,7 +754,7 @@ namespace Julesabr.GitBump.IntegrationTests.Controllers {
         public void RepositoryWhereException_Should_Fail() {
             IRepository repository = GetRepositoryWhereException();
             FileFactory fileFactory = Substitute.For<FileFactory>();
-            AppController controller = new(repository, fileFactory);
+            AppController controller = new(repository);
 
             AppRunnerResult result = Program.GetAppRunner(new TestDependencyResolver { controller })
                 .RunInMem("");

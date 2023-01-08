@@ -11,13 +11,11 @@ namespace Julesabr.GitBump.Controllers {
         public const string ReturnNone = "No Bump";
 
         private readonly IGitDetails.Factory gitDetailsFactory;
-        private readonly IGitTag.Factory gitTagFactory;
         private readonly IRepository repository;
         private readonly FileFactory fileFactory;
 
-        public AppController(IGitDetails.Factory gitDetailsFactory, IGitTag.Factory gitTagFactory, IRepository repository, FileFactory fileFactory) {
+        public AppController(IGitDetails.Factory gitDetailsFactory, IRepository repository, FileFactory fileFactory) {
             this.gitDetailsFactory = gitDetailsFactory;
-            this.gitTagFactory = gitTagFactory;
             this.repository = repository;
             this.fileFactory = fileFactory;
         }
@@ -30,7 +28,7 @@ namespace Julesabr.GitBump.Controllers {
             TryWriteToFile("version-output", defaultedOptions.VersionOutput);
 
             IGitDetails details = gitDetailsFactory.Create(defaultedOptions);
-            IGitTag? newTag = details.BumpTag(gitTagFactory);
+            IGitTag? newTag = details.BumpTag();
 
             if (newTag == null) {
                 WriteToFile(ReturnNone, defaultedOptions.VersionOutput);

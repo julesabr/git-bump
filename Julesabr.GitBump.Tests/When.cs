@@ -1,3 +1,5 @@
+using System;
+
 namespace Julesabr.GitBump.Tests {
     internal class When<TSystem> {
         public TSystem SystemUnderTest { get; }
@@ -21,5 +23,9 @@ namespace Julesabr.GitBump.Tests {
         public Then<TResult> Then() {
             return new Then<TResult>(Result);
         }
+    }
+
+    [AttributeUsage(AttributeTargets.Method)]
+    internal class WhenAttribute : Attribute {
     }
 }

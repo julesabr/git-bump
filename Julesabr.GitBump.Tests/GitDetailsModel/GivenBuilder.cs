@@ -13,7 +13,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         }
 
         public When<GitDetails> When() {
-            return new When<GitDetails>(new GitDetails(LatestTag, LatestPrereleaseTag, LatestCommits!, Options!));
+            return new When<GitDetails>(new GitDetails(LatestTag!, LatestPrereleaseTag!, LatestCommits!, Options!));
         }
     }
 }

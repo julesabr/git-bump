@@ -78,6 +78,10 @@ namespace Julesabr.GitBump {
                 (ushort)(PrereleaseNumber + 1), IsPrerelease);
         }
 
+        public bool IsReleaseEqual(IVersion? version) {
+            throw new NotImplementedException();
+        }
+
         [Pure]
         public int CompareTo(IVersion? other) {
             if (ReferenceEquals(this, other)) return 0;

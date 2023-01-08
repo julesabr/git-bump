@@ -3,15 +3,35 @@ using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     public sealed class GitTag : IGitTag {
-        public GitTag(IVersion version, string? prefix, string? suffix) {
+        public GitTag(IVersion? version, string? prefix, string? suffix) {
             Version = version;
             Prefix = prefix;
             Suffix = suffix;
         }
 
-        public IVersion Version { get; }
+        public IVersion? Version { get; }
         public string? Prefix { get; }
         public string? Suffix { get; }
+        
+        public IGitTag Bump(ReleaseType type, Options options) {
+            throw new NotImplementedException();
+        }
+
+        public IGitTag BumpMajor(Options options) {
+            throw new NotImplementedException();
+        }
+
+        public IGitTag BumpMinor(Options options) {
+            throw new NotImplementedException();
+        }
+
+        public IGitTag BumpPatch(Options options) {
+            throw new NotImplementedException();
+        }
+
+        public IGitTag BumpPrerelease(Options options) {
+            throw new NotImplementedException();
+        }
 
         [Pure]
         public int CompareTo(IGitTag? other) {

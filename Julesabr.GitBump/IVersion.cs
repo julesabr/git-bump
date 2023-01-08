@@ -42,6 +42,9 @@ namespace Julesabr.GitBump {
         IVersion BumpPrerelease();
 
         [Pure]
+        bool IsReleaseEqual(IVersion? version);
+
+        [Pure]
         string ToString();
 
         [Pure]

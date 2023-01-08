@@ -1,3 +1,5 @@
+using System;
+
 namespace Julesabr.GitBump.Tests {
     internal class Then<TResult> {
         public TResult? TheResult { get; }
@@ -5,5 +7,9 @@ namespace Julesabr.GitBump.Tests {
         public Then(TResult? result) {
             TheResult = result;
         }
+    }
+    
+    [AttributeUsage(AttributeTargets.Method)]
+    internal class ThenAttribute : Attribute {
     }
 }
