@@ -16,26 +16,28 @@ namespace Julesabr.GitBump {
             
             [Pure]
             public IGitDetails Create(Options options) {
-                IGitTag? latestTag = repository.Tags.Where(tag => tag.IsAnnotated)
-                    .Select(tag => gitTagFactory.Create(tag.Name, options.Prefix, options.Suffix))
-                    .Where(tag => !tag.Version.IsPrerelease)
+                IGitTag emptyTag = gitTagFactory.CreateEmpty(options);
+                IList<IGitTag> gitTags = repository.Tags
+                    .Where(tag => tag.IsAnnotated)
+                    .Select(tag => gitTagFactory.Create(tag.Name, options))
+                    .ToList();
+
+                IGitTag latestTag = gitTags
+                    .Where(tag => !tag.Version!.IsPrerelease)
                     .OrderByDescending(tag => tag)
-                    .FirstOrDefault();
-
-                IGitTag? latestPrereleaseTag = null;
+                    .FirstOrDefault() ?? emptyTag;
+                
+                IGitTag latestPrereleaseTag = emptyTag;
                 if (options.Prerelease)
-                    latestPrereleaseTag = repository.Tags.Where(tag => tag.IsAnnotated)
-                        .Select(tag => gitTagFactory.Create(tag.Name, options.Prefix, options.Suffix))
+                    latestPrereleaseTag = gitTags
                         .Where(tag =>
-                            tag.Version.IsPrerelease && tag.Version.PrereleaseChannel == options.Channel)
+                            tag.Version!.IsPrerelease && tag.Version!.PrereleaseChannel == options.Channel)
                         .OrderByDescending(tag => tag)
-                        .FirstOrDefault();
-
-                IDictionary<string, IList<Tag>> tagsPerCommitId = TagsPerCommitId();
-
+                        .FirstOrDefault() ?? emptyTag;
+                
                 IEnumerable<Commit> latestCommits = LatestCommitsSince(options.Prerelease ? latestPrereleaseTag : latestTag,
-                    tagsPerCommitId);
-
+                    TagsPerCommitId());
+                
                 return new GitDetails(latestTag, latestPrereleaseTag, latestCommits, options);
             }
 

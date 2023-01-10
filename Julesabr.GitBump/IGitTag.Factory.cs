@@ -50,6 +50,21 @@ namespace Julesabr.GitBump {
                     suffix
                 );
             }
+
+            [Pure]
+            public virtual IGitTag Create(IVersion version, Options options) {
+                throw new NotImplementedException();
+            }
+
+            [Pure]
+            public virtual IGitTag Create(string value, Options options) {
+                throw new NotImplementedException();
+            }
+
+            [Pure]
+            public virtual IGitTag CreateEmpty(Options options) {
+                throw new NotImplementedException();
+            }
         }
     }
 }
