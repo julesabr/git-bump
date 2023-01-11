@@ -42,8 +42,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .ThatReturnsBumpedTags(
                     Given.NextPatchTag,
                     Given.NextMinorTag,
-                    Given.NextMajorTag,
-                    @this.Options!
+                    Given.NextMajorTag
                 );
             return @this;
         }
@@ -53,12 +52,11 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
             @this.ALatestTag();
             
             @this.LatestPrereleaseTag = start
-                .ThatReturnsPrereleaseBumpedTag(nextPrerelease, @this.Options!)
+                .ThatReturnsPrereleaseBumpedTag(nextPrerelease)
                 .ThatReturnsBumpedTags(
                     Given.NextPatchTagWithoutPrerelease,
                     Given.NextMinorTagWithoutPrerelease,
-                    Given.NextMajorTagWithoutPrerelease,
-                    @this.Options!
+                    Given.NextMajorTagWithoutPrerelease
                 );
 
             ReturnsWhichVersionsAreReleaseEqual();
@@ -67,18 +65,17 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         }
 
         [Given]
-        private static IGitTag ThatReturnsPrereleaseBumpedTag(this IGitTag @this, IGitTag nextPrerelease,
-            Options options) {
-            @this.BumpPrerelease(options).Returns(nextPrerelease);
+        private static IGitTag ThatReturnsPrereleaseBumpedTag(this IGitTag @this, IGitTag nextPrerelease) {
+            @this.BumpPrerelease().Returns(nextPrerelease);
             return @this;
         }
 
         [Given]
         private static IGitTag ThatReturnsBumpedTags(this IGitTag @this, IGitTag nextPatch, IGitTag nextMinor, 
-            IGitTag nextMajor, Options options) {
-            @this.Bump(ReleaseType.Patch, options).Returns(nextPatch);
-            @this.Bump(ReleaseType.Minor, options).Returns(nextMinor);
-            @this.Bump(ReleaseType.Major, options).Returns(nextMajor);
+            IGitTag nextMajor) {
+            @this.Bump(ReleaseType.Patch).Returns(nextPatch);
+            @this.Bump(ReleaseType.Minor).Returns(nextMinor);
+            @this.Bump(ReleaseType.Major).Returns(nextMajor);
 
             return @this;
         }
@@ -136,12 +133,12 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         }
 
         private static void ReturnsWhichVersionsAreReleaseEqual() {
-            Given.NextPatchVersion.IsReleaseEqual(Given.StartingPrereleaseVersion).Returns(false);
-            Given.NextPatchVersion.IsReleaseEqual(Given.StartingPatchVersion).Returns(true);
-            Given.NextMinorVersion.IsReleaseEqual(Given.StartingPrereleaseVersion).Returns(false);
-            Given.NextMinorVersion.IsReleaseEqual(Given.StartingMinorVersion).Returns(true);
-            Given.NextMajorVersion.IsReleaseEqual(Given.StartingPrereleaseVersion).Returns(false);
-            Given.NextMajorVersion.IsReleaseEqual(Given.StartingMajorVersion).Returns(true);
+            Given.NextPatchVersion.ReleaseEquals(Given.StartingPrereleaseVersion).Returns(false);
+            Given.NextPatchVersion.ReleaseEquals(Given.StartingPatchVersion).Returns(true);
+            Given.NextMinorVersion.ReleaseEquals(Given.StartingPrereleaseVersion).Returns(false);
+            Given.NextMinorVersion.ReleaseEquals(Given.StartingMinorVersion).Returns(true);
+            Given.NextMajorVersion.ReleaseEquals(Given.StartingPrereleaseVersion).Returns(false);
+            Given.NextMajorVersion.ReleaseEquals(Given.StartingMajorVersion).Returns(true);
         }
 
         private static IEnumerable<Commit> CommitListThatContainsNoSignificantChange() {

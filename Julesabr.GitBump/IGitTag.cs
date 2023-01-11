@@ -13,25 +13,13 @@ namespace Julesabr.GitBump {
         string? Suffix { get; }
         
         [Pure]
-        IGitTag Bump(ReleaseType type, Options options);
+        IGitTag Bump(ReleaseType type);
 
         [Pure]
-        IGitTag BumpMajor(Options options);
+        IGitTag BumpPrerelease();
 
         [Pure]
-        IGitTag BumpMinor(Options options);
-
-        [Pure]
-        IGitTag BumpPatch(Options options);
-
-        [Pure]
-        IGitTag BumpPrerelease(Options options);
-
-        [Pure]
-        string ToString();
-
-        [Pure]
-        public static IGitTag Empty(Options options) => new GitTag(null, options.Prefix, options.Suffix);
+        public static IGitTag Empty(Options options) => new GitTag(IVersion.Empty(), options.Prefix, options.Suffix);
 
         [Pure]
         public static bool operator <(IGitTag? left, IGitTag? right) {

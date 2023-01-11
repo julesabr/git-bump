@@ -38,16 +38,16 @@ namespace Julesabr.GitBump {
         }
 
         private IGitTag BumpPrereleaseTag(ReleaseType releaseType) {
-            IVersion newVersion = LatestTag.Bump(releaseType, Options).Version!;
+            IVersion newVersion = LatestTag.Bump(releaseType).Version!;
             IVersion? prereleaseVersion = LatestPrereleaseTag.Version;
 
-            return newVersion.IsReleaseEqual(prereleaseVersion)
-                ? LatestPrereleaseTag.BumpPrerelease(Options)
-                : LatestPrereleaseTag.Bump(releaseType, Options);
+            return newVersion.ReleaseEquals(prereleaseVersion)
+                ? LatestPrereleaseTag.BumpPrerelease()
+                : LatestPrereleaseTag.Bump(releaseType);
         }
 
         private IGitTag BumpReleaseTag(ReleaseType releaseType) {
-            return LatestTag.Bump(releaseType, Options);
+            return LatestTag.Bump(releaseType);
         }
 
         private ReleaseType GetReleaseType() {

@@ -78,7 +78,7 @@ namespace Julesabr.GitBump {
                 (ushort)(PrereleaseNumber + 1), IsPrerelease);
         }
 
-        public bool IsReleaseEqual(IVersion? version) {
+        public bool ReleaseEquals(IVersion? version) {
             throw new NotImplementedException();
         }
 
@@ -104,27 +104,13 @@ namespace Julesabr.GitBump {
         }
 
         [Pure]
-        public override string ToString() {
-            string result = string.Join(IVersion.Separator, Major, Minor, Patch);
-            if (IsPrerelease)
-                result = string.Join(IVersion.Separator, result, PrereleaseChannel, PrereleaseNumber);
-
-            return result;
-        }
-
-        [Pure]
         public override bool Equals(object? obj) {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
 
             return obj.GetType() == GetType() && Equals((Version)obj);
         }
-
-        [Pure]
-        public override int GetHashCode() {
-            return HashCode.Combine(Major, Minor, Patch, PrereleaseChannel, PrereleaseNumber);
-        }
-
+        
         private bool Equals(IVersion other) {
             return Major == other.Major &&
                    Minor == other.Minor &&
@@ -132,6 +118,20 @@ namespace Julesabr.GitBump {
                    PrereleaseChannel == other.PrereleaseChannel &&
                    PrereleaseNumber == other.PrereleaseNumber &&
                    IsPrerelease == other.IsPrerelease;
+        }
+
+        [Pure]
+        public override int GetHashCode() {
+            return HashCode.Combine(Major, Minor, Patch, PrereleaseChannel, PrereleaseNumber);
+        }
+
+        [Pure]
+        public override string ToString() {
+            string result = string.Join(IVersion.Separator, Major, Minor, Patch);
+            if (IsPrerelease)
+                result = string.Join(IVersion.Separator, result, PrereleaseChannel, PrereleaseNumber);
+
+            return result;
         }
     }
 }
