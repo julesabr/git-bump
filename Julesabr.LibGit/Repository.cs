@@ -6,11 +6,11 @@ namespace Julesabr.LibGit {
         private Branch? head;
         private TagCollection? tags;
 
-        public Branch Head => head ??= new Branch(Shell.Run(Shell.GitShowCurrentBranch));
-        public TagCollection Tags => GetTagCollection();
-
         public IQueryableCommitLog Commits { get; } = new QueryableCommitLog();
         public INetwork Network { get; } = new Network();
+
+        public Branch Head => head ??= new Branch(Shell.Run(Shell.GitShowCurrentBranch));
+        public TagCollection Tags => GetTagCollection();
 
         public void ApplyTag(string tagName, string message) {
             Shell.Run(string.Format(Shell.GitApplyAnnotatedTag, tagName, message));

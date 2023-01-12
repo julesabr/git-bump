@@ -31,7 +31,9 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         [TestCase("docs")]
         [TestCase("revert")]
         public void
-            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainAChange_Then_TheResult_Should_Be_GitTagForNextPatchVersion(string change) {
+            BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainAChange_Then_TheResult_Should_Be_GitTagForNextPatchVersion(
+                string change
+            ) {
             Given.GitDetails
                 .With()
                 .OptionsForRelease()
@@ -60,7 +62,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextPatchVersion);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainAFeature_ThenTheResult_Should_Be_GitTagForNextMinorVersion() {
@@ -76,7 +78,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMinorVersion);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainABreakingChangeUsingExclamation_ThenTheResult_Should_Be_GitTagForNextMajorVersion() {
@@ -92,7 +94,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMajorVersion);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForRelease_ALatestTag_AndLatestCommitsThatContainABreakingChangeUsingMessageFooter_ThenTheResult_Should_Be_GitTagForNextMajorVersion() {
@@ -112,7 +114,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         #endregion
 
         #region Prerelease
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTag_AndLatestCommitsThatContainNoSignificantChange_ThenTheResult_Should_BeNull() {
@@ -130,7 +132,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Should()
                 .BeNull();
         }
-        
+
         [Test]
         [TestCase("ci")]
         [TestCase("build")]
@@ -139,7 +141,9 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         [TestCase("docs")]
         [TestCase("revert")]
         public void
-            BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsInSameRelease_AndLatestCommitsThatContainAChange_Then_TheResult_Should_Be_GitTagForNextPatchVersionWithPrerelease(string change) {
+            BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsInSameRelease_AndLatestCommitsThatContainAChange_Then_TheResult_Should_Be_GitTagForNextPatchVersionWithPrerelease(
+                string change
+            ) {
             Given.GitDetails
                 .With()
                 .OptionsForPrerelease()
@@ -152,7 +156,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextPatchVersionWithPrerelease);
         }
-        
+
         [Test]
         [TestCase("ci")]
         [TestCase("build")]
@@ -161,7 +165,9 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         [TestCase("docs")]
         [TestCase("revert")]
         public void
-            BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsNotInSameRelease_AndLatestCommitsThatContainAChange_Then_TheResult_Should_Be_GitTagForNextPatchVersionWithoutPrerelease(string change) {
+            BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsNotInSameRelease_AndLatestCommitsThatContainAChange_Then_TheResult_Should_Be_GitTagForNextPatchVersionWithoutPrerelease(
+                string change
+            ) {
             Given.GitDetails
                 .With()
                 .OptionsForPrerelease()
@@ -174,7 +180,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextPatchVersionWithoutPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsInSameRelease_AndLatestCommitsThatContainABugFix_Then_TheResult_Should_Be_GitTagForNextPatchVersionWithPrerelease() {
@@ -190,7 +196,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextPatchVersionWithPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsNotInSameRelease_AndLatestCommitsThatContainABugFix_Then_TheResult_Should_Be_GitTagForNextPatchVersionWithoutPrerelease() {
@@ -206,7 +212,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextPatchVersionWithoutPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsInSameRelease_AndLatestCommitsThatContainAFeature_Then_TheResult_Should_Be_GitTagForNextMinorVersionWithPrerelease() {
@@ -222,7 +228,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMinorVersionWithPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsNotInSameRelease_AndLatestCommitsThatContainAFeature_Then_TheResult_Should_Be_GitTagForNextMinorVersionWithoutPrerelease() {
@@ -238,7 +244,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMinorVersionWithoutPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsInSameRelease_AndLatestCommitsThatContainABreakingChangeUsingExclamation_Then_TheResult_Should_Be_GitTagForNextMajorVersionWithPrerelease() {
@@ -254,7 +260,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMajorVersionWithPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsNotInSameRelease_AndLatestCommitsThatContainABreakingChangeUsingExclamation_Then_TheResult_Should_Be_GitTagForNextMajorVersionWithoutPrerelease() {
@@ -270,7 +276,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMajorVersionWithoutPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsInSameRelease_AndLatestCommitsThatContainABreakingChangeUsingMessageFooter_Then_TheResult_Should_Be_GitTagForNextMajorVersionWithPrerelease() {
@@ -286,7 +292,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMajorVersionWithPrerelease);
         }
-        
+
         [Test]
         public void
             BumpTag_WithOptionsForPrerelease_ALatestPrereleaseTagWhereBumpedLatestTagIsNotInSameRelease_AndLatestCommitsThatContainABreakingChangeUsingMessageFooter_Then_TheResult_Should_Be_GitTagForNextMajorVersionWithoutPrerelease() {
@@ -302,7 +308,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.NextMajorVersionWithoutPrerelease);
         }
-        
+
         #endregion
     }
 }

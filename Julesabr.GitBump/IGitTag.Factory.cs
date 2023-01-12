@@ -24,7 +24,7 @@ namespace Julesabr.GitBump {
                     suffix
                 );
             }
-            
+
             [Pure]
             public virtual IGitTag Create(string value, string? prefix, string? suffix) {
                 if (string.IsNullOrWhiteSpace(value))

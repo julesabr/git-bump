@@ -11,7 +11,7 @@ namespace Julesabr.GitBump {
         IVersion? Version { get; }
         string? Prefix { get; }
         string? Suffix { get; }
-        
+
         [Pure]
         IGitTag Bump(ReleaseType type);
 
@@ -19,7 +19,9 @@ namespace Julesabr.GitBump {
         IGitTag BumpPrerelease();
 
         [Pure]
-        public static IGitTag Empty(Options options) => new GitTag(IVersion.Empty(), options.Prefix, options.Suffix);
+        public static IGitTag Empty(Options options) {
+            return new GitTag(IVersion.Empty(), options.Prefix, options.Suffix);
+        }
 
         [Pure]
         public static bool operator <(IGitTag? left, IGitTag? right) {

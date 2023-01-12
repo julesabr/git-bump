@@ -7,16 +7,24 @@ namespace Julesabr.GitBump.Tests.GitDetailsFactoryModel {
         private const string DefaultChannel = "dev";
 
         public static readonly IGitTag EmptyTag = GitTagSubstitute.Empty(DefaultPrefix, DefaultSuffix);
+
         public static readonly IGitTag
             ReleaseTag1 = GitTagSubstitute.Create(VersionSubstitute.Create(1, 0, 0), DefaultPrefix, DefaultSuffix);
+
         public static readonly IGitTag
             ReleaseTag2 = GitTagSubstitute.Create(VersionSubstitute.Create(1, 1, 0), DefaultPrefix, DefaultSuffix);
+
         public static readonly IGitTag PrereleaseDefaultChannelTag1 =
-            GitTagSubstitute.Create(VersionSubstitute.Create(1, 1, 1, DefaultChannel, 1, true), DefaultPrefix, DefaultSuffix);
+            GitTagSubstitute.Create(VersionSubstitute.Create(1, 1, 1, DefaultChannel, 1, true), DefaultPrefix,
+                DefaultSuffix);
+
         public static readonly IGitTag PrereleaseDefaultChannelTag2 =
-            GitTagSubstitute.Create(VersionSubstitute.Create(1, 1, 1, DefaultChannel, 2, true), DefaultPrefix, DefaultSuffix);
+            GitTagSubstitute.Create(VersionSubstitute.Create(1, 1, 1, DefaultChannel, 2, true), DefaultPrefix,
+                DefaultSuffix);
+
         public static readonly IGitTag PrereleaseNonDefaultChannelTag =
-            GitTagSubstitute.Create(VersionSubstitute.Create(1, 1, 1, "staging", 1, true), DefaultPrefix, DefaultSuffix);
+            GitTagSubstitute.Create(VersionSubstitute.Create(1, 1, 1, "staging", 1, true), DefaultPrefix,
+                DefaultSuffix);
 
         public static readonly Options ReleaseOptions = new() {
             Prerelease = false,
@@ -31,14 +39,14 @@ namespace Julesabr.GitBump.Tests.GitDetailsFactoryModel {
             Prefix = DefaultPrefix,
             Suffix = DefaultSuffix
         };
-        
+
         public static Given<IGitDetails.Factory> GitDetailsFactory => Given<IGitDetails.Factory>.Instance;
     }
 
     internal class GivenBuilder {
         public IGitTag.Factory? GitTagFactory { get; set; }
         public IRepository? Repository { get; set; }
-        
+
         public GivenBuilder And() {
             return this;
         }

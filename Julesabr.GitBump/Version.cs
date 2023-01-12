@@ -3,6 +3,13 @@ using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     public sealed class Version : IVersion {
+        public ushort Major { get; }
+        public ushort Minor { get; }
+        public ushort Patch { get; }
+        public string? PrereleaseChannel { get; }
+        public ushort PrereleaseNumber { get; }
+        public bool IsPrerelease { get; }
+
         public Version(ushort major, ushort minor, ushort patch) {
             Major = major;
             Minor = minor;
@@ -11,7 +18,7 @@ namespace Julesabr.GitBump {
             PrereleaseNumber = 1;
             IsPrerelease = false;
         }
-        
+
         public Version(ushort major, ushort minor, ushort patch, string? prereleaseChannel, ushort prereleaseNumber) {
             Major = major;
             Minor = minor;
@@ -20,13 +27,13 @@ namespace Julesabr.GitBump {
             PrereleaseNumber = prereleaseNumber;
             IsPrerelease = true;
         }
-        
+
         internal Version(
-            ushort major, 
-            ushort minor, 
-            ushort patch, 
-            string? prereleaseChannel, 
-            ushort prereleaseNumber, 
+            ushort major,
+            ushort minor,
+            ushort patch,
+            string? prereleaseChannel,
+            ushort prereleaseNumber,
             bool isPrerelease
         ) {
             Major = major;
@@ -36,13 +43,6 @@ namespace Julesabr.GitBump {
             PrereleaseNumber = prereleaseNumber;
             IsPrerelease = isPrerelease;
         }
-
-        public ushort Major { get; }
-        public ushort Minor { get; }
-        public ushort Patch { get; }
-        public string? PrereleaseChannel { get; }
-        public ushort PrereleaseNumber { get; }
-        public bool IsPrerelease { get; }
 
         [Pure]
         public IVersion Bump(ReleaseType type) {
@@ -110,15 +110,6 @@ namespace Julesabr.GitBump {
 
             return obj.GetType() == GetType() && Equals((Version)obj);
         }
-        
-        private bool Equals(IVersion other) {
-            return Major == other.Major &&
-                   Minor == other.Minor &&
-                   Patch == other.Patch &&
-                   PrereleaseChannel == other.PrereleaseChannel &&
-                   PrereleaseNumber == other.PrereleaseNumber &&
-                   IsPrerelease == other.IsPrerelease;
-        }
 
         [Pure]
         public override int GetHashCode() {
@@ -132,6 +123,15 @@ namespace Julesabr.GitBump {
                 result = string.Join(IVersion.Separator, result, PrereleaseChannel, PrereleaseNumber);
 
             return result;
+        }
+
+        private bool Equals(IVersion other) {
+            return Major == other.Major &&
+                   Minor == other.Minor &&
+                   Patch == other.Patch &&
+                   PrereleaseChannel == other.PrereleaseChannel &&
+                   PrereleaseNumber == other.PrereleaseNumber &&
+                   IsPrerelease == other.IsPrerelease;
         }
     }
 }

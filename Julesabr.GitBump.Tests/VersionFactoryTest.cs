@@ -10,7 +10,7 @@ namespace Julesabr.GitBump.Tests {
         public void Setup() {
             versionFactory = new IVersion.Factory();
         }
-        
+
         [Test]
         [TestCase("3.1.2", (ushort)3u, (ushort)1u, (ushort)2u)]
         [TestCase("2.5.13", (ushort)2u, (ushort)5u, (ushort)13u)]
@@ -34,7 +34,9 @@ namespace Julesabr.GitBump.Tests {
             string prereleaseBranch,
             ushort prereleaseNumber
         ) {
-            versionFactory.Create(value).Should().Be(new Version(major, minor, patch, prereleaseBranch, prereleaseNumber));
+            versionFactory.Create(value)
+                .Should()
+                .Be(new Version(major, minor, patch, prereleaseBranch, prereleaseNumber));
         }
 
         [Test]

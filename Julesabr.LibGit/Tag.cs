@@ -3,11 +3,9 @@ using JetBrains.Annotations;
 namespace Julesabr.LibGit {
     [PublicAPI]
     public class Tag {
-        protected Tag() {
-            Name = null!;
-            IsAnnotated = false;
-            Target = null!;
-        }
+        public virtual string Name { get; }
+        public virtual bool IsAnnotated { get; }
+        public virtual Commit Target { get; }
 
         internal Tag(string name, bool isAnnotated, Commit target) {
             Name = name;
@@ -15,8 +13,10 @@ namespace Julesabr.LibGit {
             Target = target;
         }
 
-        public virtual string Name { get; }
-        public virtual bool IsAnnotated { get; }
-        public virtual Commit Target { get; }
+        protected Tag() {
+            Name = null!;
+            IsAnnotated = false;
+            Target = null!;
+        }
     }
 }

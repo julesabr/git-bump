@@ -48,9 +48,13 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
         }
 
         [Given]
-        public static GivenBuilder ALatestPrereleaseTagFor(this GivenBuilder @this, IGitTag start, IGitTag nextPrerelease) {
+        public static GivenBuilder ALatestPrereleaseTagFor(
+            this GivenBuilder @this,
+            IGitTag start,
+            IGitTag nextPrerelease
+        ) {
             @this.ALatestTag();
-            
+
             @this.LatestPrereleaseTag = start
                 .ThatReturnsPrereleaseBumpedTag(nextPrerelease)
                 .ThatReturnsBumpedTags(
@@ -60,22 +64,6 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
                 );
 
             ReturnsWhichVersionsAreReleaseEqual();
-
-            return @this;
-        }
-
-        [Given]
-        private static IGitTag ThatReturnsPrereleaseBumpedTag(this IGitTag @this, IGitTag nextPrerelease) {
-            @this.BumpPrerelease().Returns(nextPrerelease);
-            return @this;
-        }
-
-        [Given]
-        private static IGitTag ThatReturnsBumpedTags(this IGitTag @this, IGitTag nextPatch, IGitTag nextMinor, 
-            IGitTag nextMajor) {
-            @this.Bump(ReleaseType.Patch).Returns(nextPatch);
-            @this.Bump(ReleaseType.Minor).Returns(nextMinor);
-            @this.Bump(ReleaseType.Major).Returns(nextMajor);
 
             return @this;
         }
@@ -118,9 +106,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
 
         [When]
         public static When<GitDetails, IGitTag?> BumpTag(this When<GitDetails> @this) {
-            return @this.AddResult(
-                @this.SystemUnderTest.BumpTag()
-            );
+            return @this.AddResult(details => details.BumpTag());
         }
 
         [Then]
@@ -130,6 +116,24 @@ namespace Julesabr.GitBump.Tests.GitDetailsModel {
             result?.Version.Should().Be(version);
             result?.Prefix.Should().Be(Given.DefaultPrefix);
             result?.Suffix.Should().Be(Given.DefaultSuffix);
+        }
+
+        private static IGitTag ThatReturnsPrereleaseBumpedTag(this IGitTag @this, IGitTag nextPrerelease) {
+            @this.BumpPrerelease().Returns(nextPrerelease);
+            return @this;
+        }
+
+        private static IGitTag ThatReturnsBumpedTags(
+            this IGitTag @this,
+            IGitTag nextPatch,
+            IGitTag nextMinor,
+            IGitTag nextMajor
+        ) {
+            @this.Bump(ReleaseType.Patch).Returns(nextPatch);
+            @this.Bump(ReleaseType.Minor).Returns(nextMinor);
+            @this.Bump(ReleaseType.Major).Returns(nextMajor);
+
+            return @this;
         }
 
         private static void ReturnsWhichVersionsAreReleaseEqual() {

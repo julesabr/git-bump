@@ -3,14 +3,14 @@ using JetBrains.Annotations;
 namespace Julesabr.LibGit {
     [PublicAPI]
     public class Branch {
-        protected Branch() {
-            Name = null!;
-        }
+        public virtual string Name { get; }
 
         internal Branch(string name) {
             Name = name;
         }
 
-        public virtual string Name { get; }
+        protected Branch() {
+            Name = null!;
+        }
     }
 }

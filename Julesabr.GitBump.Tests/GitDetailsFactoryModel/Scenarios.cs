@@ -20,7 +20,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsFactoryModel {
             Given.PrereleaseDefaultChannelTag1.ToString().Returns("v1.1.1.dev.1");
             Given.PrereleaseDefaultChannelTag2.ToString().Returns("v1.1.1.dev.2");
             Given.PrereleaseNonDefaultChannelTag.ToString().Returns("v1.1.1.staging.1");
-            
+
             gitTagFactory.Create(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>()).Returns((IGitTag)null!);
             gitTagFactory.Create("v1.0.0", options).Returns(Given.ReleaseTag1);
             gitTagFactory.Create("v1.1.0", options).Returns(Given.ReleaseTag2);
@@ -171,8 +171,11 @@ namespace Julesabr.GitBump.Tests.GitDetailsFactoryModel {
         }
 
         [When]
-        public static When<IGitDetails.Factory, IGitDetails> Create(this When<IGitDetails.Factory> @this, Options options) {
-            return @this.AddResult(@this.SystemUnderTest.Create(options));
+        public static When<IGitDetails.Factory, IGitDetails> Create(
+            this When<IGitDetails.Factory> @this,
+            Options options
+        ) {
+            return @this.AddResult(factory => factory.Create(options));
         }
 
         [Then]

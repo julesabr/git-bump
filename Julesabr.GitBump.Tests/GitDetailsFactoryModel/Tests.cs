@@ -24,7 +24,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsFactoryModel {
         }
 
         [Test]
-        public void 
+        public void
             Create_WithAGitTagFactoryForReleaseOptions_AndARepositoryThatContainsNoAnnotatedTags_Then_TheResult_Should_HaveEmptyLatestTag_HaveEmptyLatestPrereleaseTag_AndHaveAllCommitsAsLatestCommits() {
             Given.GitDetailsFactory
                 .With()
@@ -47,7 +47,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsFactoryModel {
         #region Prerelease
 
         [Test]
-        public void 
+        public void
             Create_WithAGitTagFactoryForPrereleaseOptions_AndARepositoryThatContainsAnnotatedTags_Then_TheResult_Should_HaveValidLatestTag_HaveValidLatestPrereleaseTag_AndHaveCommitsUpToLatestTagAsLatestCommits() {
             Given.GitDetailsFactory
                 .With()
@@ -66,7 +66,7 @@ namespace Julesabr.GitBump.Tests.GitDetailsFactoryModel {
         }
 
         [Test]
-        public void 
+        public void
             Create_WithAGitTagFactoryForPrereleaseOptions_AndARepositoryThatContainsNoAnnotatedTags_Then_TheResult_Should_HaveEmptyLatestTag_HaveEmptyLatestPrereleaseTag_AndHaveAllCommitsAsLatestCommits() {
             Given.GitDetailsFactory
                 .With()

@@ -7,6 +7,8 @@ namespace Julesabr.LibGit {
     internal class QueryableCommitLog : IQueryableCommitLog {
         private readonly IEnumerable<Commit>? commits;
 
+        private CommitSortStrategies SortedBy { get; }
+
         public QueryableCommitLog(
             IEnumerable<Commit>? commits = null,
             CommitSortStrategies sortedBy = CommitSortStrategies.None
@@ -14,8 +16,6 @@ namespace Julesabr.LibGit {
             this.commits = commits;
             SortedBy = sortedBy;
         }
-
-        private CommitSortStrategies SortedBy { get; }
 
         [Pure]
         public IEnumerator<Commit> GetEnumerator() {

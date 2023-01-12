@@ -10,6 +10,12 @@ namespace Julesabr.GitBump {
         private const string BreakingChangeCommitTypeRegex = @"^[a-zA-Z]+(?:\(.+\))?!: ";
         private const string BreakingChangeFooterRegex = @"\n\nBREAKING CHANGE: ";
 
+        public IGitTag LatestTag { get; }
+        public IGitTag LatestPrereleaseTag { get; }
+        public IEnumerable<Commit> LatestCommits { get; }
+
+        private Options Options { get; }
+
         public GitDetails(
             IGitTag latestTag,
             IGitTag latestPrereleaseTag,
@@ -21,12 +27,6 @@ namespace Julesabr.GitBump {
             LatestCommits = latestCommits;
             Options = options;
         }
-
-        private Options Options { get; }
-
-        public IGitTag LatestTag { get; }
-        public IGitTag LatestPrereleaseTag { get; }
-        public IEnumerable<Commit> LatestCommits { get; }
 
         [Pure]
         public IGitTag? BumpTag() {

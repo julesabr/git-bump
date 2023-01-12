@@ -3,15 +3,15 @@ using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     public sealed class GitTag : IGitTag {
+        public IVersion Version { get; }
+        public string? Prefix { get; }
+        public string? Suffix { get; }
+
         public GitTag(IVersion version, string? prefix, string? suffix) {
             Version = version;
             Prefix = prefix;
             Suffix = suffix;
         }
-
-        public IVersion Version { get; }
-        public string? Prefix { get; }
-        public string? Suffix { get; }
 
         public IGitTag Bump(ReleaseType type) {
             return new GitTag(Version.Bump(type), Prefix, Suffix);
@@ -42,20 +42,20 @@ namespace Julesabr.GitBump {
 
             return obj.GetType() == GetType() && Equals((GitTag)obj);
         }
-        
-        [Pure]
-        private bool Equals(IGitTag other) {
-            return Prefix == other.Prefix && Version.Equals(other.Version) && Suffix == other.Suffix;
-        }
 
         [Pure]
         public override int GetHashCode() {
             return HashCode.Combine(Prefix, Version, Suffix);
         }
-        
+
         [Pure]
         public override string ToString() {
             return $"{Prefix}{Version.ToString()}{Suffix}";
+        }
+
+        [Pure]
+        private bool Equals(IGitTag other) {
+            return Prefix == other.Prefix && Version.Equals(other.Version) && Suffix == other.Suffix;
         }
     }
 }

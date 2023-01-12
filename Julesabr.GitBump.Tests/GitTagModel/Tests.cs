@@ -3,10 +3,28 @@ using NUnit.Framework;
 
 namespace Julesabr.GitBump.Tests.GitTagModel {
     public class Tests {
-        #region Bumping
-        
         [Test]
-        public void Bump_ForReleaseTypeAsMajor_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextMajorVersion() {
+        public void ToString_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_Be_CorrectString() {
+            Given.AGitTag
+                .With()
+                .AVersion()
+                .And()
+                .APrefix()
+                .And()
+                .ASuffix()
+                .When()
+                .ToStringForObject()
+                .Then()
+                .TheResult
+                .Should()
+                .Be($"{Given.DefaultPrefix}1.4.2{Given.DefaultSuffix}");
+        }
+
+        #region Bumping
+
+        [Test]
+        public void
+            Bump_ForReleaseTypeAsMajor_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextMajorVersion() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -19,9 +37,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.TheNextMajorVersion);
         }
-        
+
         [Test]
-        public void Bump_ForReleaseTypeAsMinor_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextMinorVersion() {
+        public void
+            Bump_ForReleaseTypeAsMinor_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextMinorVersion() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -34,9 +53,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.TheNextMinorVersion);
         }
-        
+
         [Test]
-        public void Bump_ForReleaseTypeAsPatch_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextPatchVersion() {
+        public void
+            Bump_ForReleaseTypeAsPatch_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextPatchVersion() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -49,9 +69,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.TheNextPatchVersion);
         }
-        
+
         [Test]
-        public void BumpPrerelease_WithAPrereleaseVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextPrereleaseVersion() {
+        public void
+            BumpPrerelease_WithAPrereleaseVersion_APrefix_AndASuffix_Then_TheResult_Should_BeAGitTagForNextPrereleaseVersion() {
             Given.AGitTag
                 .With()
                 .APrereleaseVersion()
@@ -64,13 +85,14 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Then()
                 .TheResultShouldBeAGitTagForVersion(Given.TheNextPrereleaseVersion);
         }
-        
+
         #endregion
 
         #region Comparisons
-        
+
         [Test]
-        public void CompareTo_ForGitTagWithLesserPrefix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeGreaterThan_0() {
+        public void
+            CompareTo_ForGitTagWithLesserPrefix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeGreaterThan_0() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -85,9 +107,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .BeGreaterThan(0);
         }
-        
+
         [Test]
-        public void CompareTo_ForGitTagWithGreaterPrefix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeLessThan_0() {
+        public void
+            CompareTo_ForGitTagWithGreaterPrefix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeLessThan_0() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -102,9 +125,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .BeLessThan(0);
         }
-        
+
         [Test]
-        public void CompareTo_ForGitTagWithLesserVersion_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeGreaterThan_0() {
+        public void
+            CompareTo_ForGitTagWithLesserVersion_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeGreaterThan_0() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -119,9 +143,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .BeGreaterThan(0);
         }
-        
+
         [Test]
-        public void CompareTo_ForGitTagWithGreaterVersion_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeLessThan_0() {
+        public void
+            CompareTo_ForGitTagWithGreaterVersion_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeLessThan_0() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -136,9 +161,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .BeLessThan(0);
         }
-        
+
         [Test]
-        public void CompareTo_ForGitTagWithLesserSuffix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeGreaterThan_0() {
+        public void
+            CompareTo_ForGitTagWithLesserSuffix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeGreaterThan_0() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -153,9 +179,10 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .BeGreaterThan(0);
         }
-        
+
         [Test]
-        public void CompareTo_ForGitTagWithGreaterSuffix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeLessThan_0() {
+        public void
+            CompareTo_ForGitTagWithGreaterSuffix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeLessThan_0() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -170,7 +197,7 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .BeLessThan(0);
         }
-        
+
         [Test]
         public void CompareTo_ForGitTagWithAllEqual_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_Be_0() {
             Given.AGitTag
@@ -187,7 +214,7 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .Be(0);
         }
-        
+
         [Test]
         public void CompareTo_ForSameGitTag_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_Be_0() {
             Given.AGitTag
@@ -203,7 +230,7 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .Be(0);
         }
-        
+
         [Test]
         public void CompareTo_ForNullGitTag_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_Be_1() {
             Given.AGitTag
@@ -220,13 +247,14 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
                 .Should()
                 .Be(1);
         }
-        
+
         #endregion
 
         #region Equality
 
         [Test]
-        public void Equals_ForGitTagWithDifferentPrefix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeFalse() {
+        public void
+            Equals_ForGitTagWithDifferentPrefix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeFalse() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -243,7 +271,8 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
         }
 
         [Test]
-        public void Equals_ForGitTagWithDifferentVersion_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeFalse() {
+        public void
+            Equals_ForGitTagWithDifferentVersion_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeFalse() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -260,7 +289,8 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
         }
 
         [Test]
-        public void Equals_ForGitTagWithDifferentSuffix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeFalse() {
+        public void
+            Equals_ForGitTagWithDifferentSuffix_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_BeFalse() {
             Given.AGitTag
                 .With()
                 .AVersion()
@@ -361,22 +391,5 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
         }
 
         #endregion
-
-        [Test]
-        public void ToString_WithAVersion_APrefix_AndASuffix_Then_TheResult_Should_Be_CorrectString() {
-            Given.AGitTag
-                .With()
-                .AVersion()
-                .And()
-                .APrefix()
-                .And()
-                .ASuffix()
-                .When()
-                .ToStringForObject()
-                .Then()
-                .TheResult
-                .Should()
-                .Be($"{Given.DefaultPrefix}1.4.2{Given.DefaultSuffix}");
-        }
     }
 }

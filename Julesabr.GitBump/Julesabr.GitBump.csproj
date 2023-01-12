@@ -13,13 +13,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="CommandDotNet" Version="6.0.5" />
-        <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="4.0.1" />
+        <PackageReference Include="CommandDotNet" Version="6.0.5"/>
+        <PackageReference Include="CommandDotNet.IoC.MicrosoftDependencyInjection" Version="4.0.1"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Julesabr.IO\Julesabr.IO.csproj" />
-        <ProjectReference Include="..\Julesabr.LibGit\Julesabr.LibGit.csproj" />
+        <ProjectReference Include="..\Julesabr.IO\Julesabr.IO.csproj"/>
+        <ProjectReference Include="..\Julesabr.LibGit\Julesabr.LibGit.csproj"/>
     </ItemGroup>
 
 </Project>

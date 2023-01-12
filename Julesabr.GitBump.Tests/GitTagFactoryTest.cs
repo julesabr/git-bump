@@ -5,17 +5,17 @@ using NUnit.Framework;
 
 namespace Julesabr.GitBump.Tests {
     public class GitTagFactoryTest {
-        private IVersion.Factory versionFactory = null!;
         private IGitTag.Factory gitTagFactory = null!;
+        private IVersion.Factory versionFactory = null!;
 
         [SetUp]
         public void Setup() {
             versionFactory = Substitute.For<IVersion.Factory>();
             gitTagFactory = new IGitTag.Factory(versionFactory);
-            
+
             versionFactory.Create("1.2.3").Returns(new Version(1, 2, 3));
         }
-        
+
         [Test]
         public void Create_GivenVersionIsNotNull_ThenReturnGitTagObject() {
             gitTagFactory.Create(new Version(1, 2, 3), "pre", "-post")

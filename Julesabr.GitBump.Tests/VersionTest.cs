@@ -4,8 +4,6 @@ using NUnit.Framework;
 
 namespace Julesabr.GitBump.Tests {
     public class VersionTest {
-        #region Bumping
-
         [Test]
         public void Bump_GivenReleaseTypeIsNone_ThenReturnSameVersion() {
             IVersion version = IVersion.From(2, 1, 3);
@@ -125,10 +123,6 @@ namespace Julesabr.GitBump.Tests {
             result.Should().Be(IVersion.From(1, 1, 3, "dev", 6));
         }
 
-        #endregion
-
-        #region ToString
-
         [Test]
         [TestCase((ushort)3u, (ushort)2u, (ushort)1u, "3.2.1")]
         [TestCase((ushort)6u, (ushort)8u, (ushort)2u, "6.8.2")]
@@ -156,10 +150,6 @@ namespace Julesabr.GitBump.Tests {
             IVersion version = IVersion.From(major, minor, patch, prereleaseBranch, prereleaseNumber);
             version.ToString().Should().Be(value);
         }
-
-        #endregion
-
-        #region Comparisons
 
         [Test]
         public void LessThan_WhenLeftMajorIsLessThanTheRightMajor_ThenReturnTrue() {
@@ -473,10 +463,6 @@ namespace Julesabr.GitBump.Tests {
             (left >= right).Should().BeTrue();
         }
 
-        #endregion
-        
-        #region Creation
-
         [Test]
         [TestCase(null)]
         [TestCase("")]
@@ -553,7 +539,5 @@ namespace Julesabr.GitBump.Tests {
                 .Throw<ArgumentException>()
                 .WithMessage(string.Format(IVersion.InvalidStringFormatError, value));
         }
-
-        #endregion
     }
 }

@@ -6,13 +6,13 @@ namespace Julesabr.GitBump.IntegrationTests {
     public class QueryableCommitLogStub : IQueryableCommitLog {
         private readonly ICommitLog log;
 
-        public QueryableCommitLogStub(IList<Commit> commits) {
-            log = new CommitLogStub(commits);
-        }
-
         // ReSharper disable once UnassignedGetOnlyAutoProperty
         // ReSharper disable once UnusedMember.Global
         public CommitSortStrategies SortedBy { get; }
+
+        public QueryableCommitLogStub(IList<Commit> commits) {
+            log = new CommitLogStub(commits);
+        }
 
         public IEnumerator<Commit> GetEnumerator() {
             return log.GetEnumerator();

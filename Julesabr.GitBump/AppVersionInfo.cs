@@ -3,6 +3,9 @@ using CommandDotNet.Builders;
 
 namespace Julesabr.GitBump {
     public sealed class AppVersionInfo {
+        public string FileName { get; }
+        public string Version { get; }
+
         public AppVersionInfo() {
             FileName = Assembly.GetEntryAssembly()?.GetName().Name!;
             Version = AppInfo.Instance.Version!;
@@ -12,8 +15,5 @@ namespace Julesabr.GitBump {
             FileName = fileName;
             Version = version;
         }
-
-        public string FileName { get; }
-        public string Version { get; }
     }
 }

@@ -8,7 +8,7 @@ namespace Julesabr.GitBump.Tests {
             TheResult = result;
         }
     }
-    
+
     [AttributeUsage(AttributeTargets.Method)]
     internal class ThenAttribute : Attribute {
     }

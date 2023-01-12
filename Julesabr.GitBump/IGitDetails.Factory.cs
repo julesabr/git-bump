@@ -13,7 +13,7 @@ namespace Julesabr.GitBump {
                 this.gitTagFactory = gitTagFactory;
                 this.repository = repository;
             }
-            
+
             [Pure]
             public IGitDetails Create(Options options) {
                 IGitTag emptyTag = gitTagFactory.CreateEmpty(options);
@@ -26,7 +26,7 @@ namespace Julesabr.GitBump {
                     .Where(tag => !tag.Version!.IsPrerelease)
                     .OrderByDescending(tag => tag)
                     .FirstOrDefault() ?? emptyTag;
-                
+
                 IGitTag latestPrereleaseTag = emptyTag;
                 if (options.Prerelease)
                     latestPrereleaseTag = gitTags
@@ -34,10 +34,11 @@ namespace Julesabr.GitBump {
                             tag.Version!.IsPrerelease && tag.Version!.PrereleaseChannel == options.Channel)
                         .OrderByDescending(tag => tag)
                         .FirstOrDefault() ?? emptyTag;
-                
-                IEnumerable<Commit> latestCommits = LatestCommitsSince(options.Prerelease ? latestPrereleaseTag : latestTag,
+
+                IEnumerable<Commit> latestCommits = LatestCommitsSince(
+                    options.Prerelease ? latestPrereleaseTag : latestTag,
                     TagsPerCommitId());
-                
+
                 return new GitDetails(latestTag, latestPrereleaseTag, latestCommits, options);
             }
 

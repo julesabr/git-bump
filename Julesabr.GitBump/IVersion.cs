@@ -5,8 +5,6 @@ using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     public partial interface IVersion : IComparable<IVersion> {
-        private const string RegexPattern = @"^([0-9]+\.){2}[0-9]+(\.[a-zA-z]+\.[0-9]+)?$";
-
         public const char Separator = '.';
         public const string BlankStringError = "Value cannot be null or empty.";
         public const string PrereleaseIsZeroError = "Prerelease number cannot be 0.";
@@ -16,6 +14,8 @@ namespace Julesabr.GitBump {
 
         public const string InvalidStringFormatError = "'{0}' is not a valid version. All versions must be in " +
                                                        "semantic version format either 'x.y.z' or 'x.y.z.<channel>.n'.";
+
+        private const string RegexPattern = @"^([0-9]+\.){2}[0-9]+(\.[a-zA-z]+\.[0-9]+)?$";
 
         ushort Major { get; }
         ushort Minor { get; }
@@ -48,9 +48,13 @@ namespace Julesabr.GitBump {
         [Pure]
         string ToString();
 
-        public static IVersion Empty() => new Version(0, 0, 0);
-        public static IVersion First(bool isPrerelease = false, string? channel = null) =>
-            new Version(0, 1, 0, channel, 1, isPrerelease);
+        public static IVersion Empty() {
+            return new Version(0, 0, 0);
+        }
+
+        public static IVersion First(bool isPrerelease = false, string? channel = null) {
+            return new Version(0, 1, 0, channel, 1, isPrerelease);
+        }
 
         [Pure]
         public static IVersion From(ushort major, ushort minor = 0, ushort patch = 0) {
