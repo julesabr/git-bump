@@ -17,7 +17,7 @@ namespace Julesabr.GitBump {
 
         [Pure]
         IGitTag BumpPrerelease();
-        
+
         [Pure]
         string ToString();
 
