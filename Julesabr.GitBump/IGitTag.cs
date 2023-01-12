@@ -22,11 +22,6 @@ namespace Julesabr.GitBump {
         string ToString();
 
         [Pure]
-        public static IGitTag Empty(Options options) {
-            return new GitTag(IVersion.Empty(), options.Prefix, options.Suffix);
-        }
-
-        [Pure]
         public static bool operator <(IGitTag? left, IGitTag? right) {
             return Comparer<IGitTag>.Default.Compare(left, right) < 0;
         }

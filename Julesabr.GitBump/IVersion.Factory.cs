@@ -27,6 +27,11 @@ namespace Julesabr.GitBump {
 
                 return result;
             }
+
+            [Pure]
+            public virtual IVersion CreateEmpty() {
+                throw new NotImplementedException();
+            }
         }
     }
 }

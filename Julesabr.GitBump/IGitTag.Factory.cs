@@ -3,32 +3,20 @@ using JetBrains.Annotations;
 
 namespace Julesabr.GitBump {
     public partial interface IGitTag {
-        // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
         public class Factory {
             private readonly IVersion.Factory versionFactory;
-
-            [UsedImplicitly]
-            public Factory() {
-                versionFactory = null!;
-            }
 
             public Factory(IVersion.Factory versionFactory) {
                 this.versionFactory = versionFactory;
             }
 
             [Pure]
-            public virtual IGitTag Create(IVersion version, string? prefix, string? suffix) {
-                return new GitTag(
-                    version,
-                    prefix,
-                    suffix
-                );
-            }
-
-            [Pure]
-            public virtual IGitTag Create(string value, string? prefix, string? suffix) {
+            public virtual IGitTag Create(string value, Options options) {
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentNullException(nameof(value), BlankStringError);
+
+                string? prefix = options.Prefix;
+                string? suffix = options.Suffix;
 
                 if (!string.IsNullOrWhiteSpace(prefix) && !value.StartsWith(prefix))
                     throw new ArgumentException(string.Format(MissingPrefixError, value, prefix));
@@ -52,18 +40,8 @@ namespace Julesabr.GitBump {
             }
 
             [Pure]
-            public virtual IGitTag Create(IVersion version, Options options) {
-                throw new NotImplementedException();
-            }
-
-            [Pure]
-            public virtual IGitTag Create(string value, Options options) {
-                throw new NotImplementedException();
-            }
-
-            [Pure]
             public virtual IGitTag CreateEmpty(Options options) {
-                throw new NotImplementedException();
+                return new GitTag(versionFactory.CreateEmpty(), options.Prefix, options.Suffix);
             }
         }
     }

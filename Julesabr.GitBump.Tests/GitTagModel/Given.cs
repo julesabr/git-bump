@@ -48,7 +48,7 @@ namespace Julesabr.GitBump.Tests.GitTagModel {
 
         public When<GitTag, TResult> When<TResult>(Func<GitTag, TResult> action) {
             GitTag systemUnderTest = new(Version!, Prefix, Suffix);
-            return new When<GitTag, TResult>(systemUnderTest, action(systemUnderTest));
+            return new When<GitTag, TResult>(systemUnderTest, action);
         }
     }
 }

@@ -15,14 +15,14 @@ namespace Julesabr.GitBump {
                 "The git tag prefix. Git tag names are always going to be the version with the",
                 "  prefix appended at the beginning."
             })]
-        public string Prefix { get; init; } = "v";
+        public string? Prefix { get; init; } = "v";
 
         [Option('s', "suffix",
             DescriptionLines = new[] {
                 "The git tag suffix. Git tag names are always going to be the version with the",
                 "  suffix appended at the end."
             })]
-        public string Suffix { get; init; } = "";
+        public string? Suffix { get; init; } = "";
 
         [Option("version-output",
             DescriptionLines = new[] {
